@@ -1,0 +1,25 @@
+{
+  "name": "mold-remediation-fl",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static local-SEO site for a Broward / Palm Beach County mold remediation company, specializing in HVAC and air handler mold.",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && node tools/serve.mjs",
+    "start": "npm run serve",
+    "check": "./tools/check.sh",
+    "audit": "node tools/audit.mjs --width 1440 && node tools/audit.mjs --width 768 && node tools/audit.mjs --width 390",
+    "prose": "node tools/prose.mjs",
+    "preflight": "node tools/preflight.mjs",
+    "vitals": "node tools/vitals.mjs",
+    "shots": "node tools/shots.mjs",
+    "assets": "./tools/optimize-assets.sh",
+    "targets": "node tools/targets.mjs",
+    "nojs": "node tools/nojs.mjs",
+    "zoom": "node tools/zoom.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

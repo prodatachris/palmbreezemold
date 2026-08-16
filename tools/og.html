@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family:'Archivo'; src:url('/fonts/archivo-latin-var.woff2') format('woff2'); font-weight:400 800; }
+  @font-face { font-family:'IBM Plex Mono'; src:url('/fonts/plexmono-latin-500.woff2') format('woff2'); font-weight:500; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1200px; height:630px; }
+  body {
+    background:#0a2247;
+    color:#edf0f4;
+    font-family:'Archivo',sans-serif;
+    padding:64px 72px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+    overflow:hidden;
+  }
+  .rule { position:absolute; left:0; right:0; height:1px; background:rgba(237,240,244,.14); }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .brand svg { display:block; }
+  .brand b { font-size:22px; font-weight:700; letter-spacing:-.03em; }
+  .kicker {
+    font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:15px;
+    letter-spacing:.18em; text-transform:uppercase; color:#e29a5c;
+  }
+  h1 {
+    font-size:70px; font-weight:700; letter-spacing:-.042em; line-height:.98;
+    max-width:11.5ch; color:#fff; margin-top:20px;
+  }
+  .foot { display:flex; align-items:flex-end; justify-content:space-between; }
+  .phone { font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:30px; letter-spacing:-.02em; color:#fff; }
+  .where { font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:#7f93a8; margin-top:8px; }
+  .art { position:absolute; right:44px; top:150px; opacity:.92; }
+</style>
+</head>
+<body>
+  <div class="rule" style="top:0"></div>
+
+  <div class="brand">
+    <img src="/assets/brand/lockup-reversed.png" alt="Palm Breeze Mold" style="height:52px;width:auto;display:block">
+  </div>
+
+  <svg class="art" width="470" height="330" viewBox="0 0 470 330" fill="none">
+    <rect x="120" y="40" width="330" height="26" stroke="#7bb8c4" stroke-width="1.4" fill="#12304f"/>
+    <rect x="30" y="66" width="82" height="60" stroke="#7bb8c4" stroke-width="1.4" fill="#12304f"/>
+    <rect x="30" y="126" width="82" height="150" stroke="#7bb8c4" stroke-width="1.6" fill="#12304f"/>
+    <path d="M36 190 L71 148 L106 190" stroke="#7bb8c4" stroke-width="1.4" fill="none"/>
+    <circle cx="71" cy="238" r="20" stroke="#7bb8c4" stroke-width="1.4" fill="none"/>
+    <rect x="185" y="66" width="16" height="24" stroke="#7bb8c4" stroke-width="1.4" fill="#12304f"/>
+    <rect x="285" y="66" width="16" height="24" stroke="#7bb8c4" stroke-width="1.4" fill="#12304f"/>
+    <rect x="385" y="66" width="16" height="24" stroke="#7bb8c4" stroke-width="1.4" fill="#12304f"/>
+    <line x1="0" y1="90" x2="470" y2="90" stroke="#1d3f66" stroke-width="1.2"/>
+    <path d="M0 258 H71 V53 H430" stroke="#c0651a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M193 53 V96 M293 53 V96 M393 53 V96" stroke="#c0651a" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="71" cy="170" r="11" fill="#0f211e" stroke="#c0651a" stroke-width="1.8"/>
+    <circle cx="71" cy="90" r="11" fill="#0f211e" stroke="#c0651a" stroke-width="1.8"/>
+    <circle cx="293" cy="82" r="11" fill="#0f211e" stroke="#c0651a" stroke-width="1.8"/>
+  </svg>
+
+  <div>
+    <span class="kicker">HVAC &middot; Air handler &middot; Ductwork specialists</span>
+    <h1>Mold remediation for Broward &amp; Palm Beach</h1>
+  </div>
+
+  <div class="foot">
+    <div>
+      <div class="phone">(561) 680-3584</div>
+      <div class="where">Same-day inspection &middot; Licensed FL mold remediator</div>
+    </div>
+  </div>
+  <div class="rule" style="bottom:0"></div>
+</body>
+</html>
