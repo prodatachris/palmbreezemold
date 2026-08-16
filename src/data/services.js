@@ -695,7 +695,7 @@ export const services = [
     description:
       'Emergency water extraction, structural drying, and mold cleanup for Broward and Palm Beach County. The 24 to 48 hour window and why drying to standard matters.',
     eyebrow: 'Time-sensitive',
-    short: 'Extraction, structural drying to a documented standard, and mold cleanup when the window has already closed.',
+    short: 'Extraction, structural drying to a documented standard, and cleanup once the window has closed.',
     lede:
       'The gap between a water loss and a mold job is about two days. What happens in those two days decides which one you are paying for.',
 

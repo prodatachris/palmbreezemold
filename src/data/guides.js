@@ -33,6 +33,7 @@ export const guides = [
     media: { image: 'flat-roof-villa', video: 'hero-villa', caption: 'Seasonal housing, Palm Beach County. Five months closed is the whole problem.' },
     lede:
       'The advice people give each other at the clubhouse — set it to 80, shut off the water, see you in November — is the single most reliable way to produce a mold problem in this market. Here is what actually works, and why.',
+    short: 'Set it to 80 and shut off the water is the most reliable way to come back to mold. What works instead.',
 
     signals: [
       { value: '55%', label: 'Relative humidity to hold while the house is empty. Not a temperature target — a humidity target.' },
@@ -190,6 +191,7 @@ guides.push({
   },
   lede:
     'Two companies looked at the same bedroom and the numbers came back five times apart. That is normal in this trade, and it is almost never because one of them is greedy. They quoted different work.',
+    short: 'Same bedroom, numbers five times apart. That is normal, and it is almost never about greed.',
 
   signals: [
     { value: '5 items', label: 'What a comparable scope has to state. Missing any one of them and you cannot compare the number to anything.' },
@@ -334,6 +336,7 @@ guides.push({
   },
   lede:
     'The gap between a water loss and a mold job is about two days in this climate. What you do inside that window largely decides which of the two you end up paying for.',
+    short: 'About two days separate a water loss from a mold job. What you do inside that window decides which.',
 
   signals: [
       { value: '24–48 hrs', label: 'From wetting to the start of growth on organic material at South Florida temperatures. This is the whole clock.' },
@@ -480,6 +483,7 @@ guides.push({
   },
   lede:
     'Probably not, is the short answer. Most of what grows on the outside of a South Florida house is algae or lichen rather than mold, and most of it is a landscaping problem rather than a remediation one.',
+    short: 'Most of what grows outside a South Florida house is algae — a landscaping problem, not a remediation one.',
 
   signals: [
     { value: 'Algae', label: 'What the black streaking on Florida roofs almost always is — a cyanobacteria, not mold.' },

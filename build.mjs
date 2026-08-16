@@ -536,7 +536,7 @@ ${mediaHero({
           ${cardBg(a.media.image, '', a.media.focus)}
           <span class="card__eyebrow">${esc(c.short)} County</span>
           <span class="card__t">${esc(a.name)}</span>
-          <span class="card__d">${text(a.lede)}</span>
+          <span class="card__d">${text(a.short)}</span>
           <span class="card__more">What we find here &rarr;</span>
         </a>`,
           )
@@ -772,7 +772,7 @@ ${mediaHero({
         ${cardBg(g.media.image, '')}
         <span class="card__eyebrow">${esc(g.eyebrow)}</span>
         <span class="card__t">${text(g.nav)}</span>
-        <span class="card__d">${text(g.lede)}</span>
+        <span class="card__d">${text(g.short)}</span>
         <span class="card__more">Read the guide &rarr;</span>
       </a>`,
         )

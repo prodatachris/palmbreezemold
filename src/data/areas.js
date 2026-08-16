@@ -28,6 +28,7 @@ export const areas = [
       'Mold remediation and HVAC mold removal in Fort Lauderdale. Victoria Park, Rio Vista, Coral Ridge, Las Olas Isles, Sailboat Bend.',
     lede:
       'Fort Lauderdale has two mold problems and they are not the same problem: the water table east of Federal, and mid-century houses running modern air conditioning through undersized returns.',
+    short: 'Two problems, not one: the water table east of Federal, and mid-century houses on undersized returns.',
     intro: [
       'The housing stock east of US-1 is largely concrete block and stucco built between the late 1940s and the mid 1960s — terrazzo floors, low slabs, and originally no central air at all. Those houses were designed to breathe. Jalousie windows, cross ventilation, and high ceilings did the humidity management, and they did it reasonably well.',
       'Then the jalousies got replaced with impact glass, the house got tightened up, and central air went in wherever there was room for it. What you end up with in Victoria Park or Poinciana Park is a sealed envelope, a slab that was never vapor-sealed sitting a few feet above the water table, and an [air handler](/services/hvac-air-conditioner-mold-remediation/) in an interior closet with a return that is undersized for the equipment.',
@@ -82,6 +83,7 @@ export const areas = [
       'Mold remediation in Plantation FL. Plantation Acres, Jacaranda, Hawaiian Gardens, Historic District. Well-water properties and 1970s golf-community ductwork.',
     lede:
       'Plantation is really three towns. A 1960s CBS grid on the east side, a 1970s golf community in the middle, and one-acre well-and-septic properties out past Flamingo — and they fail in three different ways.',
+    short: 'Three towns in one — a 1960s CBS grid, a 1970s golf community, and well-and-septic acreage out west.',
     intro: [
       'Plantation was one of the first master-planned communities in west Broward, and you can still read that history in the housing. East of University Drive the stock is 1950s and 60s concrete block on a conventional grid — terrazzo floors, low slabs, jalousies long since replaced with impact glass, and air handlers wedged into interior closets that were never designed to hold one.',
       'The middle of the city is Jacaranda: a 1970s and 80s golf-course community of two-story homes with mature landscaping and, in a great many cases, the original fiberglass [duct board](/services/air-duct-cleaning-sanitizing/) plenum still in service. Forty-plus years is a long time for a porous material in this climate, and it is the single most common thing we end up replacing here.',
@@ -137,6 +139,7 @@ export const areas = [
       'Mold remediation in Miramar FL. Miramar Lakes, Sunset Lakes, Monarch Lakes, Historic Miramar. Attached townhomes, high water table and 1950s east-side stock.',
     lede:
       'Miramar is two cities laid end to end. A 1950s postwar grid at the Miami-Dade line, and fifteen miles west of it, lake-lot subdivisions that were wetland thirty years ago.',
+    short: 'Two cities end to end: a 1950s postwar grid, and lake-lot subdivisions built on former wetland.',
     intro: [
       'The original Miramar sits east of Palm Avenue and dates from the mid 1950s — modest concrete block ranches on a conventional grid, some of the earliest postwar development in south Broward, and the only part of our service area that runs right up against the Miami-Dade line. Terrazzo, low slabs, jalousies replaced with impact glass decades later, and central air added to houses that were never designed around it.',
       'West of Flamingo Road the city is barely thirty years old. Miramar Lakes, Sunset Lakes, Monarch Lakes, Riviera Isles and Silver Shores were built on drained wetland from the 1990s onward, on a water table high enough to matter at the slab edge, with the tight modern envelopes that make dehumidification a mechanical problem rather than an accidental one.',
@@ -188,6 +191,7 @@ export const areas = [
       'Mold remediation in Pompano Beach, including condo and seasonal-unit AC mold. Palm Aire, Cypress Bend, Hillsboro Shores, Cresthaven. Licensed and insured.',
     lede:
       'Pompano is a condo town, and condo mold has its own physics: shared corridors, individual air handlers in hallway closets, and units that sit closed up all summer.',
+    short: 'A condo town, and condo mold has its own physics — hallway air handlers, units closed all summer.',
     intro: [
       'The dense mid-rise and garden-apartment stock through Palm Aire, Cypress Bend, and the Cresthaven corridor was largely built between the late 1960s and the mid 1980s. Most of those buildings put a small [air handler](/services/hvac-air-conditioner-mold-remediation/) in a hallway or bedroom closet, run supply through a [duct board](/services/air-duct-cleaning-sanitizing/) plenum into a short trunk, and use a single return grille on the closet door.',
       'That configuration is fine until the building is pressurized differently than it was designed to be — a corridor makeup air unit that has been off for two years, say — and then units start drawing air through the front door frame and the window wall instead. Combine that with a coil in a closet and you have a reliable growth condition.',
@@ -242,6 +246,7 @@ export const areas = [
       'Mold remediation in Deerfield Beach. Century Village East, The Cove, Hillsboro Blvd. Association buildings, seasonal units and salt-air coils.',
     lede:
       'Deerfield has more association-managed housing per square mile than almost anywhere else we work, and that changes the question from what is wrong with your unit to what is wrong with your building.',
+    short: 'Association-managed housing changes the question from what is wrong with your unit to your building.',
     intro: [
       'Century Village East alone is roughly eight and a half thousand units across a few hundred two- and three-story buildings, most of it built through the 1970s and early 80s. Add the garden apartments along the Hillsboro corridor, the oceanfront mid-rises on the barrier island, and the villa communities west of Powerline, and a great deal of what we are called to in this city turns out to be somebody else’s common element as much as it is your living room.',
       'The buildings themselves share a pattern: a small [air handler](/services/hvac-air-conditioner-mold-remediation/) in a hallway or bedroom closet, a short [duct board](/services/air-duct-cleaning-sanitizing/) plenum, a single return grille on the closet door, and no elevator. Individually each one is unremarkable. Collectively it means that when three units in the same building call us in the same month, the answer is almost never three separate unit problems.',
@@ -293,6 +298,7 @@ export const areas = [
       'Mold remediation and HVAC mold removal in Coral Springs. Eagle Trace, Ramblewood, Turtle Run, Cypress Run. Garage air handler specialists.',
     lede:
       'Coral Springs is 1980s and 90s master-planned housing, and a lot of it put the air handler in the garage. That single decision drives most of what we find here.',
+    short: '1980s and 90s master-planned housing that put the air handler in the garage. That drives most of it.',
     intro: [
       'The build-out through Ramblewood, Cypress Run, Eagle Trace, Maplewood, and later Turtle Run and the Heron Bay edge produced tens of thousands of two-story tract homes on a handful of floor plans. Those plans put the air handler either in the garage or in a second-floor closet, and both locations have a characteristic failure.',
       'A garage air handler sits in an unconditioned space that runs hot and humid. If the return plenum or the cabinet is not sealed — and after thirty years of service calls, filter changes, and a coil replacement, it usually is not — the system pulls garage air into the return on every cycle. That air is warm, humid, and carrying whatever is in the garage. It hits a 42°F coil.',
@@ -346,6 +352,7 @@ export const areas = [
       'Mold remediation in Weston FL. Weston Hills, The Ridges, Savanna, Windmill Ranch, Bonaventure. Tight post-1996 construction, lake lots and second-home vacancy.',
     lede:
       'Weston is the newest housing we work in and the most uniform. Whole villages went up in the same few years to the same handful of plans — which means when we find something here, we usually find it up the street too.',
+    short: 'The newest, most uniform housing we work in. Find something here and it is usually up the street too.',
     intro: [
       'Almost all of Weston was built between the late 1980s and the early 2000s on drained land at the edge of the water conservation areas, and it incorporated as a city only in 1996. The construction is post-Andrew and code-current: tight envelopes, good windows, real insulation, barrel tile on nearly everything, and very little of the accidental ventilation that makes older South Florida housing forgiving.',
       'That produces the newer-construction problem in its purest form. A sealed house has no passive way to shed interior moisture, so the air conditioner is the only mechanism — and if it is oversized, which is still the default in residential installs, it satisfies the thermostat before it has run long enough to pull latent heat. We measure 65% relative humidity in Weston houses that read 73°F on the wall.',
@@ -397,6 +404,7 @@ export const areas = [
       'Mold remediation in Hollywood FL. Hollywood Lakes, Emerald Hills, Hillcrest, Beverly Hills. Wood-frame historic homes and 1960s co-op buildings.',
     lede:
       'Hollywood is unusual in Broward: it has real wood-frame housing stock. That changes what mold does to a building here.',
+    short: 'Unusual in Broward: real wood-frame housing stock, which changes what mold does to a building.',
     intro: [
       'Almost everything in South Florida is concrete block. Hollywood Lakes is not. The 1920s boom-era houses between Hollywood Boulevard and the beach include genuine wood-framed construction with lath and plaster, and in a few cases raised floors — which is close to nonexistent elsewhere in the county.',
       'That matters because block does not feed mold and wood does. On a CBS house, a chronic moisture problem produces surface growth on the drywall face and the paint. On a wood-framed house it produces growth in the framing, the sheathing, and the sill, and after enough decades of it, rot. The remediation scope is deeper and the inspection has to go further into the assembly.',
@@ -448,6 +456,7 @@ export const areas = [
       'Mold remediation in Pembroke Pines. Chapel Trail, Silver Lakes, Pembroke Falls, Century Village. Tight-envelope homes on a high water table.',
     lede:
       'West of Flamingo Road, Pembroke Pines is built on drained wetland. Tight modern houses on a high water table is a specific combination and it behaves in a specific way.',
+    short: 'Built on drained wetland. Tight modern houses on a high water table behave in a specific way.',
     intro: [
       'The build-out through Chapel Trail, Silver Lakes, Pembroke Falls, and Grand Palms happened largely between the late 1980s and the mid 2000s, on land at the eastern edge of the Everglades that was drained and filled. The water table out there is shallow, the communities are laced with retention lakes, and a large share of homes sit on lake lots.',
       'The houses themselves are the opposite of the old east-side stock: post-Andrew construction codes, tight envelopes, better windows, and considerably less accidental ventilation. A tight house is more efficient and it is also less forgiving, because a tight house has no mechanism to shed interior moisture except the air conditioner.',
@@ -500,6 +509,7 @@ export const areas = [
       'Mold remediation in West Palm Beach. El Cid, Flamingo Park, Northwood, SoSo, Grandview Heights. 1920s homes with retrofitted attic ductwork.',
     lede:
       'West Palm has the oldest intact historic housing in the two counties, and almost all of it had air conditioning added long after it was built. The ductwork went into the attic because there was nowhere else to put it.',
+    short: 'The oldest intact historic housing in the two counties, with air conditioning added long afterward.',
     intro: [
       'El Cid, Flamingo Park, Grandview Heights, and Northwood Shores are full of 1920s Mediterranean Revival and mission bungalows — stucco over hollow tile or wood frame, original plaster, wood floors, and no ducts anywhere in the original design.',
       'When central air went in during the 1970s through the 2000s, the ducts had to go somewhere. That somewhere was the attic, occasionally a soffit chase, and in a few unfortunate cases a crawl area. An attic in West Palm reaches 130 to 140°F in July with humidity to match, and a supply duct in it is carrying 55°F air. Every failure of that duct insulation produces condensation, and the condensation lands on the plaster ceiling below.',
@@ -554,6 +564,7 @@ export const areas = [
       'Mold remediation in Lake Worth Beach. Old Town, Parrot Cove, College Park, South Palm Park. 1920s wood-frame bungalows, duplex conversions and window units.',
     lede:
       'Lake Worth Beach has one of the largest historic districts in Florida, and a great deal of it is genuinely wood-framed. In this climate that changes what mold does to a building rather than just where it sits.',
+    short: 'One of Florida\'s largest historic districts, and a great deal of it is genuinely wood-framed.',
     intro: [
       'The city renamed itself Lake Worth Beach in 2019, but the housing has not changed: a dense grid of 1920s Mission and Mediterranean Revival cottages and wood-frame bungalows on small lots, most of it inside a designated historic district, much of it on original framing with plaster interiors.',
       'Almost everything else we work on in these two counties is concrete block. Block does not feed mold; wood does. On a CBS house a chronic moisture problem produces surface growth on the drywall face. On a wood-framed 1925 bungalow it produces growth in the studs, the sheathing and the sill, and eventually rot — so the assessment has to open the assembly rather than read the wall face, and a meter reading on the plaster tells you very little about what the stud bay is doing.',
@@ -605,6 +616,7 @@ export const areas = [
       'Mold remediation in Boca Raton. Boca Del Mar, Broken Sound, Woodfield, Boca Pointe. Seasonal homes, zoned systems, second-floor AC closets.',
     lede:
       'Boca has more seasonally occupied housing than anywhere else we work, and more zoned multi-system homes. Both produce mold problems that have nothing to do with a leak.',
+    short: 'More seasonally occupied housing, and more zoned multi-system homes, than anywhere else we work.',
     intro: [
       'The country-club build-out — Boca Del Mar, Broken Sound, Woodfield, Boca West, Boca Bath & Tennis — runs from the mid 1970s through the 1990s and includes an enormous volume of condominium, villa, and townhome stock alongside the single-family homes. A large share of it is occupied from November through April and closed the rest of the year.',
       'The closed-up-for-summer problem is the same one we see in Pompano, but Boca adds a wrinkle: the homes are larger, they frequently run two or three zoned systems, and the zoning itself creates dead spots. A zone that is calling for cooling rarely because nobody is in that wing of the house is a zone that is not dehumidifying, and the guest suite that gets opened in December is the one with the smell.',
@@ -656,6 +668,7 @@ export const areas = [
       'Mold remediation in Delray Beach. Lake Ida, Del-Ida Park, Tropic Isle, Pineapple Grove, Kings Point. Historic bungalows and original 1970s duct board systems.',
     lede:
       'Delray splits cleanly in two: historic bungalows near Atlantic Avenue, and one of the largest 55+ condo communities in Florida west of I-95. They fail in completely different ways.',
+    short: 'Historic bungalows near Atlantic Avenue, and a very large 55+ condo community west of I-95.',
     intro: [
       'East of Swinton, Del-Ida Park and Lake Ida hold 1920s through 1950s bungalows — smaller than the West Palm historic stock, frequently renovated, and mostly on modest lots close to the water table. The renovation wave through Pineapple Grove and the Atlantic Avenue corridor has been aggressive, and renovation is its own mold risk: new impact windows sealed imperfectly, new flooring over old slabs, and new HVAC squeezed into spaces that were not designed for it.',
       'West of the interstate, Kings Point is a different universe. Thousands of units built from the 1970s into the 1980s, most with original or lightly updated air handlers, and — the recurring theme — fiberglass duct board supply plenums that are now forty-plus years old in a subtropical climate.',
@@ -707,6 +720,7 @@ export const areas = [
       'Mold remediation in Boynton Beach. Leisureville, Hunters Run, Valencia communities, Renaissance Commons. Seasonal units, aging equipment, and flat-roof villas.',
     lede:
       'Boynton is where Palm Beach County put most of its 55+ housing, and a very large share of it sits empty for six months a year with the AC turned off.',
+    short: 'Where Palm Beach County put most of its 55+ housing — much of it empty six months a year.',
     intro: [
       'From Leisureville and Hunters Run through the Valencia communities west of the Turnpike, Boynton has an unusually high concentration of active-adult housing spanning fifty years of construction. The 1970s villas have flat or low-slope roofs, original [duct board](/services/air-duct-cleaning-sanitizing/), and small closet air handlers. The 2000s Valencia homes are tight, modern, and have exactly the opposite problem.',
       'What unites them is occupancy pattern. Seasonal residency at this scale means thousands of units sitting closed from May through October in the wettest, hottest part of the year, and the standard advice people give each other at the clubhouse — set it to 80 and turn off the water — is precisely the advice that produces mold.',
@@ -761,6 +775,7 @@ export const areas = [
       'Mold remediation in Wellington FL. Palm Beach Polo, Grand Prix Village, Binks Forest. Eight-month seasonal vacancy, barns, tack rooms and staff quarters.',
     lede:
       'Wellington runs on an inverted calendar. The season is January through April, and a great many houses, barns and staff apartments here sit closed for the other eight months — which happen to be the wet ones.',
+    short: 'An inverted calendar: the season is January to April, and the empty months are the wet ones.',
     intro: [
       'Everywhere else we work, the seasonal pattern is a snowbird condo empty from May to October. Wellington is the same problem stretched longer and applied to more buildings. The Winter Equestrian Festival brings the population in around January and it leaves again in April, which means the typical property here is shut through the entire wet season rather than most of it.',
       'The ground does not help. Wellington was built on the former Flying Cow Ranch — drained wetland threaded with an extensive canal network, with a water table high enough that it is a genuine factor at the slab edge on canal-adjacent lots. The housing on top of it is mostly 1990s and 2000s: tight, code-current, well built, and completely dependent on mechanical dehumidification because the envelope gives interior moisture no other way out.',
@@ -814,6 +829,7 @@ export const areas = [
       'Mold remediation in Riviera Beach and Singer Island. High-rise fan coil units, ceiling-plenum condensate, window wall leaks and 1950s mainland CBS stock.',
     lede:
       'Singer Island is the tallest housing we work in, and above about eight stories the mechanical system stops looking like a house and starts looking like a building. That changes where the water is.',
+    short: 'The tallest housing we work in. Above about eight stories the water is somewhere else entirely.',
     intro: [
       'Everywhere else in these two counties, an air conditioner is a split system: an [air handler](/services/hvac-air-conditioner-mold-remediation/) in a closet and a condenser outside. In the Singer Island towers a large share of units are served by fan coil units instead — a compact coil-and-blower assembly fed with chilled water from central plant, often tucked above a ceiling in a hallway soffit or into a narrow mechanical closet, with a condensate pan that drains to a shared riser or to a small pump.',
       'That arrangement moves the risk. A pan above a ceiling that overflows does not stain a closet floor, it comes through the ceiling — sometimes into the unit below rather than your own. Condensate pumps fail quietly and nobody hears them. And the pan and coil are behind drywall rather than behind an access panel, so nothing about them gets looked at until something drips.',
@@ -868,6 +884,7 @@ export const areas = [
       'Mold remediation in Palm Beach Gardens. PGA National, BallenIsles, Mirasol, Evergrene and the original MacArthur Plats. Preserve-edge and shaded-wall growth.',
     lede:
       'The recurring problem in Palm Beach Gardens is an exterior wall that has not seen direct sun in twenty years — because of what the house backs onto, or because of what was planted around it and then left to fill in.',
+    short: 'Exterior walls that have not seen direct sun in twenty years, by aspect or by what was planted.',
     intro: [
       'The city was developed by the MacArthur Foundation starting in 1959, and the original Plats still read that way: modest concrete block ranches on generous lots, laid out with a lot of tree planting. Sixty years on, that planting is a mature canopy, and a north or east elevation under heavy shade never gets the solar drying that keeps a South Florida wall surface in check.',
       'Layered on top is the 1980s-onward gated build-out — PGA National, BallenIsles, Frenchman’s Reserve, Mirasol, Evergrene, Old Palm — much of it backing onto preserve. A lot on a preserve edge has dense vegetation growing right up against the building, no air movement at the wall, continuous leaf litter at the base, and irrigation running into all of it.',
@@ -919,6 +936,7 @@ export const areas = [
       'Mold remediation in Jupiter FL. Abacoa, Jupiter Farms, Admirals Cove, Egret Landing. Tight modern envelopes, coastal salt exposure, and well-water properties.',
     lede:
       'Jupiter is the newest housing stock we work in, and new construction has its own mold profile. Tight houses do not forgive an oversized air conditioner.',
+    short: 'The newest housing stock we work in. Tight houses do not forgive an oversized air conditioner.',
     intro: [
       'Abacoa came out of the ground starting in 1998, Egret Landing and the Central Boulevard corridor filled in around the same era, and much of what is east of Alternate A1A has been rebuilt or heavily renovated since. This is post-Andrew, post-2001-code construction: tight envelopes, good windows, better insulation, and substantially less accidental air exchange than anything in the older markets to the south.',
       'That is a good thing for energy and a demanding thing for moisture. A tight house has no passive way to shed interior humidity. If the air conditioner is correctly sized and running long cycles, the house stays at 50% RH and everything is fine. If it is oversized — and oversizing is still the default in new residential installs — the house runs cold and damp, and the mold shows up in closets, behind furniture on exterior walls, and around the AC registers.',
