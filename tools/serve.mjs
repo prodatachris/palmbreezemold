@@ -25,6 +25,23 @@ const flag = (n, d) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[
 const PORT = Number(flag('port', 8099));
 const ROOT = flag('root', 'dist');
 
+/**
+ * No caching, ever, on the dev server.
+ *
+ * This sent no cache headers at all, which is not the same as sending
+ * no-store: with no Cache-Control, no ETag and no Last-Modified, Chrome
+ * falls back to heuristic caching and may reuse a response without
+ * revalidating. That is how you end up staring at a page whose stylesheet
+ * predates the change you just made and concluding the change did not work.
+ * Production caching is a separate concern and lives in _headers and
+ * deploy/gcs-cache-headers.sh.
+ */
+const NO_STORE = {
+  'Cache-Control': 'no-store, must-revalidate',
+  Pragma: 'no-cache',
+  Expires: '0',
+};
+
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.json': 'application/json',
@@ -63,7 +80,7 @@ createServer(async (req, res) => {
   const type = TYPES[ext] || 'application/octet-stream';
 
   if (!COMPRESSIBLE.has(ext)) {
-    res.writeHead(200, { 'Content-Type': type });
+    res.writeHead(200, { 'Content-Type': type, ...NO_STORE });
     return createReadStream(file).pipe(res);
   }
 
@@ -77,7 +94,7 @@ createServer(async (req, res) => {
     body = gzipSync(raw, { level: 6 });
     encoding = 'gzip';
   }
-  const headers = { 'Content-Type': type, 'Content-Length': body.length, Vary: 'Accept-Encoding' };
+  const headers = { 'Content-Type': type, 'Content-Length': body.length, Vary: 'Accept-Encoding', ...NO_STORE };
   if (encoding) headers['Content-Encoding'] = encoding;
   res.writeHead(200, headers);
   res.end(body);
