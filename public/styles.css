@@ -1009,7 +1009,13 @@ h1, h2, h3, h4 {
   margin-bottom: 0.7rem;
   display: block;
 }
-.signals__l { font-size: 0.94rem; line-height: 1.5; color: var(--slate); }
+/* display: block so the declared line-height actually governs. As an inline
+   span its line-height never sets the line box — the parent li's 1.6 did,
+   so the label rendered at 31px leading against the 22.6px declared here,
+   noticeably airier than .legend__d, .card__d and .deflist__d, which are
+   all blockified and honour theirs. It is the only multi-line body text on
+   the site that was not obeying its own leading. */
+.signals__l { display: block; font-size: 0.94rem; line-height: 1.5; color: var(--slate); }
 
 /* ── Cards ─────────────────────────────────────────────────────────────────── */
 .grid { display: grid; gap: clamp(1rem, 2vw, 1.4rem); }
