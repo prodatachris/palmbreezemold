@@ -211,7 +211,7 @@ a:hover { color: var(--brand-deep); }
 }
 .wrap--mid { max-width: 62rem; }
 
-.section { padding-block: var(--sec-pad); }
+.section { padding-block: var(--sec-pad); background: var(--haze); }
 .section--ruled { border-top: 1px solid var(--rule); }
 .section--wash { background: var(--haze-deep); }
 
@@ -822,9 +822,16 @@ h1, h2, h3, h4 {
        for motion users while reduced-motion users still had it. Individual
        transform properties compose with `transform` instead of replacing it,
        so the reveal owns `translate` and the hover keeps `transform`. */
+    /* 34px and a 1.5% scale, not 14px flat. At 14px over the first 35% of
+       entry the reveal finished before the block reached the reader's eye
+       line — measured on /services/, all six cards sat at opacity 1 by the
+       time any of them were comfortably readable, which is why the page
+       looked static. Travel further, over more of the entry, so the movement
+       is still happening where it can be seen. `translate`/`scale`, the
+       individual properties, so the card hover lift keeps `transform`. */
     @keyframes rise-in {
-      from { opacity: 0; translate: 0 14px; }
-      to   { opacity: 1; translate: 0 0; }
+      from { opacity: 0; translate: 0 34px; scale: 0.985; }
+      to   { opacity: 1; translate: 0 0; scale: 1; }
     }
     .sec-head,
     .card,
@@ -835,7 +842,7 @@ h1, h2, h3, h4 {
     .faq details {
       animation: rise-in auto cubic-bezier(0.2, 0.6, 0.2, 1) both;
       animation-timeline: view();
-      animation-range: entry 0% entry 35%;
+      animation-range: entry 0% entry 62%;
     }
     /* Never on anything above the fold or fixed: the hero, header, call bar
        and the CTA band are always fully visible on arrival. */
@@ -851,8 +858,8 @@ h1, h2, h3, h4 {
       animation-range: 0 100vh;
     }
     @keyframes hero-drift {
-      from { transform: scale(1.06) translateY(0); }
-      to   { transform: scale(1.06) translateY(6%); }
+      from { transform: scale(1.12) translateY(0); }
+      to   { transform: scale(1.12) translateY(14%); }
     }
 
     /* 3. The air-path diagram, driven by its own visibility.
@@ -930,6 +937,31 @@ h1, h2, h3, h4 {
       animation-timeline: view();
       animation-range: entry calc(var(--i, 0) * 6%) entry calc(30% + var(--i, 0) * 6%);
     }
+  }
+}
+
+/* ── Pinned hero ───────────────────────────────────────────────────────────
+   The hero stays put and the page slides up over it, so the first scroll has
+   somewhere to go instead of the whole screen simply translating. Plain
+   position: sticky, deliberately outside the @supports gate that wraps the
+   scroll-driven work — sticky is supported everywhere, so this is the one
+   piece of motion a Firefox reader also gets.
+
+   It needs two things to be true, both handled above: every .section paints
+   its own --haze ground rather than letting the body's show through, or the
+   hero would be visible behind all of them; and the hero is z-index 0 against
+   siblings at 1, inside main's stacking context, so the sticky header still
+   covers both. Held to prefers-reduced-motion: no-preference — nothing moves
+   that a reader has asked not to move. */
+@media (prefers-reduced-motion: no-preference) {
+  .mhero {
+    position: sticky;
+    top: 0;
+    z-index: 0;
+  }
+  main > .section {
+    position: relative;
+    z-index: 1;
   }
 }
 
