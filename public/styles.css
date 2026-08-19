@@ -1074,7 +1074,16 @@ h1, h2, h3, h4 {
 
 /* ── Cards ─────────────────────────────────────────────────────────────────── */
 .grid { display: grid; gap: clamp(1rem, 2vw, 1.4rem); }
-.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  /* A row gap sized for stacking, not for sitting side by side. The 16px .grid
+     gap is right between two columns and much too little once auto-fit folds
+     them into one: on /contact/ at 390 it left the "Or write it down" heading
+     16px under the contact list, which ends on a --rule-soft hairline of its
+     own, so the heading read as a sixth row of the list rather than the start
+     of the form. Used on the contact page only. */
+  row-gap: clamp(2.75rem, 8vw, 3.5rem);
+}
 .grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
 
 .card {
