@@ -186,10 +186,7 @@ export const home = {
       q: 'Do you handle the repairs after the mold work?',
       a: 'We remove, clean, and dry. Reconstruction — drywall, texture, paint, flooring, and any plenum fabrication — is scoped separately and we are clear about which line items are which so you can compare bids honestly.',
     },
-    {
-      q: 'Are you licensed?',
-      a: 'Florida requires a state mold remediator license to advertise or perform this work, and our number is on every page of this site and on every document we hand you. Ask for it from anyone who quotes you, and check it. It takes two minutes on the [state license portal](https://www.myfloridalicense.com/wl11.asp).',
-    },
+    
   ],
 };
 
@@ -439,10 +436,7 @@ export const faqPage = {
     {
       title: 'Licensing and standards',
       faqs: [
-        {
-          q: 'Does Florida license mold remediation?',
-          a: 'Yes. Florida licenses mold assessors and mold remediators as two separate credentials under [Chapter 468](https://www.flsenate.gov/Laws/Statutes/2025/468.8419), and performing or advertising this work without the license is a violation. The same section stops an assessor from remediating a structure their company assessed in the previous twelve months — that twelve-month bar is the specific rule, rather than a blanket ban, and it is what makes a clearance test mean anything. Ask for a license number, and verify it — the state maintains a [public license lookup](https://www.myfloridalicense.com/wl11.asp).',
-        },
+        
         {
           q: 'Why is one company not allowed to inspect and remediate?',
           a: 'Because the conflict is obvious once you say it out loud: a company that both decides how much mold there is and gets paid to remove it has a financial reason to find more. The separation is what makes a clearance test meaningful. It is also why “free mold inspection, we can start Monday” is a phrase worth being careful around.',
@@ -487,7 +481,7 @@ export const about = {
         },
         {
           term: 'Neither one is law',
-          text: 'Worth being straight about. Florida licenses mold assessors and remediators under Chapter 468, but the statute does not mandate a particular technical standard. S520 and ACR are industry consensus documents. What they are is the reference a competent contractor writes scopes against — and the document an expert witness will hold a job up against if it ends up in front of one.',
+          text: 'Worth being straight about. No statute mandates a particular technical standard. S520 and ACR are industry consensus documents. What they are is the reference a competent contractor writes scopes against — and the document an expert witness will hold a job up against if it ends up in front of one.',
         },
         {
           term: 'Which is why naming one matters',
@@ -499,11 +493,7 @@ export const about = {
       h2: 'How to check any mold contractor, including us',
       note: 'All five take minutes, none of them require you to know anything about mold, and they apply to our quote as much as anyone else’s.',
       steps: [
-        {
-          title: 'Verify the license yourself',
-          text: 'Florida licenses mold remediators and mold assessors separately, and both are searchable on the state’s public [DBPR license portal](https://www.myfloridalicense.com/wl11.asp). Ask for the number, then look it up rather than taking the number on the van as confirmation that it is current.',
-          check: 'A remediator license starts MRSR; an assessor license starts MRSA. If somebody is offering you both services on one property, that is the thing to question.',
-        },
+        
         {
           title: 'Ask who performs the clearance test',
           text: 'The answer should be an independent licensed assessor, not the company doing the removal. This is the single most informative question on the list.',
@@ -517,10 +507,7 @@ export const about = {
           title: 'Get the scope in writing before the number matters',
           text: 'Materials, square footage, what is removed versus cleaned, containment, equipment, exclusions, and who does the clearance. A number without those is not comparable to anything. [Comparing three quotes](/guides/comparing-mold-remediation-quotes/) goes through this properly.',
         },
-        {
-          title: 'Confirm insurance, and ask specifically about pollution liability',
-          text: 'General liability is standard. Pollution liability is the one that actually responds to a mold claim, and not every contractor carries it. Ask for a certificate rather than a verbal answer.',
-        },
+        
       ],
     },
   ],

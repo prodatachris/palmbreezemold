@@ -1087,13 +1087,28 @@ ${(about.sections || []).map(renderSection).join('\n\n')}
 
 <section class="section section--ruled defer">
   <div class="wrap">
-    ${sectionHead({ eyebrow: 'Credentials', h2: 'Licensing and certification' })}
+    ${/*
+      EVERY ROW IS CONDITIONAL, and the section itself disappears when they all
+      are. Nulling site.license without this printed the literal string "null"
+      to visitors on 37 pages, next to a label reading "FL Mold Remediator Lic."
+      -- a worse statement than the placeholder it replaced, and one the launch
+      checks did not catch because preflight only looks for claim VALUES that
+      reached the build, and "null" is not one of them.
+
+      An absent credential is not a credential with an empty value. It is a
+      thing the site does not say.
+    */''}
+    ${(() => {
+      const rows = [];
+      if (site.license) rows.push(`<li><span class="deflist__t">${esc(site.licenseLabel)}</span><span class="deflist__d">${esc(site.license)}</span></li>`);
+      if (site.certifications && site.certifications.length) rows.push(`<li><span class="deflist__t">Certifications</span><span class="deflist__d">${site.certifications.map(text).join('<br>')}</span></li>`);
+      if (site.insurance) rows.push(`<li><span class="deflist__t">Insurance</span><span class="deflist__d">${text(site.insurance)}</span></li>`);
+      rows.push(`<li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear}${site.yearsInBusiness > 0 ? ` &mdash; ${site.yearsInBusiness} year${site.yearsInBusiness === 1 ? '' : 's'}` : ''} across Broward and Palm Beach County.</span></li>`);
+      return `${sectionHead({ eyebrow: 'The company', h2: 'Who you are hiring' })}
     <ul class="deflist" role="list">
-      <li><span class="deflist__t">${esc(site.licenseLabel)}</span><span class="deflist__d">${esc(site.license)} &mdash; verify any Florida mold license on the state&rsquo;s <a href="https://www.myfloridalicense.com/wl11.asp" rel="noopener external">public license portal</a> before you hire anyone, including us.</span></li>
-      <li><span class="deflist__t">Certifications</span><span class="deflist__d">${site.certifications.map(text).join('<br>')}</span></li>
-      <li><span class="deflist__t">Insurance</span><span class="deflist__d">${text(site.insurance)}</span></li>
-      <li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear}${site.yearsInBusiness > 0 ? ` &mdash; ${site.yearsInBusiness} year${site.yearsInBusiness === 1 ? '' : 's'}` : ''} across Broward and Palm Beach County.</span></li>
-    </ul>
+      ${rows.join('\n      ')}
+    </ul>`;
+    })()}
   </div>
 </section>
 
@@ -1182,9 +1197,9 @@ async function buildContact() {
         <ul class="deflist mt-lg" role="list">
           <li><span class="deflist__t">Hours</span><span class="deflist__d">${text(site.hoursText)}</span></li>
           <li><span class="deflist__t">Response</span><span class="deflist__d">${text(site.responseWindow)}</span></li>
-          <li><span class="deflist__t">Email</span><span class="deflist__d"><a href="mailto:${esc(site.email)}">${esc(site.email)}</a></span></li>
+          ${site.email ? `<li><span class="deflist__t">Email</span><span class="deflist__d"><a href="mailto:${esc(site.email)}">${esc(site.email)}</a></span></li>` : ''}
           ${site.hideAddress ? '' : `<li><span class="deflist__t">Office</span><span class="deflist__d">${esc(site.address.street)}<br>${esc(site.address.city)}, ${esc(site.address.region)} ${esc(site.address.postalCode)}</span></li>`}
-          <li><span class="deflist__t">${esc(site.licenseLabel)}</span><span class="deflist__d">${esc(site.license)}</span></li>
+          ${site.license ? `<li><span class="deflist__t">${esc(site.licenseLabel)}</span><span class="deflist__d">${esc(site.license)}</span></li>` : ''}
         </ul>
       </div>
       <div>

@@ -31,7 +31,12 @@ export function businessNode() {
     name: site.name,
     url: site.origin,
     telephone: site.phoneHref,
-    email: site.email,
+    /*
+      Only when there is one. `email: null` was being emitted on all 37 pages,
+      which is not "we did not say" -- it is a structured statement that the
+      value is empty. Same reasoning as streetAddress and hasCredential below.
+    */
+    ...(site.email ? { email: site.email } : {}),
     description: `${site.tagline}. Specializing in HVAC, air handler, and duct mold remediation.`,
     // priceRange removed: it asserted a price band on all 37 pages, was
     // hardcoded outside site.config.js so the launch gate could not see it,
@@ -40,10 +45,17 @@ export function businessNode() {
     slogan: site.tagline,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: site.address.street,
+      ...(site.address.street ? { streetAddress: site.address.street } : {}),
       addressLocality: site.address.city,
       addressRegion: site.address.region,
-      postalCode: site.address.postalCode,
+      /*
+        A locality and a region describe a service area honestly. A POSTCODE
+        describes premises, and 33301 is the one that came attached to the
+        placeholder street address -- a specific downtown Fort Lauderdale block
+        this business has no presence on. It is published only alongside a real
+        street, which is the thing that would make it true.
+      */
+      ...(site.address.street ? { postalCode: site.address.postalCode } : {}),
       addressCountry: site.address.country,
     },
     // Coordinates only once the address they describe is confirmed. The
@@ -69,15 +81,27 @@ export function businessNode() {
       opens: h.opens,
       closes: h.closes,
     })),
-    hasCredential: {
-      '@type': 'EducationalOccupationalCredential',
-      credentialCategory: 'license',
-      name: `${site.licenseLabel} ${site.license}`,
-      recognizedBy: {
-        '@type': 'GovernmentOrganization',
-        name: 'Florida Department of Business and Professional Regulation',
-      },
-    },
+    /*
+      THE ONE THAT MATTERED MOST. With site.license null this emitted
+      hasCredential.name = "FL Mold Remediator Lic. null", recognizedBy the
+      Florida DBPR, on every page: a machine-readable claim to hold a state
+      licence, addressed to Google rather than to a reader who might notice it
+      was nonsense. A credential we do not hold is not a credential with a
+      missing number; the whole node is absent until there is one to name.
+    */
+    ...(site.license
+      ? {
+          hasCredential: {
+            '@type': 'EducationalOccupationalCredential',
+            credentialCategory: 'license',
+            name: `${site.licenseLabel} ${site.license}`,
+            recognizedBy: {
+              '@type': 'GovernmentOrganization',
+              name: 'Florida Department of Business and Professional Regulation',
+            },
+          },
+        }
+      : {}),
     knowsAbout: [
       'Mold remediation',
       'HVAC mold remediation',

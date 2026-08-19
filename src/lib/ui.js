@@ -554,7 +554,7 @@ export function footer() {
         <p class="ftr__name">${brandLockup({ reversed: true, cls: 'ftr__logo' })}</p>
         <p class="ftr__meta">${text(site.serviceRadiusNote)}</p>
         <dl class="ftr__meta">
-          <dt>${esc(site.licenseLabel)}</dt><dd>${esc(site.license)}</dd>
+          ${site.license ? `<dt>${esc(site.licenseLabel)}</dt><dd>${esc(site.license)}</dd>` : ''}
           <dt>Phone</dt><dd><a href="tel:${esc(site.phoneHref)}">${esc(site.phoneDisplay)}</a></dd>
           <dt>Hours</dt><dd>${text(site.hoursText)}</dd>
         </dl>
@@ -595,8 +595,14 @@ export function footer() {
     </div>
 
     <div class="ftr__bottom">
-      <span>&copy; ${year} ${esc(site.name)}. ${esc(site.licenseLabel)} ${esc(site.license)}.</span>
-      <span>${esc(site.insurance)}</span>
+      ${/*
+        The footer is on all 37 pages, which is why an unconditional licence
+        line here printed "FL Mold Remediator Lic. null." site-wide. A licence
+        and an insurance line are things the footer says only when there is
+        something to say.
+      */''}
+      <span>&copy; ${year} ${esc(site.name)}.${site.license ? ` ${esc(site.licenseLabel)} ${esc(site.license)}.` : ''}</span>
+      ${site.insurance ? `<span>${esc(site.insurance)}</span>` : ''}
     </div>
 
     <!-- Paper only. Printing hides the header, the call bar and the CTA band,

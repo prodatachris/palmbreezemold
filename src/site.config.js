@@ -313,7 +313,11 @@ export const site = {
 /** Convenience: full postal address on one line. */
 export const addressLine = [
   site.address.street,
-  `${site.address.city}, ${site.address.region} ${site.address.postalCode}`,
-].join(', ');
+  site.address.street
+    ? `${site.address.city}, ${site.address.region} ${site.address.postalCode}`
+    : `${site.address.city}, ${site.address.region}`,
+]
+  .filter(Boolean)
+  .join(', ');
 
 export default site;

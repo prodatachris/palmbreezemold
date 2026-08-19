@@ -601,7 +601,7 @@ export const areas = [
       },
       {
         q: 'I rent here and my landlord says it is not mold. What can I do?',
-        a: 'Get it documented independently. A [licensed mold assessor](/services/mold-inspection-testing/) produces a report that is a neutral record, which is a very different thing from either party asserting something. That is a separate license from ours — Florida restricts one company from both assessing and remediating the same property — so we would refer you out rather than test it ourselves, and we would tell you the same thing if you were the landlord.',
+        a: 'Get it documented independently. A [licensed mold assessor](/services/mold-inspection-testing/) produces a report that is a neutral record, which is a very different thing from either party asserting something. That is a separate role from ours, so we would refer you out rather than test it ourselves, and we would tell you the same thing if you were the landlord.',
       },
     ],
   },

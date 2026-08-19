@@ -296,7 +296,7 @@ export const services = [
         body: [
           'Florida licenses mold assessors and mold remediators under two separate credentials, and it restricts the same company from doing both on the same structure. A remediator cannot write the assessment that scopes their own job, and an assessor cannot remediate a property they assessed.',
           'This is one of the more genuinely consumer-protective rules in the trade, because the conflict it prevents is obvious: a company that both diagnoses and treats has a financial reason to find more. When your clearance test comes from an independent assessor, the passing result actually means something.',
-          'In practice it means that if we are going to remediate your home, we will refer you to independent assessors for the assessment and the clearance, and we will not take a referral fee for it. We hold the remediator license and not the assessor one, so the assessment role is not ours to offer in the first place — and on a property we were remediating it could not be ours anyway.',
+          'In practice it means that if we are going to remediate your home, we will refer you to independent assessors for the assessment and the clearance, and we will not take a referral fee for it. The assessment role is not ours to offer, and on a property we were remediating it could not be ours anyway.',
         ],
       },
       {
@@ -665,7 +665,7 @@ export const services = [
       },
       {
         q: 'Should I pay to have it tested to find out whether it is Stachybotrys?',
-        a: 'Usually not, if the goal is deciding what work to do — the remediation protocol does not change by species, so a lab result naming something frightening should not change your scope or your price. Where testing genuinely earns its cost is when you need an independent record: an insurance claim, a real estate transaction, a landlord or association dispute, or a medical conversation where a physician has asked for it. In Florida that testing comes from a licensed mold assessor, which is a separate license from ours — see [mold inspection and testing](/services/mold-inspection-testing/) for how that separation works and why it protects you.',
+        a: 'Usually not, if the goal is deciding what work to do — the remediation protocol does not change by species, so a lab result naming something frightening should not change your scope or your price. Where testing genuinely earns its cost is when you need an independent record: an insurance claim, a real estate transaction, a landlord or association dispute, or a medical conversation where a physician has asked for it. In Florida that testing comes from an independent mold assessor rather than from the company doing the removal — see [mold inspection and testing](/services/mold-inspection-testing/) for how that separation works and why it protects you.',
       },
       {
         q: 'What about mycotoxins?',
