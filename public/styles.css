@@ -502,7 +502,15 @@ h1, h2, h3, h4 {
      shows up as text cut off at the right edge rather than as page overflow. */
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 1fr auto;
-  min-height: clamp(28rem, 60svh, 38rem);
+  /* Full viewport, so there is no fold. At clamp(28rem, 60svh, 38rem) the
+     hero came up short of the screen and the next section's top edge showed
+     along the bottom on load — the pinned hero then slid content over a stage
+     that had never filled it. 100svh (small viewport height) rather than
+     100vh: on a phone, vh is the height with browser chrome retracted, so a
+     100vh hero is taller than the screen until you scroll and the fold comes
+     back. min-height, not height, so a hero whose copy runs long still grows
+     rather than clipping it. */
+  min-height: 100svh;
   padding-block: clamp(3rem, 6vw, 4.5rem) 0;
   overflow: hidden;
 }
