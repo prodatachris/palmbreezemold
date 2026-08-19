@@ -1003,7 +1003,16 @@ h1, h2, h3, h4 {
   overflow: hidden;
 }
 @media (min-width: 720px) { .legend { grid-template-columns: 1fr 1fr; } }
+/* The fifth marker spans both columns so the grid does not end on a half-empty
+   row — leave that alone, the audit's dead-space check exists because an
+   uncovered track paints the container's --rule-soft as a grey slab. What was
+   wrong is that spanning also let its description run to 130ch while the four
+   above set at 60ch, so the last item read as a different kind of thing from
+   the rest of the list. Cap the text, keep the span: the cell stays full width
+   and the measure matches its neighbours. */
 .legend li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.legend li:last-child:nth-child(odd) .legend__d,
+.legend li:last-child:nth-child(odd) .legend__t { max-width: 60ch; }
 .legend li {
   background: var(--paper);
   padding: 1.15rem 1.25rem;
