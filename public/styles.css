@@ -31,6 +31,48 @@
    download it. It exists so that adding bold body copy later degrades visibly
    instead of silently — `font-synthesis-weight: none` on body means a missing
    weight would otherwise render identically to regular. */
+/* Metric-matched stand-ins for Archivo, so the swap does not move anything.
+   The hero h1 sits right on a wrap boundary: Helvetica Neue is only 1.9%
+   wider than Archivo, and that is enough to tip the headline from three
+   lines to four. Measured at 1440 it went 167.3px -> 223.0px, one whole
+   55.75px line, and that single reflow was the site's entire CLS (0.015 on
+   the home page, worst shift div.wrap; every other page was already 0.001).
+
+   size-adjust is what actually fixes it — with an explicit line-height the
+   ascent and descent overrides cannot change the line box, but they are set
+   so the match still holds anywhere line-height is normal.
+
+   Three faces because the right number depends on which font the platform
+   actually falls back to, and one value cannot serve all of them: Helvetica
+   Neue needs 98.2%, Arial 99.6%, Liberation Sans 108.4%. Each face names its
+   own font via local(), so a face whose font is absent contributes nothing
+   and the stack moves on. Ratios measured with canvas measureText against
+   the real Archivo file, not taken from a table. */
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Helvetica Neue'), local('HelveticaNeue');
+  size-adjust: 98.2%;
+  ascent-override: 89.7%;
+  descent-override: 21.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Archivo Fallback 2';
+  src: local('Arial'), local('Helvetica');
+  size-adjust: 99.6%;
+  ascent-override: 88.3%;
+  descent-override: 21.1%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Archivo Fallback 3';
+  src: local('Liberation Sans'), local('Nimbus Sans');
+  size-adjust: 108.4%;
+  ascent-override: 81.2%;
+  descent-override: 19.4%;
+  line-gap-override: 0%;
+}
+
 @font-face {
   font-family: 'Source Serif 4';
   src: url('/fonts/sourceserif4-latin-400.woff2') format('woff2');
@@ -94,7 +136,8 @@
   --rule-soft: #dde4ea;
 
   /* Type */
-  --font-display: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-display: 'Archivo', 'Archivo Fallback', 'Archivo Fallback 2',
+    'Archivo Fallback 3', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-body: 'Source Serif 4', Charter, Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
