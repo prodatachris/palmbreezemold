@@ -1585,7 +1585,20 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   display: inline-block;
 }
 .cta-band__phone:hover { color: #f0b072; }
-.cta-band__meta {
+/* Selector carries p deliberately: .cta-band p is (0,1,1) and a lone
+   .cta-band__meta is (0,1,0), so the cap below silently kept winning. */
+.cta-band p.cta-band__meta {
+  /* Not the 46ch that .cta-band p sets. That cap is measured for the lede in
+     the other column, which is body-font; applied to uppercase mono at 0.7rem
+     it resolved to 309px inside a 451px column, so the hours broke as
+     "MON-FRI 7:00AM - 7:00PM · SAT 8:00AM -" / "4:00PM" with 142px of the
+     column unused beside the orphan. A measure is a property of the typeface
+     it was measured for. */
+  max-width: none;
+  /* At 390 the column is 350px and the hours string needs about the same, so
+     it still broke as a full line plus "4:00PM" alone. Balance evens the two
+     lines instead of stranding two words. */
+  text-wrap: balance;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.11em;
