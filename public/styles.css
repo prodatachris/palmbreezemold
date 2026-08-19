@@ -1771,6 +1771,17 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 .callbar a:first-child { flex-grow: 1.5; }
 @media (max-width: 760px) {
   .callbar { display: flex; min-height: var(--callbar-h); }
+
+  /* The hero's own action pair goes, because the bar below is the same two
+     actions and is always on screen. Measured on a 390x844 phone: two
+     identically-worded, identically-amber Call buttons 297px apart, plus
+     "Request an inspection" against the bar's "Get inspection". Amber is
+     reserved here for risk and action precisely so the call is the loudest
+     thing on the page — printing it twice halves that, and the duplicate was
+     the one further from the thumb. The hero keeps the headline, the lede and
+     the credibility strip; the actions live in the bar, permanently and within
+     reach. Nothing is lost: both actions stay one tap away on every screen. */
+  .mhero__actions { display: none; }
   /* At 320px the second label rendered as "Get inspec…". The ellipsis meant
      nothing reported an overflow — the truncation is the styling working — so
      the only way to see it was to look at the bar on a 320px screen. Drop the
