@@ -1,0 +1,30 @@
+# What Cloud Build does NOT need, and why the upload was 107 MB without it.
+#
+# The Dockerfile runs `node build.mjs`, which regenerates dist/ from src/ and
+# public/. So the two largest directories in this repo are both dead weight in
+# the build context:
+#
+#   raw-assets/  87 MB  the originals that public/assets was optimised FROM.
+#                       Nothing in the build reads them.
+#   dist/        25 MB  the previous build's output, which the image rebuilds.
+#                       Shipping it would also risk baking a stale copy in.
+#
+# .git is 112 MB and is excluded by gcloud's own defaults, but named here so
+# the number is written down next to the others.
+#
+# Without this the context was 245 MB on disk and 107 MB compressed, which on a
+# slow uplink is a build that times out before it starts.
+
+.git/
+.gitignore
+raw-assets/
+dist/
+node_modules/
+.DS_Store
+
+# Documentation and local tooling: useful to a person, inert to the build.
+README.md
+LAUNCH.md
+CONTENT-REVIEW.md
+tools/
+deploy/

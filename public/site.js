@@ -169,3 +169,92 @@
     else window.addEventListener('load', attach, { once: true });
   });
 })();
+
+/* ── Contact form ─────────────────────────────────────────────────────────
+   Sends the enquiry to RankEngineAI's lead capture as JSON.
+
+   WHY JS AND NOT A NATIVE FORM POST. The endpoint takes JSON with a client_id
+   and answers with JSON; a native POST would send urlencoded fields and
+   navigate the visitor away to a 400. So the form carries no action, the
+   markup keeps onsubmit="return false", and a <noscript> notice tells anyone
+   without JavaScript to call instead. Nothing here fails silently: if this
+   file does not load, the visitor is told, rather than typing into a form that
+   quietly discards them.
+
+   THE STATUS LINE IS THE POINT. The previous form looked like it worked and
+   threw every message away. Whatever happens here, the visitor is told which
+   of the three things happened: sent, not sent, or the phone number instead. */
+(function () {
+  var form = document.querySelector('form.form[data-endpoint]');
+  if (!form) return;
+
+  var endpoint = form.getAttribute('data-endpoint');
+  var clientId = form.getAttribute('data-client-id');
+  var status = form.querySelector('[data-form-status]');
+  var button = form.querySelector('button[type="submit"]');
+  if (!endpoint || !clientId || !status || !button) return;
+
+  var val = function (n) {
+    var el = form.querySelector('[name="' + n + '"]');
+    return el && el.value ? String(el.value).trim() : '';
+  };
+
+  var say = function (text, ok) {
+    status.textContent = text;
+    status.hidden = false;
+    status.setAttribute('data-state', ok ? 'ok' : 'error');
+    status.setAttribute('role', 'status');
+  };
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    /* The browser has already enforced `required` on name and phone; this is
+       the belt for the case where it has not. */
+    if (!val('name') || !val('phone')) {
+      say('Please give us a name and a phone number so we can call you back.', false);
+      return;
+    }
+
+    var original = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+
+    /* The issue dropdown and the city field are the useful part of the
+       message: what they are seeing, and where. Sent as the message body
+       rather than dropped, because a lead with neither is a callback with no
+       context. */
+    var parts = [];
+    if (val('issue')) parts.push(val('issue'));
+    if (val('city')) parts.push('City: ' + val('city'));
+    if (val('message')) parts.push(val('message'));
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        client_id: clientId,
+        name: val('name'),
+        phone: val('phone'),
+        email: val('email'),
+        message: parts.join('\n'),
+        city: val('city'),
+        form_source: 'contact',
+        landing_path: window.location.pathname
+      })
+    })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(String(r.status))); })
+      .then(function () {
+        form.reset();
+        say('Thank you. We have your message and will call you back.', true);
+        button.textContent = 'Sent';
+      })
+      .catch(function () {
+        /* Never claim it sent. The phone number is the recovery route, and it
+           is the one thing on this site that has always worked. */
+        button.disabled = false;
+        button.textContent = original;
+        say('That did not send. Please call us on (561) 680-3584 and we will take it from there.', false);
+      });
+  });
+})();

@@ -1092,7 +1092,7 @@ ${(about.sections || []).map(renderSection).join('\n\n')}
       <li><span class="deflist__t">${esc(site.licenseLabel)}</span><span class="deflist__d">${esc(site.license)} &mdash; verify any Florida mold license on the state&rsquo;s <a href="https://www.myfloridalicense.com/wl11.asp" rel="noopener external">public license portal</a> before you hire anyone, including us.</span></li>
       <li><span class="deflist__t">Certifications</span><span class="deflist__d">${site.certifications.map(text).join('<br>')}</span></li>
       <li><span class="deflist__t">Insurance</span><span class="deflist__d">${text(site.insurance)}</span></li>
-      <li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear} &mdash; ${site.yearsInBusiness} years across Broward and Palm Beach County.</span></li>
+      <li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear}${site.yearsInBusiness > 0 ? ` &mdash; ${site.yearsInBusiness} year${site.yearsInBusiness === 1 ? '' : 's'}` : ''} across Broward and Palm Beach County.</span></li>
     </ul>
   </div>
 </section>
@@ -1117,8 +1117,12 @@ async function buildContact() {
   const f = contact.form;
 
   const formHtml = `
-<form class="form" ${f.hasBackend ? `action="${esc(f.action)}" method="POST"` : 'onsubmit="return false"'}>
+<form class="form" ${f.hasBackend && f.endpoint
+    ? `data-endpoint="${esc(f.endpoint)}" data-client-id="${esc(f.clientId)}" onsubmit="return false"`
+    : f.hasBackend ? `action="${esc(f.action)}" method="POST"` : 'onsubmit="return false"'}>
   ${f.hasBackend ? '' : `<p class="notice"><b>This form is not taking messages yet</b>Nothing typed here will reach us. Call <a href="tel:${site.phoneHref}">${site.phoneDisplay}</a> instead and we will take it from there.</p>`}
+  ${f.hasBackend && f.endpoint ? `<noscript><p class="notice"><b>This form needs JavaScript</b>It is switched off in this browser, so nothing typed here can be sent. Call <a href="tel:${site.phoneHref}">${site.phoneDisplay}</a> and we will take it from there.</p></noscript>` : ''}
+  <p class="form__status" data-form-status hidden></p>
   <div class="field-row">
     <div class="field">
       <label for="name">Your name <span class="field__req">required</span></label>
@@ -1491,6 +1495,13 @@ async function main() {
   await assertCopyClaimsMatch();
 
   const files = await readdir(DIST);
+  if (contact.form.hasBackend && !contact.form.endpoint && !contact.form.action) {
+    console.log(
+      `\n⚠ FORM SAYS IT HAS A BACKEND AND HAS NOWHERE TO SEND. hasBackend is\n` +
+      `  true but neither endpoint nor action is set, so the submit button is\n` +
+      `  enabled and every message is dropped. Set contact.form.endpoint.\n`,
+    );
+  }
   if (!contact.form.hasBackend) {
     console.log(
       `\n⚠ CONTACT FORM HAS NO BACKEND — the submit button is disabled and the\n` +

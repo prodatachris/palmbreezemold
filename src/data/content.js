@@ -293,7 +293,7 @@ export const process = {
     },
     {
       title: 'A written scope you could hand to someone else',
-      duration: 'Same day',
+      duration: 'Before work starts',
       text: 'Affected materials, square footage, what is being removed versus cleaned, containment approach, equipment, and what is excluded. Written so that a second company could bid the identical job from it.',
       check: 'If the quote is a number and a sentence, you cannot compare it to anything. That is usually the point, and [comparing mold remediation quotes](/guides/comparing-mold-remediation-quotes/) walks through what to hold them to.',
     },
@@ -336,7 +336,7 @@ export const process = {
     {
       title: 'Independent clearance testing',
       duration: '2–5 days for lab results',
-      text: 'A third-party licensed mold assessor — not us — inspects and samples the containment before it comes down. If it does not pass, we go back in at our cost. Florida separates these two licenses specifically so that this check is real, and [what that means for you](/faq/#licensing-and-standards) is worth reading before you hire anyone.',
+      text: 'A third-party licensed mold assessor — not us — inspects and samples the containment before it comes down. Florida separates these two licenses specifically so that this check is real, and [what that means for you](/faq/#licensing-and-standards) is worth reading before you hire anyone.',
       check: 'The company that did the work should never be the company that clears it. If they offer to, that is the whole answer about how they operate.',
     },
     {
@@ -605,7 +605,28 @@ export const contact = {
    * clearly-labelled placeholder rather than a control that silently fails.
    */
   form: {
-    hasBackend: false,
+    hasBackend: true,
+    /**
+     * Posts to RankEngineAI's lead capture rather than a form service.
+     *
+     * WHY NOT Formspree or Basin. Those deliver a message to an inbox and stop
+     * there. This endpoint stores the enquiry against the client with its
+     * first-touch attribution, so the dashboard can answer which marketing
+     * produced which job, which is the thing the plan is actually for. It is
+     * the same door the other hosted sites use.
+     *
+     * IT IS NOT A NATIVE FORM POST. The endpoint takes JSON with a client_id,
+     * not urlencoded fields, so `action` is deliberately NOT rendered as a form
+     * action -- a browser with JavaScript off would otherwise navigate away to
+     * a 400. The handler in public/site.js sends it, and without JavaScript the
+     * form renders the call-us notice instead. See build.mjs.
+     *
+     * The client id is public by design: it identifies a tenant, and the
+     * endpoint refuses any request whose Origin is not this site's own domain,
+     * so it cannot be used to write rows against anybody else.
+     */
+    endpoint: 'https://rankengineai.com/api/inquiry',
+    clientId: '0c31846a-da5a-4301-b6f5-41854433cb27',
     action: '',
   },
 };

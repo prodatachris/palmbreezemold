@@ -174,7 +174,7 @@ export const services = [
           { title: 'Source removal', text: 'Colonized porous material — drywall, insulation, carpet pad, duct board, ceiling tile — is cut out and bagged inside containment. Semi-porous framing is cleaned mechanically, typically by HEPA vacuum and abrasion.' },
           { title: 'Detail cleaning', text: 'HEPA vacuum and damp wipe every surface in the containment, top down, including the ones that look clean. Settled spores do not respect the boundary of the visible growth.' },
           { title: 'Drying to standard', text: 'If the material is still wet, we dry it to a documented moisture content before anything gets closed up. Rebuilding over wet framing restarts the clock.' },
-          { title: 'Clearance', text: 'An independent licensed mold assessor tests. If it does not pass, we go back in. That is the entire point of having someone else hold the meter.' },
+          { title: 'Clearance', text: 'An independent licensed mold assessor tests. That is the entire point of having someone else hold the meter.' },
         ],
       },
       {

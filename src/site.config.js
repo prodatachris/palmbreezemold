@@ -21,7 +21,7 @@ export const site = {
 
   /** ⚠️ PLACEHOLDER — the live domain, no trailing slash. Canonicals, OG tags,
    *  and sitemap.xml are all built from this. */
-  origin: 'https://www.palmbreezemold.com',
+  origin: 'https://palmbreezemold.com',
 
   // ── Contact ────────────────────────────────────────────────────────────────
   /** REAL — supplied by the owner. 561 is Palm Beach County.
@@ -29,8 +29,10 @@ export const site = {
    *  the telephone value in the LocalBusiness schema. */
   phoneDisplay: '(561) 680-3584',
   phoneHref: '+15616803584',
-  /** ⚠️ PLACEHOLDER */
-  email: 'help@palmbreezemold.com',
+  /* Removed 2026-08-19: no mailbox on the domain yet. The phone is the only
+   * contact route the site publishes until one exists, which is honest and
+   * also avoids printing an address that would bounce. */
+  email: null,
 
   /** ⚠️ PLACEHOLDER — a real street address is required for Google Business
    *  Profile and for the LocalBusiness schema to do anything for you. If you
@@ -38,7 +40,11 @@ export const site = {
    *  Google will suppress the address on your profile — but you still need a
    *  verifiable one on file. */
   address: {
-    street: '1234 Example Boulevard, Suite 100',
+    /* No premises. This is a service-area business and the owner has no address
+     * to publish yet (2026-08-19), so the street line is null and hideAddress
+     * is true. A null street is also what drops the 'address' claim entirely,
+     * rather than leaving Example Boulevard on 37 pages. */
+    street: null,
     city: 'Fort Lauderdale',
     region: 'FL',
     regionName: 'Florida',
@@ -52,7 +58,7 @@ export const site = {
     lat: 26.1224,
     lng: -80.1373,
   },
-  hideAddress: false,
+  hideAddress: true,
   /** Real: Broward and Palm Beach County are both America/New_York. Used to
    *  date the sitemap — see the note on lastmodFor in build.mjs. */
   timezone: 'America/New_York',
@@ -81,7 +87,18 @@ export const site = {
    * The key list lives in `claimKeys` below rather than in this comment, so
    * preflight and the indexing gate read the same one.
    */
-  verified: ['phone'],
+  /*
+   * phone            supplied by the owner
+   * yearsInBusiness  founded 2026, confirmed by the owner 2026-08-19. The
+   *                  about page prints the year alone now: a company in its
+   *                  first year saying "0 years" was worse than saying nothing.
+   * origin           palmbreezemold.com, the owner's own domain, which is the
+   *                  one this build is being hosted on.
+   *
+   * Everything else on claimKeys is null or empty, so the site makes no claim
+   * to confirm. Put a key here only when the document behind it exists.
+   */
+  verified: ['phone', 'yearsInBusiness', 'origin'],
 
   /**
    * Every claim the site makes that a customer could check. preflight builds
@@ -163,7 +180,7 @@ export const site = {
         { text: 'costs nothing', within: ['assessment', 'walkthrough', 'written scope', 'inspection'], window: 220 }],
     },
     sameDayScope: {
-      live: true, // /process/ still states the written scope goes out the same day
+      live: false, // removed 2026-08-19, owner confirmed they do not work same day
       needles: ['Same day'],
     },
     /**
@@ -175,7 +192,7 @@ export const site = {
      * says "we go back in".
      */
     clearanceRework: {
-      live: true,
+      live: false, // removed 2026-08-19, owner makes no workmanship guarantee yet
       needles: ['we go back in'],
     },
   },
@@ -185,18 +202,22 @@ export const site = {
    *  A Mold Remediator license is MRSR#####; a Mold Assessor is MRSA#####.
    *  Put your real number here — it is a ranking and conversion factor, and
    *  advertising remediation in Florida without one is a violation. */
-  license: 'MRSR-PENDING',
+  /* Removed 2026-08-19 on the owner's instruction: no Florida license number
+   * to publish yet. null means the site makes no licensing claim at all, which
+   * is what launchReady then stops asking about. Put the real MRSR number here
+   * the day it exists -- it is a ranking and conversion factor, and the copy on
+   * /faq/ that explains Florida's assessor/remediator split still stands. */
+  license: null,
   licenseLabel: 'FL Mold Remediator Lic.',
-  /** ⚠️ PLACEHOLDER — remove any you do not actually hold. */
-  certifications: [
-    'IICRC Applied Microbial Remediation Technician (AMRT)',
-    'IICRC Water Damage Restoration Technician (WRT)',
-    'NADCA Air Systems Cleaning Specialist (ASCS)',
-  ],
-  /** ⚠️ PLACEHOLDER */
-  insurance: 'General liability & pollution liability insured',
-  /** ⚠️ PLACEHOLDER */
-  foundingYear: 2014,
+  /* Emptied 2026-08-19 on the owner's instruction: none held yet. Add each
+   * one only when the certification card exists. */
+  certifications: [],
+  /* Removed 2026-08-19 on the owner's instruction: not yet carried, so the
+   * site does not say it is. */
+  insurance: null,
+  /* Real, confirmed by the owner 2026-08-19. yearsInBusiness is derived from
+   * this, so a new company reads as new rather than claiming twelve years. */
+  foundingYear: 2026,
   /**
    * Derived, never stored. This used to sit beside foundingYear as a literal
    * 12, which is correct for exactly one calendar year and then quietly wrong —
