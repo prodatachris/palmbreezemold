@@ -69,102 +69,113 @@
   openTargetDetails();
   window.addEventListener('hashchange', openTargetDetails);
 
-  /* ── Hero video ────────────────────────────────────────────────────────────
-     Sources are attached from data-* attributes rather than written into the
-     markup, which means the clip is never requested unless we decide it should
-     be. We decline in four cases:
+  /* ── Hero video, scrubbed by scroll ───────────────────────────────────────
+     The clip does not play. Its frame is a function of how far the reader has
+     scrolled through the hero: scroll down and the shot advances, scroll back
+     and it rewinds, stop and it holds. Nothing moves on its own.
 
-       • prefers-reduced-motion — vestibular safety, and it is a stated choice
-       • Save-Data — the visitor has asked every site not to do this
-       • narrow viewports — most traffic here is a phone on cell data, and the
-         still is already the whole message
-       • no <video> support
+     That is why the encode changed. Scrubbing means seeking to an arbitrary
+     time on every frame, and the previous clips carried a single keyframe
+     each, so every seek decoded from frame zero and the picture snapped. They
+     are now all-keyframe — and because a scrubbed clip never loops, they no
+     longer need the forward-then-reverse ping-pong that used to double them,
+     which paid for the keyframes.
 
-     In all four the poster still remains, which is a complete hero on its own.
-     That is why the still is real markup and not the `poster` attribute.       */
+     Declined in four cases, exactly as before: reduced motion, Save-Data,
+     narrow viewports, and no <video> support. In all four the poster still
+     remains and is the whole hero. It is also why there is no pause control
+     any more — WCAG 2.2.2 governs content that moves by itself, and this
+     only moves while the reader does.                                        */
   var heroes = document.querySelectorAll('.mhero[data-video]');
   if (!heroes.length) return;
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var conn = navigator.connection || {};
-  var wideEnough = window.matchMedia('(min-width: 700px)').matches;
 
-  function shouldPlay() {
-    return wideEnough && !reduceMotion.matches && !conn.saveData;
+  function shouldScrub() {
+    return window.matchMedia('(min-width: 700px)').matches &&
+      !reduceMotion.matches && !conn.saveData;
   }
 
   Array.prototype.forEach.call(heroes, function (hero) {
     var video = hero.querySelector('.mhero__video');
-    var toggle = hero.querySelector('[data-motion-toggle]');
     if (!video || typeof video.canPlayType !== 'function') return;
 
+    var ready = false;
     var attached = false;
-    var paused = false;
+    var frame = null;
+    var lastSet = -1;
 
     function attach() {
       if (attached) return;
       attached = true;
-
-      // The build measured both encodes and put the smaller one in
-      // data-first. Browsers take the first playable <source>, and every one
-      // of them plays H.264, so a fixed WebM-first order shipped the bigger
-      // file on the clips where VP9 lost.
-      var order = video.getAttribute('data-first') === 'mp4'
-        ? [['mp4', 'video/mp4'], ['webm', 'video/webm']]
-        : [['webm', 'video/webm'], ['mp4', 'video/mp4']];
-      order.forEach(function (pair) {
-        var src = video.getAttribute('data-' + pair[0]);
-        if (!src) return;
-        var el = document.createElement('source');
-        el.src = src;
-        el.type = pair[1];
-        video.appendChild(el);
-      });
-
-      video.addEventListener('playing', function () {
-        video.setAttribute('data-playing', '');
-        if (toggle) toggle.hidden = false;
+      var src = video.getAttribute('data-src');
+      if (!src) return;
+      // preload=auto here rather than in the markup: the file must be fully
+      // buffered before a seek is smooth, but it must not compete with the
+      // hero still, which is the LCP element. This runs after window load.
+      video.preload = 'auto';
+      video.addEventListener('loadeddata', function () {
+        ready = true;
+        video.setAttribute('data-playing', '');   // fades the clip in over the still
+        update();
       }, { once: true });
-
-      video.load();
-      var p = video.play();
-      // Autoplay can still be refused (low power mode, browser policy). That is
-      // not an error worth surfacing — the still is already correct.
-      if (p && typeof p.catch === 'function') p.catch(function () {});
+      // Assigning src is itself a load. Calling load() after it fetched the
+      // clip twice — visible as two requests for the same file in the network
+      // log — so the assignment stands alone.
+      video.src = src;
     }
 
-    if (toggle) {
-      toggle.addEventListener('click', function () {
-        paused = !paused;
-        if (paused) video.pause();
-        else video.play().catch(function () {});
-        // The label carries the state, so there is no aria-pressed. Using both
-        // contradicted itself: one click produced a button labelled "Play" with
-        // aria-pressed="true", which announces as "Play, toggle button, pressed"
-        // — playback engaged — while the video was in fact paused. aria-pressed
-        // was also absent until that first click, so the control changed role
-        // partway through the session.
-        toggle.textContent = paused ? 'Play' : 'Pause';
-        toggle.setAttribute('aria-label', paused ? 'Play background video' : 'Pause background video');
-      });
+    function update() {
+      frame = null;
+      if (!ready || !shouldScrub()) return;
+      var d = video.duration;
+      if (!d || !isFinite(d)) return;
+      // Measured against the runway, not the hero.
+      //
+      // The hero is position: sticky and nothing on a sticky element reports
+      // where it would have been — getBoundingClientRect().top pins at 0 and
+      // offsetTop tracks the scroll, so both gave a progress of exactly zero
+      // at every position and the clip never advanced a frame. The runway is
+      // an ordinary block and does not pin, so its rect is honest.
+      //
+      // Travel is the distance the hero actually stays put for: the runway's
+      // height less the hero's own. Scrubbing against that means the shot
+      // plays through exactly while the hero is held, and is finished at the
+      // moment it starts to leave.
+      var runway = hero.parentElement;
+      var travel = Math.max(runway.offsetHeight - hero.offsetHeight, 1);
+      var start = runway.getBoundingClientRect().top + window.scrollY;
+      var scrolled = Math.min(Math.max(window.scrollY - start, 0), travel);
+      var t = (scrolled / travel) * d;
+      // Only seek when the target frame actually differs. At 12fps a scroll of
+      // a few pixels resolves to the same frame, and re-seeking to it stalls
+      // the decoder for no visible gain.
+      var snapped = Math.round(t * 12) / 12;
+      if (snapped === lastSet) return;
+      lastSet = snapped;
+      try { video.currentTime = Math.min(snapped, d - 0.001); } catch (e) { /* seek before ready */ }
     }
 
-    // Someone can turn reduced-motion on while the page is open.
-    var onChange = function () {
+    function onScroll() {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(update);
+    }
+
+    var onMotionChange = function () {
       if (reduceMotion.matches) {
-        video.pause();
         video.removeAttribute('data-playing');
-        if (toggle) toggle.hidden = true;
-      } else if (!paused) {
-        shouldPlay() && (attached ? video.play().catch(function () {}) : attach());
+      } else if (shouldScrub()) {
+        attached ? update() : attach();
       }
     };
-    if (reduceMotion.addEventListener) reduceMotion.addEventListener('change', onChange);
-    else if (reduceMotion.addListener) reduceMotion.addListener(onChange);
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener('change', onMotionChange);
+    else if (reduceMotion.addListener) reduceMotion.addListener(onMotionChange);
 
-    if (!shouldPlay()) return;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
 
-    // Wait for load so the clip never competes with the LCP paint or the fonts.
+    if (!shouldScrub()) return;
     if (document.readyState === 'complete') attach();
     else window.addEventListener('load', attach, { once: true });
   });

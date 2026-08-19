@@ -5,7 +5,7 @@
  * no hydration. The build script calls these and writes files.
  */
 
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import site from '../site.config.js';
 import { services, featuredServices } from '../data/services.js';
 import { counties } from '../data/areas.js';
@@ -203,14 +203,29 @@ export function mediaHero({
   eyebrow, h1, lede, image, alt, video = null, caption = '',
   actions = '', extra = '', crumbs = '',
 }) {
+  // One MP4, no loop, no WebM.
+  //
+  // The clip is scrubbed by scroll rather than played, which changes every one
+  // of those. It is not a loop — its frame is a function of scroll position, so
+  // there is nothing to loop back to. It cannot be VP9 as well: scrubbing needs
+  // every frame to be a keyframe, and maintaining two all-keyframe encodes to
+  // save bytes on a file that has to be fully buffered before it is smooth is
+  // the wrong trade. Dropping WebM also removed 8.2 MB of encodes that lost to
+  // their MP4 counterparts on 7 of 9 clips anyway.
   const vid = video
     ? `
-    <video class="mhero__video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
-           data-webm="/assets/video/${video}.webm" data-mp4="/assets/video/${video}.mp4"
-           data-first="${smallerEncoding(video)}"></video>`
+    <video class="mhero__video" muted playsinline preload="none" aria-hidden="true" tabindex="-1"
+           data-src="/assets/video/${video}.mp4"></video>`
     : '';
 
+  // The runway. The hero is sticky inside a container taller than itself, so it
+  // holds in place while the reader scrolls that extra distance — the hero owns
+  // the scroll rather than having the next section slide across it. Same shape
+  // as rankengineai, breathforrecovery and the fantasticrides scroll-scrub
+  // stage: a sticky full-viewport stage with runway beneath it, then the page
+  // resumes normally.
   return `
+<div class="mhero-runway">
 <section class="mhero"${video ? ' data-video' : ''}>
   <div class="mhero__bg">
     ${picture({ name: image, alt, sizes: '100vw', cls: 'mhero__still', priority: true })}${vid}
@@ -231,9 +246,14 @@ export function mediaHero({
          the reader can follow. rich() still renders links only, so a caption
          with no link syntax is unchanged. -->
     ${caption ? `<p class="mhero__cap">${rich(caption)}</p>` : '<span></span>'}
-    ${video ? '<button type="button" class="mhero__toggle" data-motion-toggle hidden aria-label="Pause background video">Pause</button>' : ''}
+    <!-- No pause control. It was here for WCAG 2.2.2, which governs content
+         that moves automatically; a scrubbed clip only moves while the reader
+         scrolls, so there is nothing running to stop and the button would have
+         paused nothing. -->
+    <span></span>
   </div>
-</section>`;
+</section>
+</div>`;
 }
 
 /* ── The signature: air path diagram ───────────────────────────────────────── */
@@ -251,8 +271,21 @@ export function airPathDiagram(idPrefix = 'dg') {
   // Each marker is grouped and numbered so the stylesheet can light them in
   // airflow order as the reader scrolls — the scroll-driven version of the
   // diagram uses --i to stagger each node along one shared view timeline.
-  const node = (n, x, y) => `
-    <g class="dg-mark" style="--i:${n - 1}">
+  // `lead` is the scroll offset, as a cover percentage, at which this marker
+  // lights. It is paired with the marker's true position along the pulse path
+  // — 4.2 / 26.5 / 29.5 / 39.4 / 77.6, measured off the rendered SVG with
+  // getPointAtLength, not guessed — and the pulse is keyframed in styles.css
+  // to reach each of those positions at the matching lead. The two lists must
+  // move together; build.mjs asserts they do.
+  //
+  // They are deliberately not the same shape. Path position is wildly uneven:
+  // 1 to 4 are the air handler and its two plenums, all inside the first 40%
+  // of the run, and the register boot is most of the way along. Lighting on
+  // that spacing would fire four of five before a reader finished arriving.
+  // So the markers keep a readable cadence and the pulse carries the physics,
+  // easing through the equipment and running once it is in open duct.
+const node = (n, x, y, lead) => `
+    <g class="dg-mark" style="--i:${n - 1};--lead:${lead}%">
     <circle class="dg-ring" cx="${x}" cy="${y}" r="14"/>
     <circle class="dg-node" cx="${x}" cy="${y}" r="14"/>
     <text class="dg-node-n" x="${x}" y="${y + 4.2}">${n}</text>
@@ -334,11 +367,11 @@ export function airPathDiagram(idPrefix = 'dg') {
   <path class="dg-pulse" pathLength="1" d="M28 373 H156 V110 H660"/>
 
   <!-- Findings, numbered in the order the air reaches them -->
-  ${node(1, 66, 373)}
-  ${node(2, 156, 250)}
-  ${node(3, 156, 294)}
-  ${node(4, 156, 148)}
-  ${node(5, 460, 142)}
+  ${node(1, 66, 373, 24)}
+  ${node(2, 156, 250, 30)}
+  ${node(3, 156, 294, 33)}
+  ${node(4, 156, 148, 38)}
+  ${node(5, 460, 142, 45)}
 </svg>
 </div>`;
 }
@@ -607,23 +640,6 @@ export const callBar = () => `
  * told a lie with nothing to catch it. Build-time only; the result is cached
  * per path.
  */
-/**
- * Which of a clip's two encodes to offer first. Browsers take the first
- * <source> they can play and everything plays H.264, so listing WebM first
- * ships WebM to almost everyone regardless of size — and on high-texture clips
- * (fibreglass, Spanish moss, popcorn ceiling) VP9 at this CRF came out up to
- * 65% LARGER than x264. Measured at build time, per clip, from public/ for the
- * same reason imageSize reads from public/: dist/ is not populated yet.
- */
-function smallerEncoding(video) {
-  try {
-    const webm = statSync(`public/assets/video/${video}.webm`).size;
-    const mp4 = statSync(`public/assets/video/${video}.mp4`).size;
-    return webm < mp4 ? 'webm' : 'mp4';
-  } catch {
-    return 'mp4';
-  }
-}
 
 const sizeCache = new Map();
 function imageSize(relPath) {

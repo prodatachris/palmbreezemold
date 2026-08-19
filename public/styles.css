@@ -31,6 +31,48 @@
    download it. It exists so that adding bold body copy later degrades visibly
    instead of silently — `font-synthesis-weight: none` on body means a missing
    weight would otherwise render identically to regular. */
+/* Metric-matched stand-ins for Archivo, so the swap does not move anything.
+   The hero h1 sits right on a wrap boundary: Helvetica Neue is only 1.9%
+   wider than Archivo, and that is enough to tip the headline from three
+   lines to four. Measured at 1440 it went 167.3px -> 223.0px, one whole
+   55.75px line, and that single reflow was the site's entire CLS (0.015 on
+   the home page, worst shift div.wrap; every other page was already 0.001).
+
+   size-adjust is what actually fixes it — with an explicit line-height the
+   ascent and descent overrides cannot change the line box, but they are set
+   so the match still holds anywhere line-height is normal.
+
+   Three faces because the right number depends on which font the platform
+   actually falls back to, and one value cannot serve all of them: Helvetica
+   Neue needs 98.2%, Arial 99.6%, Liberation Sans 108.4%. Each face names its
+   own font via local(), so a face whose font is absent contributes nothing
+   and the stack moves on. Ratios measured with canvas measureText against
+   the real Archivo file, not taken from a table. */
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Helvetica Neue'), local('HelveticaNeue');
+  size-adjust: 98.2%;
+  ascent-override: 89.7%;
+  descent-override: 21.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Archivo Fallback 2';
+  src: local('Arial'), local('Helvetica');
+  size-adjust: 99.6%;
+  ascent-override: 88.3%;
+  descent-override: 21.1%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Archivo Fallback 3';
+  src: local('Liberation Sans'), local('Nimbus Sans');
+  size-adjust: 108.4%;
+  ascent-override: 81.2%;
+  descent-override: 19.4%;
+  line-gap-override: 0%;
+}
+
 @font-face {
   font-family: 'Source Serif 4';
   src: url('/fonts/sourceserif4-latin-400.woff2') format('woff2');
@@ -94,7 +136,8 @@
   --rule-soft: #dde4ea;
 
   /* Type */
-  --font-display: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-display: 'Archivo', 'Archivo Fallback', 'Archivo Fallback 2',
+    'Archivo Fallback 3', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-body: 'Source Serif 4', Charter, Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
@@ -209,9 +252,19 @@ a:hover { color: var(--brand-deep); }
   margin-inline: auto;
   padding-inline: var(--gut);
 }
-.wrap--mid { max-width: 62rem; }
+/* Narrower measure, same left rail.
+   .wrap--mid used to shrink the container itself, and because .wrap centres,
+   a narrower box indents from BOTH sides — content stepped from 170px to
+   264px and back on every page, two to four times each. Against a layout
+   built on hairline rules and a consistent rail, a 94px indent that appears
+   and disappears reads as drift rather than as an editorial choice; the
+   section head directly below it snapping back to 170px is what gives it
+   away. The container now keeps the full rail and the measure is applied to
+   its contents, so prose still sets at 62rem but starts where everything
+   else does. */
+.wrap--mid > * { max-width: 62rem; }
 
-.section { padding-block: var(--sec-pad); }
+.section { padding-block: var(--sec-pad); background: var(--haze); }
 .section--ruled { border-top: 1px solid var(--rule); }
 .section--wash { background: var(--haze-deep); }
 
@@ -502,7 +555,15 @@ h1, h2, h3, h4 {
      shows up as text cut off at the right edge rather than as page overflow. */
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 1fr auto;
-  min-height: clamp(28rem, 60svh, 38rem);
+  /* Full viewport, so there is no fold. At clamp(28rem, 60svh, 38rem) the
+     hero came up short of the screen and the next section's top edge showed
+     along the bottom on load — the pinned hero then slid content over a stage
+     that had never filled it. 100svh (small viewport height) rather than
+     100vh: on a phone, vh is the height with browser chrome retracted, so a
+     100vh hero is taller than the screen until you scroll and the fold comes
+     back. min-height, not height, so a hero whose copy runs long still grows
+     rather than clipping it. */
+  min-height: 100svh;
   padding-block: clamp(3rem, 6vw, 4.5rem) 0;
   overflow: hidden;
 }
@@ -822,9 +883,16 @@ h1, h2, h3, h4 {
        for motion users while reduced-motion users still had it. Individual
        transform properties compose with `transform` instead of replacing it,
        so the reveal owns `translate` and the hover keeps `transform`. */
+    /* 34px and a 1.5% scale, not 14px flat. At 14px over the first 35% of
+       entry the reveal finished before the block reached the reader's eye
+       line — measured on /services/, all six cards sat at opacity 1 by the
+       time any of them were comfortably readable, which is why the page
+       looked static. Travel further, over more of the entry, so the movement
+       is still happening where it can be seen. `translate`/`scale`, the
+       individual properties, so the card hover lift keeps `transform`. */
     @keyframes rise-in {
-      from { opacity: 0; translate: 0 14px; }
-      to   { opacity: 1; translate: 0 0; }
+      from { opacity: 0; translate: 0 34px; scale: 0.985; }
+      to   { opacity: 1; translate: 0 0; scale: 1; }
     }
     .sec-head,
     .card,
@@ -835,7 +903,7 @@ h1, h2, h3, h4 {
     .faq details {
       animation: rise-in auto cubic-bezier(0.2, 0.6, 0.2, 1) both;
       animation-timeline: view();
-      animation-range: entry 0% entry 35%;
+      animation-range: entry 0% entry 62%;
     }
     /* Never on anything above the fold or fixed: the hero, header, call bar
        and the CTA band are always fully visible on arrival. */
@@ -851,8 +919,8 @@ h1, h2, h3, h4 {
       animation-range: 0 100vh;
     }
     @keyframes hero-drift {
-      from { transform: scale(1.06) translateY(0); }
-      to   { transform: scale(1.06) translateY(6%); }
+      from { transform: scale(1.12) translateY(0); }
+      to   { transform: scale(1.12) translateY(14%); }
     }
 
     /* 3. The air-path diagram, driven by its own visibility.
@@ -879,11 +947,31 @@ h1, h2, h3, h4 {
       animation-timeline: --airpath;
       animation-range: cover 18% cover 48%;
     }
+    /* Not linear, and the offsets are not arbitrary. Each stop below puts the
+       pulse at the exact point on the path where a marker sits at the moment
+       that marker lights. Path positions were measured off the rendered SVG
+       with getPointAtLength — 4.2 / 26.5 / 29.5 / 39.4 / 77.6 percent — and
+       dashoffset is 1 minus that. The leads live in src/lib/ui.js; build.mjs
+       asserts the two lists still agree.
+
+       A linear pulse against the old evenly-spaced leads was out by 15 to 36
+       points: marker 1 sits at 4% of the path but lit with the pulse already a
+       quarter of the way along, and marker 5 lit while the pulse was still well
+       short of the register boot. The leads are paced for reading, so the
+       pulse is what bends — it eases through the air handler and its two
+       plenums, where four of the five markers stack inside the first 40% of
+       the run, then travels once it reaches open duct. That is also the
+       order a technician works in, and roughly how the air behaves. */
     @keyframes dg-travel-scroll {
-      0%   { stroke-dashoffset: 1; opacity: 0; }
-      6%   { opacity: 0.9; }
-      94%  { opacity: 0.9; }
-      100% { stroke-dashoffset: 0; opacity: 0; }
+      0%    { stroke-dashoffset: 1;     opacity: 0; }
+      6%    { opacity: 0.9; }
+      20%   { stroke-dashoffset: 0.958; }  /* 1 return plenum */
+      40%   { stroke-dashoffset: 0.735; }  /* 2 evaporator coil */
+      50%   { stroke-dashoffset: 0.705; }  /* 3 drain pan */
+      66.7% { stroke-dashoffset: 0.606; }  /* 4 supply plenum */
+      90%   { stroke-dashoffset: 0.224; }  /* 5 register boot */
+      94%   { opacity: 0.9; }
+      100%  { stroke-dashoffset: 0;     opacity: 0; }
     }
     /* Markers light in airflow order. Each one's window is offset by its index
        so 1 lights first and 5 last, tracking the pulse's arrival. */
@@ -897,11 +985,14 @@ h1, h2, h3, h4 {
        31–43% (phone 31%, home desktop 43%, the tall HVAC figure 32%) — not
        50%, because centring puts the top edge mid-viewport and a phone will
        not scroll the figure under its sticky header. So the sequence runs
-       24–48%: 1 lights 24–29, 2 29–34, 3 34–39, 4 39–44, 5 44–49. Arriving,
+       24–50%: 1 lights 24–29, 2 30–35, 3 33–38, 4 38–43, 5 45–50. The
+       gaps are uneven because 2 and 3 sit within 3% of each other on the
+       path, and lighting them five points apart would overstate that.
+       Arriving,
        the reader sees 1–2 lit and the air moving; a small nudge down brings
        3, 4 and 5 in — all with the figure still on screen. */
     figure.diagram .dg-mark {
-      --lead: calc(24% + var(--i) * 5%);
+      /* --lead is set per marker in the markup. See src/lib/ui.js. */
       animation: dg-arrive auto ease-out both;
       animation-timeline: --airpath;
       animation-range: cover var(--lead) cover calc(var(--lead) + 5%);
@@ -933,6 +1024,27 @@ h1, h2, h3, h4 {
   }
 }
 
+/* ── Hero runway ───────────────────────────────────────────────────────────
+   The hero holds while the reader scrolls past it, then the page resumes.
+
+   It is sticky inside a container half again its own height, so there is
+   100svh of scroll during which the hero stays exactly where it is. That
+   distance belongs to the hero — nothing is laid out inside it — which is the
+   difference between this and the first attempt: there, sections slid across
+   a pinned hero and the overlap read as content covering it. Here the hero
+   simply owns its own stretch of the page, and the next section arrives only
+   once the runway is spent.
+
+   The clip is scrubbed against this distance, so the shot plays through
+   exactly while the hero is held.
+
+   Reduced motion collapses the runway to the hero's own height and unsticks
+   it, which is an ordinary hero that scrolls away. */
+@media (prefers-reduced-motion: no-preference) {
+  .mhero-runway { height: 200svh; }
+  .mhero { position: sticky; top: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dg-flow, .dg-pulse, .dg-ring { animation: none; }
@@ -957,7 +1069,16 @@ h1, h2, h3, h4 {
   overflow: hidden;
 }
 @media (min-width: 720px) { .legend { grid-template-columns: 1fr 1fr; } }
+/* The fifth marker spans both columns so the grid does not end on a half-empty
+   row — leave that alone, the audit's dead-space check exists because an
+   uncovered track paints the container's --rule-soft as a grey slab. What was
+   wrong is that spanning also let its description run to 130ch while the four
+   above set at 60ch, so the last item read as a different kind of thing from
+   the rest of the list. Cap the text, keep the span: the cell stays full width
+   and the measure matches its neighbours. */
 .legend li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.legend li:last-child:nth-child(odd) .legend__d,
+.legend li:last-child:nth-child(odd) .legend__t { max-width: 60ch; }
 .legend li {
   background: var(--paper);
   padding: 1.15rem 1.25rem;
@@ -1019,7 +1140,16 @@ h1, h2, h3, h4 {
 
 /* ── Cards ─────────────────────────────────────────────────────────────────── */
 .grid { display: grid; gap: clamp(1rem, 2vw, 1.4rem); }
-.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  /* A row gap sized for stacking, not for sitting side by side. The 16px .grid
+     gap is right between two columns and much too little once auto-fit folds
+     them into one: on /contact/ at 390 it left the "Or write it down" heading
+     16px under the contact list, which ends on a --rule-soft hairline of its
+     own, so the heading read as a sixth row of the list rather than the start
+     of the form. Used on the contact page only. */
+  row-gap: clamp(2.75rem, 8vw, 3.5rem);
+}
 .grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
 
 .card {
@@ -1181,6 +1311,15 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 .grid--services { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
 @media (min-width: 900px) {
   .grid--services { grid-template-columns: repeat(3, 1fr); }
+  /* Four cards in a three-column grid leaves one orphan with two empty slots
+     beside it, which is how /guides/ rendered — three across, then a lone card
+     against two-thirds of empty row. Two-up gives four equal cards and no gap.
+     Same idea as the .related rules further down: match the track count to the
+     card count rather than leaving the grid to strand the remainder. Only the
+     guides hub has four; every other instance has six and fills 3x2 exactly. */
+  .grid--services:has(> :last-child:nth-child(4)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ── Definition-style lists (findings, watch items) ────────────────────────── */
@@ -1285,6 +1424,16 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   border-radius: var(--radius);
   background: var(--flag-wash);
   padding: clamp(1.25rem, 3vw, 1.9rem);
+  /* Hold the same measure as body copy. Uncapped, the paragraphs inside ran to
+     86ch on /process/ — 847px against the 68ch that .body-block holds and the
+     67ch of .steps__d — so the one block on the page meant to be read closely
+     had the longest lines on the site. The cap goes on the box rather than the
+     paragraphs: capping the text alone would leave the bordered callout wide
+     with the copy stopping short of its own right edge, which reads as a
+     mistake rather than a measure. Padding is added back so the TEXT lands at
+     68ch, not the border. Where a narrower column already constrains it — the
+     guides, at 671px — this changes nothing. */
+  max-width: calc(68ch + 2 * clamp(1.25rem, 3vw, 1.9rem));
 }
 .flagbox .h3 { margin-bottom: 0.75rem; }
 .flagbox__note { color: var(--ink-soft); opacity: 0.8; font-size: 0.98rem; max-width: 58ch; }
@@ -1502,7 +1651,20 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   display: inline-block;
 }
 .cta-band__phone:hover { color: #f0b072; }
-.cta-band__meta {
+/* Selector carries p deliberately: .cta-band p is (0,1,1) and a lone
+   .cta-band__meta is (0,1,0), so the cap below silently kept winning. */
+.cta-band p.cta-band__meta {
+  /* Not the 46ch that .cta-band p sets. That cap is measured for the lede in
+     the other column, which is body-font; applied to uppercase mono at 0.7rem
+     it resolved to 309px inside a 451px column, so the hours broke as
+     "MON-FRI 7:00AM - 7:00PM · SAT 8:00AM -" / "4:00PM" with 142px of the
+     column unused beside the orphan. A measure is a property of the typeface
+     it was measured for. */
+  max-width: none;
+  /* At 390 the column is 350px and the hours string needs about the same, so
+     it still broke as a full line plus "4:00PM" alone. Balance evens the two
+     lines instead of stranding two words. */
+  text-wrap: balance;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.11em;
@@ -1706,6 +1868,17 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 .callbar a:first-child { flex-grow: 1.5; }
 @media (max-width: 760px) {
   .callbar { display: flex; min-height: var(--callbar-h); }
+
+  /* The hero's own action pair goes, because the bar below is the same two
+     actions and is always on screen. Measured on a 390x844 phone: two
+     identically-worded, identically-amber Call buttons 297px apart, plus
+     "Request an inspection" against the bar's "Get inspection". Amber is
+     reserved here for risk and action precisely so the call is the loudest
+     thing on the page — printing it twice halves that, and the duplicate was
+     the one further from the thumb. The hero keeps the headline, the lede and
+     the credibility strip; the actions live in the bar, permanently and within
+     reach. Nothing is lost: both actions stay one tap away on every screen. */
+  .mhero__actions { display: none; }
   /* At 320px the second label rendered as "Get inspec…". The ellipsis meant
      nothing reported an overflow — the truncation is the styling working — so
      the only way to see it was to look at the bar on a 320px screen. Drop the
