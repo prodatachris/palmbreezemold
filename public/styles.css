@@ -1321,6 +1321,16 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   border-radius: var(--radius);
   background: var(--flag-wash);
   padding: clamp(1.25rem, 3vw, 1.9rem);
+  /* Hold the same measure as body copy. Uncapped, the paragraphs inside ran to
+     86ch on /process/ — 847px against the 68ch that .body-block holds and the
+     67ch of .steps__d — so the one block on the page meant to be read closely
+     had the longest lines on the site. The cap goes on the box rather than the
+     paragraphs: capping the text alone would leave the bordered callout wide
+     with the copy stopping short of its own right edge, which reads as a
+     mistake rather than a measure. Padding is added back so the TEXT lands at
+     68ch, not the border. Where a narrower column already constrains it — the
+     guides, at 671px — this changes nothing. */
+  max-width: calc(68ch + 2 * clamp(1.25rem, 3vw, 1.9rem));
 }
 .flagbox .h3 { margin-bottom: 0.75rem; }
 .flagbox__note { color: var(--ink-soft); opacity: 0.8; font-size: 0.98rem; max-width: 58ch; }
