@@ -1434,6 +1434,52 @@ async function assertCopyClaimsMatch() {
   }
 }
 
+/**
+ * The air-path diagram splits one piece of knowledge across two files: the
+ * markers carry the scroll offset at which each lights (src/lib/ui.js), and
+ * the pulse keyframes carry where the pulse has to be along the path at that
+ * moment (public/styles.css). Neither file can see the other, so an edit to
+ * one silently desynchronises the diagram — which is the exact bug this pass
+ * fixed, and it went unnoticed for a while because a drifting pulse still
+ * looks like a working animation.
+ *
+ * This re-derives one from the other. Each marker's lead is converted into a
+ * fraction of the pulse's own animation-range, and that has to be the offset
+ * the keyframe uses. Tolerance is a third of a percent: the numbers are
+ * rounded for legibility in the stylesheet, not computed there.
+ */
+async function assertDiagramPulseSync() {
+  const css = await readFile(path.join(ROOT, 'public/styles.css'), 'utf8');
+  const ui = await readFile(path.join(ROOT, 'src/lib/ui.js'), 'utf8');
+
+  const leads = [...ui.matchAll(/\$\{node\((\d), \d+, \d+, ([\d.]+)\)\}/g)]
+    .map(m => ({ n: +m[1], lead: +m[2] }));
+  // Anchored on the scroll-driven rule specifically. A looser /\.dg-pulse \{/
+  // starts at the base rule 130 lines earlier and runs forward into the
+  // .dg-flow--b range, which reads 18-30% and quietly halves every offset.
+  const range = css.match(/figure\.diagram \.dg-pulse \{[\s\S]*?animation-range: cover ([\d.]+)% cover ([\d.]+)%/);
+  const stops = [...css.matchAll(/^\s*([\d.]+)%\s*\{ stroke-dashoffset: ([\d.]+); \}\s*\/\* (\d)/gm)]
+    .map(m => ({ at: +m[1], off: +m[2], n: +m[3] }));
+
+  if (!range) throw new Error('diagram: could not read the pulse animation-range from styles.css');
+  if (leads.length !== 5 || stops.length !== 5)
+    throw new Error(`diagram: expected 5 markers and 5 pulse stops, found ${leads.length} and ${stops.length}`);
+
+  const [, from, to] = range.map(Number);
+  for (const { n, lead } of leads) {
+    const stop = stops.find(s => s.n === n);
+    if (!stop) throw new Error(`diagram: marker ${n} lights at cover ${lead}% with no matching pulse stop`);
+    const want = ((lead - from) / (to - from)) * 100;
+    if (Math.abs(stop.at - want) > 0.34)
+      throw new Error(
+        `diagram: marker ${n} lights at cover ${lead}%, which is ${want.toFixed(1)}% through the ` +
+        `pulse, but its keyframe is at ${stop.at}%. Update the other file to match.`);
+  }
+  const order = stops.map(s => s.off);
+  if (order.some((o, i) => i && o >= order[i - 1]))
+    throw new Error('diagram: pulse keyframes must move the dash forward — stroke-dashoffset has to fall monotonically');
+}
+
 async function assertRoutingConsistent() {
   const problems = [];
   const indexable = new Map();
@@ -1487,6 +1533,7 @@ async function main() {
 
   assertProfileLinks();
   await assertRoutingConsistent();
+  await assertDiagramPulseSync();
   await assertSignalsUnique();
   await assertCopyClaimsMatch();
 

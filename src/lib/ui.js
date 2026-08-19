@@ -271,8 +271,21 @@ export function airPathDiagram(idPrefix = 'dg') {
   // Each marker is grouped and numbered so the stylesheet can light them in
   // airflow order as the reader scrolls — the scroll-driven version of the
   // diagram uses --i to stagger each node along one shared view timeline.
-  const node = (n, x, y) => `
-    <g class="dg-mark" style="--i:${n - 1}">
+  // `lead` is the scroll offset, as a cover percentage, at which this marker
+  // lights. It is paired with the marker's true position along the pulse path
+  // — 4.2 / 26.5 / 29.5 / 39.4 / 77.6, measured off the rendered SVG with
+  // getPointAtLength, not guessed — and the pulse is keyframed in styles.css
+  // to reach each of those positions at the matching lead. The two lists must
+  // move together; build.mjs asserts they do.
+  //
+  // They are deliberately not the same shape. Path position is wildly uneven:
+  // 1 to 4 are the air handler and its two plenums, all inside the first 40%
+  // of the run, and the register boot is most of the way along. Lighting on
+  // that spacing would fire four of five before a reader finished arriving.
+  // So the markers keep a readable cadence and the pulse carries the physics,
+  // easing through the equipment and running once it is in open duct.
+const node = (n, x, y, lead) => `
+    <g class="dg-mark" style="--i:${n - 1};--lead:${lead}%">
     <circle class="dg-ring" cx="${x}" cy="${y}" r="14"/>
     <circle class="dg-node" cx="${x}" cy="${y}" r="14"/>
     <text class="dg-node-n" x="${x}" y="${y + 4.2}">${n}</text>
@@ -354,11 +367,11 @@ export function airPathDiagram(idPrefix = 'dg') {
   <path class="dg-pulse" pathLength="1" d="M28 373 H156 V110 H660"/>
 
   <!-- Findings, numbered in the order the air reaches them -->
-  ${node(1, 66, 373)}
-  ${node(2, 156, 250)}
-  ${node(3, 156, 294)}
-  ${node(4, 156, 148)}
-  ${node(5, 460, 142)}
+  ${node(1, 66, 373, 24)}
+  ${node(2, 156, 250, 30)}
+  ${node(3, 156, 294, 33)}
+  ${node(4, 156, 148, 38)}
+  ${node(5, 460, 142, 45)}
 </svg>
 </div>`;
 }

@@ -904,11 +904,31 @@ h1, h2, h3, h4 {
       animation-timeline: --airpath;
       animation-range: cover 18% cover 48%;
     }
+    /* Not linear, and the offsets are not arbitrary. Each stop below puts the
+       pulse at the exact point on the path where a marker sits at the moment
+       that marker lights. Path positions were measured off the rendered SVG
+       with getPointAtLength — 4.2 / 26.5 / 29.5 / 39.4 / 77.6 percent — and
+       dashoffset is 1 minus that. The leads live in src/lib/ui.js; build.mjs
+       asserts the two lists still agree.
+
+       A linear pulse against the old evenly-spaced leads was out by 15 to 36
+       points: marker 1 sits at 4% of the path but lit with the pulse already a
+       quarter of the way along, and marker 5 lit while the pulse was still well
+       short of the register boot. The leads are paced for reading, so the
+       pulse is what bends — it eases through the air handler and its two
+       plenums, where four of the five markers stack inside the first 40% of
+       the run, then travels once it reaches open duct. That is also the
+       order a technician works in, and roughly how the air behaves. */
     @keyframes dg-travel-scroll {
-      0%   { stroke-dashoffset: 1; opacity: 0; }
-      6%   { opacity: 0.9; }
-      94%  { opacity: 0.9; }
-      100% { stroke-dashoffset: 0; opacity: 0; }
+      0%    { stroke-dashoffset: 1;     opacity: 0; }
+      6%    { opacity: 0.9; }
+      20%   { stroke-dashoffset: 0.958; }  /* 1 return plenum */
+      40%   { stroke-dashoffset: 0.735; }  /* 2 evaporator coil */
+      50%   { stroke-dashoffset: 0.705; }  /* 3 drain pan */
+      66.7% { stroke-dashoffset: 0.606; }  /* 4 supply plenum */
+      90%   { stroke-dashoffset: 0.224; }  /* 5 register boot */
+      94%   { opacity: 0.9; }
+      100%  { stroke-dashoffset: 0;     opacity: 0; }
     }
     /* Markers light in airflow order. Each one's window is offset by its index
        so 1 lights first and 5 last, tracking the pulse's arrival. */
@@ -922,11 +942,14 @@ h1, h2, h3, h4 {
        31–43% (phone 31%, home desktop 43%, the tall HVAC figure 32%) — not
        50%, because centring puts the top edge mid-viewport and a phone will
        not scroll the figure under its sticky header. So the sequence runs
-       24–48%: 1 lights 24–29, 2 29–34, 3 34–39, 4 39–44, 5 44–49. Arriving,
+       24–50%: 1 lights 24–29, 2 30–35, 3 33–38, 4 38–43, 5 45–50. The
+       gaps are uneven because 2 and 3 sit within 3% of each other on the
+       path, and lighting them five points apart would overstate that.
+       Arriving,
        the reader sees 1–2 lit and the air moving; a small nudge down brings
        3, 4 and 5 in — all with the figure still on screen. */
     figure.diagram .dg-mark {
-      --lead: calc(24% + var(--i) * 5%);
+      /* --lead is set per marker in the markup. See src/lib/ui.js. */
       animation: dg-arrive auto ease-out both;
       animation-timeline: --airpath;
       animation-range: cover var(--lead) cover calc(var(--lead) + 5%);
