@@ -31,9 +31,9 @@ npm run vitals    # measured LCP + CLS per page under Slow 4G + 4x CPU
 | **37 pages** | home, services hub + 6 service pages, areas hub + 18 city pages, guides hub + 4 guides, process, FAQ, about, contact, 404 |
 | **Weight** | 145 KB on a first mobile visit at 390px, measured — 9 requests, of which 74 KB is the four self-hosted font files — see below. ~22 KB of that is gzipped HTML+CSS+JS; the rest is fonts and images, cached after |
 | **External requests** | zero. No CDN, no Google Fonts, no analytics unless you add it |
-| **Media** | 17 stills + 3 silent looping hero clips, self-hosted, WebP/JPEG and MP4/WebM |
+| **Media** | 17 stills self-hosted as WebP/JPEG, plus 9 hero clips as all-keyframe MP4 that are scrubbed by scroll rather than played |
 | **Structured data** | LocalBusiness, WebSite, WebPage (with `primaryImageOfPage`), BreadcrumbList, Service, FAQPage, HowTo |
-| **JavaScript** | 1.9 KB gzipped, one file: mobile menu + hero video. Every page is complete and navigable without it — verified by `npm run nojs`, not asserted. The nav collapse is scoped to a `js` class set before first paint, so a scriptless phone gets the links in flow instead of a Menu button that does nothing |
+| **JavaScript** | one file: mobile menu, FAQ deep-links, and the scroll-scrubbed hero video. Every page is complete and navigable without it — verified by `npm run nojs`, not asserted. The nav collapse is scoped to a `js` class set before first paint, so a scriptless phone gets the links in flow instead of a Menu button that does nothing |
 
 ### Page map
 

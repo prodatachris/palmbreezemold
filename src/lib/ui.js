@@ -5,7 +5,7 @@
  * no hydration. The build script calls these and writes files.
  */
 
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import site from '../site.config.js';
 import { services, featuredServices } from '../data/services.js';
 import { counties } from '../data/areas.js';
@@ -203,11 +203,19 @@ export function mediaHero({
   eyebrow, h1, lede, image, alt, video = null, caption = '',
   actions = '', extra = '', crumbs = '',
 }) {
+  // One MP4, no loop, no WebM.
+  //
+  // The clip is scrubbed by scroll rather than played, which changes every one
+  // of those. It is not a loop — its frame is a function of scroll position, so
+  // there is nothing to loop back to. It cannot be VP9 as well: scrubbing needs
+  // every frame to be a keyframe, and maintaining two all-keyframe encodes to
+  // save bytes on a file that has to be fully buffered before it is smooth is
+  // the wrong trade. Dropping WebM also removed 8.2 MB of encodes that lost to
+  // their MP4 counterparts on 7 of 9 clips anyway.
   const vid = video
     ? `
-    <video class="mhero__video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
-           data-webm="/assets/video/${video}.webm" data-mp4="/assets/video/${video}.mp4"
-           data-first="${smallerEncoding(video)}"></video>`
+    <video class="mhero__video" muted playsinline preload="none" aria-hidden="true" tabindex="-1"
+           data-src="/assets/video/${video}.mp4"></video>`
     : '';
 
   return `
@@ -231,7 +239,11 @@ export function mediaHero({
          the reader can follow. rich() still renders links only, so a caption
          with no link syntax is unchanged. -->
     ${caption ? `<p class="mhero__cap">${rich(caption)}</p>` : '<span></span>'}
-    ${video ? '<button type="button" class="mhero__toggle" data-motion-toggle hidden aria-label="Pause background video">Pause</button>' : ''}
+    <!-- No pause control. It was here for WCAG 2.2.2, which governs content
+         that moves automatically; a scrubbed clip only moves while the reader
+         scrolls, so there is nothing running to stop and the button would have
+         paused nothing. -->
+    <span></span>
   </div>
 </section>`;
 }
@@ -607,23 +619,6 @@ export const callBar = () => `
  * told a lie with nothing to catch it. Build-time only; the result is cached
  * per path.
  */
-/**
- * Which of a clip's two encodes to offer first. Browsers take the first
- * <source> they can play and everything plays H.264, so listing WebM first
- * ships WebM to almost everyone regardless of size — and on high-texture clips
- * (fibreglass, Spanish moss, popcorn ceiling) VP9 at this CRF came out up to
- * 65% LARGER than x264. Measured at build time, per clip, from public/ for the
- * same reason imageSize reads from public/: dist/ is not populated yet.
- */
-function smallerEncoding(video) {
-  try {
-    const webm = statSync(`public/assets/video/${video}.webm`).size;
-    const mp4 = statSync(`public/assets/video/${video}.mp4`).size;
-    return webm < mp4 ? 'webm' : 'mp4';
-  } catch {
-    return 'mp4';
-  }
-}
 
 const sizeCache = new Map();
 function imageSize(relPath) {

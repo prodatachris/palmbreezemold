@@ -80,7 +80,39 @@ createServer(async (req, res) => {
   const type = TYPES[ext] || 'application/octet-stream';
 
   if (!COMPRESSIBLE.has(ext)) {
-    res.writeHead(200, { 'Content-Type': type, ...NO_STORE });
+    // Range requests, for the media only.
+    //
+    // Without these a browser cannot seek: it asks for a byte range, gets a
+    // 200 and the whole file, and reports the clip as unseekable. That is
+    // exactly what happened to the scroll-scrubbed hero video — readyState 4,
+    // fully buffered, and video.seekable.end(0) === 0, so every seek snapped
+    // back to frame zero and the clip looked frozen. Real hosts answer ranges;
+    // this server was the only thing that did not, which made a working
+    // feature look broken.
+    const { size } = await stat(file);
+    const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '');
+    if (range) {
+      const start = range[1] ? Number(range[1]) : 0;
+      const end = range[2] ? Math.min(Number(range[2]), size - 1) : size - 1;
+      if (start >= size || start > end) {
+        res.writeHead(416, { 'Content-Range': `bytes */${size}` });
+        return res.end();
+      }
+      res.writeHead(206, {
+        'Content-Type': type,
+        'Content-Length': end - start + 1,
+        'Content-Range': `bytes ${start}-${end}/${size}`,
+        'Accept-Ranges': 'bytes',
+        ...NO_STORE,
+      });
+      return createReadStream(file, { start, end }).pipe(res);
+    }
+    res.writeHead(200, {
+      'Content-Type': type,
+      'Content-Length': size,
+      'Accept-Ranges': 'bytes',
+      ...NO_STORE,
+    });
     return createReadStream(file).pipe(res);
   }
 

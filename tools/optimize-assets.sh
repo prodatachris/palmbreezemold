@@ -60,40 +60,43 @@ for name in lockup lockup-reversed; do
 done
 
 # ── Video ────────────────────────────────────────────────────────────────────
-# These are ambient background clips sitting behind a scrim, so they are
-# encoded for size rather than fidelity. Audio is stripped outright: the markup
-# autoplays them, and an autoplaying clip with an audio track is both a browser
-# blocking condition and a hostile thing to do to a visitor.
+# These clips are SCRUBBED BY SCROLL, not played, and every setting below
+# follows from that.
+#
+#   -g 1        every frame a keyframe. Scrubbing seeks to an arbitrary time on
+#               every scroll frame; with the default GOP these clips carried a
+#               single keyframe each, so every seek decoded from frame zero and
+#               the picture snapped instead of moving.
+#   no reverse  the old ping-pong existed so a LOOPING clip would not snap back
+#               at the join. A scrubbed clip never loops — its frame is a
+#               function of scroll position — so the reversed half is dead
+#               weight, and dropping it paid for the keyframes: the worst clip
+#               went 1.2M ping-ponged to 1.1M all-keyframe.
+#   960 / 12fps it sits behind a heavy navy scrim as decoration, and the frame
+#               shown is chosen by scroll position rather than by time, so
+#               temporal resolution buys nothing.
+#   mp4 only    no WebM. Maintaining a second all-keyframe encode to save bytes
+#               on a file that must be fully buffered before it is smooth is the
+#               wrong trade, and the VP9 encodes lost to their MP4 counterparts
+#               on 7 of 9 clips anyway.
+#
+# Audio is stripped: the markup never plays these, and a track would be dead
+# bytes on a file that is downloaded in full.
 for src in "$RAW"/*.mp4; do
   name=$(basename "$src" .mp4)
 
-  # Ping-pong: play forward, then backward. Every one of these clips is a slow
-  # one-directional push or drift, and a plain `loop` on that snaps hard back to
-  # the start every four seconds — which is the single thing that makes a
-  # background video read as cheap. Forward-then-reverse loops seamlessly and
-  # doubles the runtime for free.
-  PP='[0:v]scale=1280:-2,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]'
-
-  ffmpeg -loglevel error -y -i "$src" -filter_complex "$PP" -map "[v]" \
-    -an -c:v libx264 -profile:v main -pix_fmt yuv420p \
-    -crf 31 -preset slow -movflags +faststart \
+  ffmpeg -loglevel error -y -i "$src" -vf "scale=960:-2" -an \
+    -c:v libx264 -profile:v main -pix_fmt yuv420p \
+    -g 1 -crf 33 -r 12 -preset slow -movflags +faststart \
     "$VID/${name}.mp4"
 
-  ffmpeg -loglevel error -y -i "$src" -filter_complex "$PP" -map "[v]" \
-    -an -c:v libvpx-vp9 -b:v 0 -crf 37 -row-mt 1 \
-    -deadline good -cpu-used 2 \
-    "$VID/${name}.webm"
+  # No poster frame, deliberately. mediaHero already paints a responsive <img>
+  # from the image registry behind the clip and never removes it — that still
+  # is the LCP element, and it is what a reduced-motion, Save-Data,
+  # narrow-viewport or no-JS visitor sees.
 
-  # No poster frame is generated, deliberately. A <video poster> would be the
-  # obvious way to cover the gap before playback, but mediaHero already paints a
-  # responsive <img> from the image registry behind the clip and never removes
-  # it — that still is the LCP element, and it is what a reduced-motion,
-  # Save-Data, narrow-viewport or no-JS visitor sees. A poster would duplicate
-  # it at a second set of dimensions. This script used to emit one in WebP and
-  # JPEG for every clip; nothing ever referenced them and they cost 411 KB.
-
-  printf '%-24s %s\n' "$name" \
-    "$(du -h "$VID/${name}.mp4" | cut -f1) mp4 / $(du -h "$VID/${name}.webm" | cut -f1) webm"
+  kf=$(ffprobe -v error -select_streams v:0 -show_frames -show_entries frame=key_frame -of csv=p=0 "$VID/${name}.mp4" 2>/dev/null | grep -c '^1')
+  printf '%-24s %s  (%s keyframes)\n' "$name" "$(du -h "$VID/${name}.mp4" | cut -f1)" "$kf"
 done
 
 echo
