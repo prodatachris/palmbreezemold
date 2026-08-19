@@ -209,7 +209,17 @@ a:hover { color: var(--brand-deep); }
   margin-inline: auto;
   padding-inline: var(--gut);
 }
-.wrap--mid { max-width: 62rem; }
+/* Narrower measure, same left rail.
+   .wrap--mid used to shrink the container itself, and because .wrap centres,
+   a narrower box indents from BOTH sides — content stepped from 170px to
+   264px and back on every page, two to four times each. Against a layout
+   built on hairline rules and a consistent rail, a 94px indent that appears
+   and disappears reads as drift rather than as an editorial choice; the
+   section head directly below it snapping back to 170px is what gives it
+   away. The container now keeps the full rail and the measure is applied to
+   its contents, so prose still sets at 62rem but starts where everything
+   else does. */
+.wrap--mid > * { max-width: 62rem; }
 
 .section { padding-block: var(--sec-pad); background: var(--haze); }
 .section--ruled { border-top: 1px solid var(--rule); }
