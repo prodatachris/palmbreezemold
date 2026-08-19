@@ -568,7 +568,44 @@ h1, h2, h3, h4 {
   overflow: hidden;
 }
 
-.mhero__bg { position: absolute; inset: 0; z-index: 0; }
+/* The scroll push-in.
+   --mhero-scale is written by site.js from the same scroll progress that
+   scrubs the clip, so the shot advances and the frame closes in together.
+
+   IT ONLY EVER GOES UP. .mhero clips, and the background is inset:0, so any
+   value below 1 pulls the edges inside the box and shows the page behind it.
+   1 is the floor and the JS clamps to it; a scale that could go under would
+   be a white-edge bug that only appears at one scroll position.
+
+   The scrim sits on .mhero__bg::after and therefore scales with it, which is
+   what keeps the type legible at every step of the push rather than only at
+   the start. */
+.mhero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform: scale(var(--mhero-scale, 1));
+  transform-origin: center 45%;
+}
+/* Only while a hero is actually being scrubbed. Left on permanently it holds a
+   compositor layer for every hero on the page, and there are six on the home
+   page. */
+.mhero[data-scrubbing] .mhero__bg { will-change: transform; }
+
+/* The copy lifts and settles as the frame closes in. Small enough to read as
+   depth rather than as movement, and it is the reason the eye stays on the
+   hero while the clip plays through. */
+.mhero__inner {
+  transform: translate3d(0, calc(var(--mhero-lift, 0) * -1.25rem), 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Neither of the two transforms above. The clip still scrubs (that is the
+     reader's own thumb moving it, not motion we impose), but nothing scales
+     or drifts on its own. */
+  .mhero__bg { transform: none; }
+  .mhero__inner { transform: none; }
+}
 .mhero__bg picture { display: block; height: 100%; }
 .mhero__still,
 .mhero__video {

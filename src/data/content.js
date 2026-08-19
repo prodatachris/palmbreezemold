@@ -120,7 +120,7 @@ export const airPathPoints = [
 // Homepage
 // ─────────────────────────────────────────────────────────────────────────────
 export const home = {
-  title: 'Mold Remediation Broward & Palm Beach County | AC Specialists',
+  title: 'AC & Air Handler Mold Remediation | Broward & Palm Beach',
   description:
     'Licensed mold remediation for Broward and Palm Beach County, specializing in HVAC and air handler mold. Source removal, independent clearance testing.',
   /* Not 'HVAC & air handler specialists' — the brand tagline directly above it
@@ -129,7 +129,21 @@ export const home = {
      eyebrow's job is to add the thing neither the tagline nor the H1 says: where
      we start. */
   eyebrow: 'We start at the air handler',
-  h1: 'Mold remediation for Broward and Palm Beach County homes',
+  /*
+     LEADS WITH THE SPECIALTY, not the head term, and that is an SEO decision
+     rather than a stylistic one. This H1 was "Mold remediation for Broward and
+     Palm Beach County homes" and /services/mold-remediation/ is "Mold
+     Remediation in Broward and Palm Beach County": 70% word overlap on both H1
+     and title, two of our own pages competing for one search. Google picks one
+     and frequently the wrong one.
+
+     The service page keeps the head term. The home page takes the thing that
+     is actually differentiated and far less contested -- mold that starts at
+     the air conditioner -- which is also the site's whole thesis and what the
+     eyebrow above it already says. The region stays in the title, so nothing
+     local is lost.
+  */
+  h1: 'Mold remediation that starts at the air conditioner',
   lede:
     'Run an air conditioner year-round in South Florida and the coil stays wet. Mold takes hold at the equipment first, and then the duct system carries it to every room in the house. We start where it starts.',
 

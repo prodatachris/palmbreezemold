@@ -114,6 +114,7 @@
       // preload=auto here rather than in the markup: the file must be fully
       // buffered before a seek is smooth, but it must not compete with the
       // hero still, which is the LCP element. This runs after window load.
+      hero.setAttribute('data-scrubbing', '');
       video.preload = 'auto';
       video.addEventListener('loadeddata', function () {
         ready = true;
@@ -124,6 +125,28 @@
       // clip twice — visible as two requests for the same file in the network
       // log — so the assignment stands alone.
       video.src = src;
+    }
+
+    /* Writes the two custom properties the hero reads.
+
+       PUSH RANGE 1 -> 1.055. Enough that a reader notices the frame closing
+       while the shot advances, small enough that it is not a zoom effect. The
+       floor is exactly 1 and never below: .mhero clips and .mhero__bg is
+       inset:0, so anything under 1 pulls the edges in and shows the page
+       behind the hero.
+
+       The copy lift eases out rather than tracking linearly, so the type
+       settles early and holds while the frame keeps closing. Linear on both
+       made the whole hero feel like it was sliding. */
+    function setPush(p) {
+      if (reduceMotion.matches) {
+        hero.style.removeProperty('--mhero-scale');
+        hero.style.removeProperty('--mhero-lift');
+        return;
+      }
+      var x = p < 0 ? 0 : p > 1 ? 1 : p;
+      hero.style.setProperty('--mhero-scale', String(1 + x * 0.055));
+      hero.style.setProperty('--mhero-lift', (1 - Math.pow(1 - x, 3)).toFixed(3));
     }
 
     function update() {
@@ -151,6 +174,13 @@
       // Only seek when the target frame actually differs. At 12fps a scroll of
       // a few pixels resolves to the same frame, and re-seeking to it stalls
       // the decoder for no visible gain.
+      /* The push-in, from the SAME progress that drives the clip.
+         Computed before the frame-snapping below, because scale is continuous
+         and the seek is not: snapping the scale to twelfths would step it
+         visibly, and returning early on an unchanged frame would freeze it
+         between seeks. */
+      setPush(scrolled / travel);
+
       var snapped = Math.round(t * 12) / 12;
       if (snapped === lastSet) return;
       lastSet = snapped;
@@ -165,6 +195,8 @@
     var onMotionChange = function () {
       if (reduceMotion.matches) {
         video.removeAttribute('data-playing');
+        hero.removeAttribute('data-scrubbing');
+        setPush(0);   // clears both properties; see setPush
       } else if (shouldScrub()) {
         attached ? update() : attach();
       }
