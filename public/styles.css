@@ -948,31 +948,6 @@ h1, h2, h3, h4 {
   }
 }
 
-/* ── Pinned hero ───────────────────────────────────────────────────────────
-   The hero stays put and the page slides up over it, so the first scroll has
-   somewhere to go instead of the whole screen simply translating. Plain
-   position: sticky, deliberately outside the @supports gate that wraps the
-   scroll-driven work — sticky is supported everywhere, so this is the one
-   piece of motion a Firefox reader also gets.
-
-   It needs two things to be true, both handled above: every .section paints
-   its own --haze ground rather than letting the body's show through, or the
-   hero would be visible behind all of them; and the hero is z-index 0 against
-   siblings at 1, inside main's stacking context, so the sticky header still
-   covers both. Held to prefers-reduced-motion: no-preference — nothing moves
-   that a reader has asked not to move. */
-@media (prefers-reduced-motion: no-preference) {
-  .mhero {
-    position: sticky;
-    top: 0;
-    z-index: 0;
-  }
-  main > .section {
-    position: relative;
-    z-index: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dg-flow, .dg-pulse, .dg-ring { animation: none; }
