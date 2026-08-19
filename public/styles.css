@@ -948,6 +948,27 @@ h1, h2, h3, h4 {
   }
 }
 
+/* ── Hero runway ───────────────────────────────────────────────────────────
+   The hero holds while the reader scrolls past it, then the page resumes.
+
+   It is sticky inside a container half again its own height, so there is
+   100svh of scroll during which the hero stays exactly where it is. That
+   distance belongs to the hero — nothing is laid out inside it — which is the
+   difference between this and the first attempt: there, sections slid across
+   a pinned hero and the overlap read as content covering it. Here the hero
+   simply owns its own stretch of the page, and the next section arrives only
+   once the runway is spent.
+
+   The clip is scrubbed against this distance, so the shot plays through
+   exactly while the hero is held.
+
+   Reduced motion collapses the runway to the hero's own height and unsticks
+   it, which is an ordinary hero that scrolls away. */
+@media (prefers-reduced-motion: no-preference) {
+  .mhero-runway { height: 200svh; }
+  .mhero { position: sticky; top: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dg-flow, .dg-pulse, .dg-ring { animation: none; }

@@ -218,7 +218,14 @@ export function mediaHero({
            data-src="/assets/video/${video}.mp4"></video>`
     : '';
 
+  // The runway. The hero is sticky inside a container taller than itself, so it
+  // holds in place while the reader scrolls that extra distance — the hero owns
+  // the scroll rather than having the next section slide across it. Same shape
+  // as rankengineai, breathforrecovery and the fantasticrides scroll-scrub
+  // stage: a sticky full-viewport stage with runway beneath it, then the page
+  // resumes normally.
   return `
+<div class="mhero-runway">
 <section class="mhero"${video ? ' data-video' : ''}>
   <div class="mhero__bg">
     ${picture({ name: image, alt, sizes: '100vw', cls: 'mhero__still', priority: true })}${vid}
@@ -245,7 +252,8 @@ export function mediaHero({
          paused nothing. -->
     <span></span>
   </div>
-</section>`;
+</section>
+</div>`;
 }
 
 /* ── The signature: air path diagram ───────────────────────────────────────── */

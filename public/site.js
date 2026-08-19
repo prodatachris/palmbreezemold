@@ -131,20 +131,21 @@
       if (!ready || !shouldScrub()) return;
       var d = video.duration;
       if (!d || !isFinite(d)) return;
-      // Measured from the section BELOW the hero, not from the hero.
+      // Measured against the runway, not the hero.
       //
-      // The hero is position: sticky, and nothing on a sticky element reports
-      // where it would have been: getBoundingClientRect().top pins at 0, and
-      // offsetTop tracks the scroll so start grew in step with scrollY. Both
-      // gave a progress of exactly zero at every position and the clip never
-      // advanced a frame. The next section is position: relative and does not
-      // pin, so its document top is stable — and the hero's bottom edge is
-      // that, by definition.
-      var travel = hero.offsetHeight || 1;
-      var next = hero.nextElementSibling;
-      var start = next
-        ? next.getBoundingClientRect().top + window.scrollY - travel
-        : 0;
+      // The hero is position: sticky and nothing on a sticky element reports
+      // where it would have been — getBoundingClientRect().top pins at 0 and
+      // offsetTop tracks the scroll, so both gave a progress of exactly zero
+      // at every position and the clip never advanced a frame. The runway is
+      // an ordinary block and does not pin, so its rect is honest.
+      //
+      // Travel is the distance the hero actually stays put for: the runway's
+      // height less the hero's own. Scrubbing against that means the shot
+      // plays through exactly while the hero is held, and is finished at the
+      // moment it starts to leave.
+      var runway = hero.parentElement;
+      var travel = Math.max(runway.offsetHeight - hero.offsetHeight, 1);
+      var start = runway.getBoundingClientRect().top + window.scrollY;
       var scrolled = Math.min(Math.max(window.scrollY - start, 0), travel);
       var t = (scrolled / travel) * d;
       // Only seek when the target frame actually differs. At 12fps a scroll of
