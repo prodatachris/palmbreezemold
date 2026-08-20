@@ -494,7 +494,7 @@ export const cardBg = (image, alt, focus = '') => `<span class="card__bg"${
 })}</span>`;
 
 export const serviceCard = (s) => `
-<a class="card card--photo${s.slug === 'hvac-air-conditioner-mold-remediation' ? ' card--flag' : ''}" href="${url.service(s.slug)}">
+<a class="card card--photo${s.slug === 'hvac-air-conditioner-mold-remediation' ? ' card--flag' : ''}${s.tone ? ` tone-${s.tone}` : ''}" href="${url.service(s.slug)}">
   ${cardBg(s.media.image, '')}
   <span class="card__eyebrow">${text(s.eyebrow)}</span>
   <span class="card__t">${text(s.navLong)}</span>

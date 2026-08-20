@@ -544,6 +544,11 @@ export const services = [
   // ───────────────────────────────────────────────────────────────────────────
   {
     slug: 'black-mold-removal',
+    /* The register-stain photo runs ~25 luminance points hotter than the other
+       five doors (measured mean 83 vs a 52-68 cluster), so its card takes the
+       deeper scrim via tone below. The panel also called two other cards
+       "extinguished"; measurement put them inside the cluster, so they stay. */
+    tone: 'seat',
     cta: {
       h2: 'Send a photograph before you assume the worst',
       body: 'Color tells you very little and nobody can identify a species by eye, ourselves included. What we can tell you from a photograph and a few questions is whether what you are looking at needs containment or a cloth.',

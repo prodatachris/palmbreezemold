@@ -1530,6 +1530,17 @@ a.card--flag:hover { border-color: var(--flag-deep); }
 /* Lifted from #b3c5d6: at 9.9px this is the smallest type on the card and the
    one that sits highest in the scrim, so it needs the most headroom. */
 .card--photo .card__eyebrow { color: #d6e2ec; }
+/* tone-seat: a deeper scrim for the one photo that runs hot. Data-driven from
+   services.js so the exception is named where the photo is chosen. */
+.card--photo.tone-seat .card__bg::after {
+  background: linear-gradient(
+    to top,
+    rgba(10, 34, 71, 0.97) 0%,
+    rgba(10, 34, 71, 0.94) 72%,
+    rgba(10, 34, 71, 0.72) 84%,
+    rgba(10, 34, 71, 0.45) 100%
+  );
+}
 
 /* Deep-linked FAQ answers only. site.js marks the <details> before focusing it,
    because :focus-visible never matches programmatic focus and the ring is the
