@@ -20,6 +20,8 @@
 
 import { spawn } from 'node:child_process';
 import { setTimeout as sleep } from 'node:timers/promises';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { site } from '../src/site.config.js';
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -33,28 +35,27 @@ const WIDTH = Number(flag('width', 1440));
 const HEIGHT = Number(flag('height', 900));
 const PORT = 9333;
 
-const ROUTES = [
-  '/', '/services/', '/service-areas/', '/guides/', '/process/', '/faq/', '/about/', '/contact/', '/404.html',
-  '/guides/closing-a-florida-home-for-the-summer/',
-  '/guides/comparing-mold-remediation-quotes/',
-  '/guides/first-48-hours-after-water-damage/',
-  '/guides/mold-on-the-outside-of-your-house/',
-  '/services/hvac-air-conditioner-mold-remediation/',
-  '/services/mold-remediation/',
-  '/services/mold-inspection-testing/',
-  '/services/air-duct-cleaning-sanitizing/',
-  '/services/black-mold-removal/',
-  '/services/water-damage-mold-cleanup/',
-  '/service-areas/fort-lauderdale/', '/service-areas/pompano-beach/',
-  '/service-areas/coral-springs/', '/service-areas/hollywood/',
-  '/service-areas/pembroke-pines/', '/service-areas/west-palm-beach/',
-  '/service-areas/boca-raton/', '/service-areas/delray-beach/',
-  '/service-areas/boynton-beach/', '/service-areas/jupiter/',
-  '/service-areas/plantation/', '/service-areas/wellington/',
-  '/service-areas/deerfield-beach/', '/service-areas/lake-worth-beach/',
-  '/service-areas/weston/', '/service-areas/riviera-beach/',
-  '/service-areas/miramar/', '/service-areas/palm-beach-gardens/',
-];
+/**
+ * Walked from dist/, never listed by hand. This was a literal array of 36
+ * paths, and adding /privacy/ to the site did not add it here — so the new
+ * page went unaudited while the footer link to it was reported as broken,
+ * which reads as the page being missing rather than the list being stale.
+ * A hardcoded ORIGIN a few hundred lines down had failed the same way.
+ *
+ * 404.html is appended separately: it is a real page with no index.html, so
+ * the walk cannot see it.
+ */
+const ROUTES = (() => {
+  const found = [];
+  (function walk(dir) {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, e.name);
+      if (e.isDirectory()) walk(full);
+      else if (e.name === 'index.html') found.push('/' + (dir === 'dist' ? '' : dir.slice(5) + '/'));
+    }
+  })('dist');
+  return ['/404.html', ...found.sort()];
+})();
 
 /* ── The script evaluated inside each page ─────────────────────────────────── */
 /**

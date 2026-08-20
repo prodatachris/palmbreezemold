@@ -549,6 +549,87 @@ export const about = {
 // ─────────────────────────────────────────────────────────────────────────────
 // /contact/
 // ─────────────────────────────────────────────────────────────────────────────
+/**
+ * PRIVACY — describes what the code on this site actually does, and nothing
+ * else. Every mechanism below was read out of public/site.js and the built
+ * pages rather than assumed: the GA4 measurement id, the two custom events,
+ * the localStorage key, the endpoint, and the exact field list the form posts.
+ *
+ * If any of those change, this page is wrong, and a wrong privacy page is
+ * worse than none. build.mjs asserts the endpoint and the analytics id named
+ * here still match site.config.js.
+ *
+ * The lines that are commitments rather than descriptions — that data is used
+ * only to answer the enquiry, and is not sold — are the owner’s to keep, not
+ * the code’s. They are deliberately the only two.
+ */
+export const privacy = {
+  eyebrow: 'Privacy',
+  h1: 'What this site collects, and who it goes to',
+  lede: 'Short version: analytics that count visits, and a form that sends what you type to us. No advertising profile is built here and nothing is sold.',
+  title: 'Privacy | Palm Breeze Mold',
+  description: 'What Palm Breeze Mold collects through this website: Google Analytics, the contact form, and what is stored in your browser. Written in plain terms.',
+  updated: '20 August 2026',
+  /* The “how to ask us about your data” section is not here. It needs a real
+     tel: link, and rich() accepts site paths and https only — a tel: link
+     written in this file renders as literal [text](tel:…) on the page. It is
+     composed in build.mjs instead, where site.phoneHref already is. */
+  sections: [
+    {
+      h2: 'Analytics',
+      body: [
+        'This site loads Google Analytics 4 on every page, under the measurement id G-EE6SMM9HMT. It is the standard Google tag, served from googletagmanager.com, and it sets cookies in your browser.',
+        'What it records is ordinary traffic data: which pages you opened, roughly where you are (Google derives that from your IP address, to the level of a city), what device and browser you used, and how you arrived — a search, an ad, another site, or typing the address in.',
+        'Two things on top of that are counted as conversions, because they are the only two actions on this site that mean somebody is trying to reach us. One fires when you tap a phone number. The other fires when the contact form sends successfully. Both record the page you were on. Neither records what you typed.',
+        'Google processes this data as described in [its own privacy policy](https://policies.google.com/privacy). You can stop it entirely with [Google’s opt-out add-on](https://tools.google.com/dlpage/gaoptout), or with any browser setting or extension that blocks analytics — the site works exactly the same either way.',
+      ],
+    },
+    {
+      h2: 'The contact form',
+      body: [
+        'The form sends what you fill in to our enquiry system at rankengineai.com, which handles enquiries on our behalf. It goes as a direct request from your browser to that endpoint.',
+        'The fields are the ones you can see: your name, your phone number, your email if you give one, your city, what you are seeing, and anything you add in the notes box. Your name and phone number are required because a mold problem cannot be answered by email alone. Everything else is optional.',
+        'That information is used to answer your enquiry and to do the work if you go ahead with it. It is not sold, and it is not passed to anyone outside the company beyond the system that carries it.',
+        'If you would rather send nothing through a form, the phone number at the top of every page reaches the same place and leaves no record here at all.',
+      ],
+    },
+    {
+      h2: 'What gets stored in your browser',
+      list: [
+        {
+          term: 'Google Analytics cookies',
+          text: 'Set by the Google tag described above. They are what lets Google tell a returning visitor from a new one.',
+        },
+        {
+          term: 're_first_touch',
+          text: 'A single entry in this site’s local storage, written the first time you arrive. It holds a random id generated in your browser, the campaign tags on the address you arrived at (utm_source, utm_medium, utm_campaign, utm_content, utm_term), any advertising click id that came with it (gclid, wbraid, gbraid, msclkid, fbclid), and the address of the site that sent you, when that site was not this one.',
+        },
+        {
+          term: 'Why that one exists',
+          text: 'So that an enquiry can be attributed to how you first found us rather than to whatever page you happened to be on when you filled the form in. It is attached to the form when you submit it, and only then. If you never submit the form it never leaves your browser.',
+        },
+        {
+          term: 'Clearing it',
+          text: 'Clearing this site’s data in your browser removes both the cookies and that entry. Nothing here reads them back from anywhere else, so once they are gone they are gone.',
+        },
+      ],
+    },
+    {
+      h2: 'What this site does not do',
+      body: [
+        'There is no advertising pixel on these pages, no retargeting tag, no social tracker, no session recorder, no heat map, and no live chat widget. The two things described above are the whole of it.',
+        'Nothing here asks you to make an account, and there is nothing to log in to.',
+      ],
+    },
+    {
+      h2: 'Changes',
+      body: [
+        'If what the site collects changes, this page changes with it, and the date below moves. It does not get quietly rewritten.',
+      ],
+    },
+  ],
+};
+
 export const contact = {
   title: 'Contact | Mold Remediation Broward & Palm Beach County',
   description:

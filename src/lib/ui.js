@@ -73,6 +73,7 @@ export const url = {
   faq: '/faq/',
   about: '/about/',
   contact: '/contact/',
+  privacy: '/privacy/',
 };
 
 export const abs = (path) => `${site.origin}${path}`;
@@ -590,6 +591,7 @@ export function footer() {
           <li><a href="${url.guides}">Guides</a></li>
           <li><a href="${url.faq}">FAQ</a></li>
           <li><a href="${url.contact}">Contact</a></li>
+          <li><a href="${url.privacy}">Privacy</a></li>
         </ul>
       </div>
     </div>

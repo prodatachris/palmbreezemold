@@ -17,7 +17,7 @@ import site from './src/site.config.js';
 import { services, serviceBySlug } from './src/data/services.js';
 import { areas, counties } from './src/data/areas.js';
 import { guides } from './src/data/guides.js';
-import { home, process as processContent, faqPage, about, contact, media, servicesHub, guidesHub } from './src/data/content.js';
+import { home, process as processContent, faqPage, about, contact, privacy, media, servicesHub, guidesHub } from './src/data/content.js';
 import {
   page, url, abs, esc, text, paras,
   sectionHead, signals, deflist, stepList, faqList,
@@ -1239,6 +1239,66 @@ ${(contact.sections || []).map(renderSection).join('\n\n')}
 /* ═══════════════════════════════════════════════════════════════════════════
    404
    ═══════════════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Privacy
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Added 2026-08-20, and it is the only page on this site that exists for a
+ * legal reason rather than a reader’s. GA4 and a live form endpoint both went
+ * in without one, which leaves visitors giving up a name and a phone number
+ * with nothing on the site saying where either goes. Google’s own Analytics
+ * terms require a notice disclosing the cookies too.
+ *
+ * It carries noindex. It is linked from the footer so a reader can always
+ * reach it, but it is not a page anybody should arrive at from a search, and
+ * leaving it out of the index also keeps it clear of the local-SEO surface
+ * the rest of the site is built for. It stays out of sitemap.xml for the same
+ * reason — see buildMeta.
+ */
+async function buildPrivacy() {
+  const p = url.privacy;
+  const trail = [{ name: 'Home', href: '/' }, { name: 'Privacy' }];
+
+  const body = `
+<section class="wrap phead">
+  <span class="eyebrow">${text(privacy.eyebrow)}</span>
+  <h1>${text(privacy.h1)}</h1>
+  <p class="lede">${text(privacy.lede)}</p>
+</section>
+
+${/* Everything except the last section, which is "Changes" and belongs after
+      the how-to-reach-us box rather than before it — a policy that explains how
+      it gets amended before it says who to ask is in the wrong order. */''}
+${privacy.sections.slice(0, -1).map(renderSection).join('\n\n')}
+
+<section class="section section--ruled defer">
+  <div class="wrap wrap--mid">
+    <div class="flagbox">
+      <h2 class="h3" id="${anchorId('Asking us about your information')}" tabindex="-1">Asking us about your information</h2>
+      <div class="body-block">
+        <p>Call <a href="tel:${site.phoneHref}">${esc(site.phoneDisplay)}</a> and ask. We can tell you what we hold from an enquiry you sent, and delete it if you want it gone.</p>
+        <p>${site.email ? `You can also write to <a href="mailto:${esc(site.email)}">${esc(site.email)}</a>.` : 'This site does not publish an email address yet, so the phone is the only route, and it is a real one.'}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+${renderSection(privacy.sections.at(-1))}
+
+<section class="section section--ruled">
+  <div class="wrap wrap--mid">
+    <p class="fineprint">Last updated ${text(privacy.updated)}.</p>
+  </div>
+</section>`;
+
+  await emit(p, page({
+    path: p, title: privacy.title, description: privacy.description, body, trail,
+    noindex: true,
+    schema: [graph({ path: p, title: privacy.title, description: privacy.description, trail })],
+  }));
+}
+
 async function build404() {
   const body = `
 <section class="wrap phead">
@@ -1300,7 +1360,11 @@ Allow: /
     return '0.6';
   };
 
-  const routes = site.launchReady ? written.filter((r) => r !== '/404.html').sort() : [];
+  /* /privacy/ is excluded alongside the 404 because both are noindex, and a
+     sitemap that lists a noindex URL asks Google to crawl a page it is then
+     told to drop. The footer link is how readers reach it. */
+  const NO_SITEMAP = new Set(['/404.html', url.privacy]);
+  const routes = site.launchReady ? written.filter((r) => !NO_SITEMAP.has(r)).sort() : [];
   const urls = (
     await Promise.all(
       routes.map(async (r) => `  <url>
@@ -1499,6 +1563,45 @@ async function assertDiagramPulseSync() {
     throw new Error('diagram: pulse keyframes must move the dash forward — stroke-dashoffset has to fall monotonically');
 }
 
+/**
+ * The privacy page describes mechanisms that live in three other files: the
+ * GA4 id in site.config.js, the form endpoint in content.js, and the storage
+ * key in public/site.js. Prose cannot follow a refactor, so a privacy notice
+ * rots into a false statement the moment one of them moves — and unlike most
+ * stale copy, that one is a compliance problem rather than an untidy sentence.
+ *
+ * Each fact is re-read from its real source and looked for on the built page.
+ * Deliberately one-directional: this proves the page names what the site does,
+ * not that it names everything. Adding a tracker still needs a human to write
+ * the paragraph — no assertion can catch a silence.
+ */
+async function assertPrivacyDescribesReality() {
+  /* Scripts stripped first, and that is the whole point of this line. Searching
+     the raw html let the GA4 tag satisfy the GA4 assertion — the measurement id
+     appears in the gtag src on every page, so changing it kept the check green
+     while the disclosure still named the old one. The check has to read what a
+     visitor reads. */
+  const html = (await readFile(path.join(DIST, url.privacy, 'index.html'), 'utf8'))
+    .replace(/<script[\s\S]*?<\/script>/g, '');
+  const js = await readFile(path.join(ROOT, 'public/site.js'), 'utf8');
+  const endpointHost = contact.form.endpoint ? new URL(contact.form.endpoint).hostname : null;
+  const storageKey = (js.match(/var KEY = '([^']+)'/) || [])[1];
+
+  const facts = [
+    [site.analyticsId, 'the GA4 measurement id from site.config.js'],
+    [endpointHost, 'the form endpoint host from content.js'],
+    [storageKey, 'the localStorage key from public/site.js'],
+  ];
+  for (const [value, what] of facts) {
+    if (!value) continue;   // nothing configured is nothing to disclose
+    if (!html.includes(value))
+      throw new Error(`privacy: the page does not mention ${value} — ${what}. ` +
+        'Update /privacy/ to match, or it is describing a site that no longer exists.');
+  }
+  if (site.analyticsId && !html.includes('noindex'))
+    throw new Error('privacy: the page lost its noindex');
+}
+
 async function assertRoutingConsistent() {
   const problems = [];
   const indexable = new Map();
@@ -1543,6 +1646,7 @@ async function main() {
   await buildFaq();
   await buildAbout();
   await buildContact();
+  await buildPrivacy();
   await build404();
 
   // Static assets: fonts, stylesheet, favicon, client script
@@ -1553,6 +1657,7 @@ async function main() {
   assertProfileLinks();
   await assertRoutingConsistent();
   await assertDiagramPulseSync();
+  await assertPrivacyDescribesReality();
   await assertSignalsUnique();
   await assertCopyClaimsMatch();
 
