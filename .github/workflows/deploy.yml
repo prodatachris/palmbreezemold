@@ -64,11 +64,29 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@v2
 
-      - name: Build the image
+      # Built ON THE RUNNER, not by Cloud Build, and that is a deliberate
+      # simplification after three failed attempts.
+      #
+      # `gcloud builds submit` uploads the source to a GCS staging bucket and
+      # builds it there, which needs serviceusage.services.use plus bucket
+      # access, and returns one misleading error covering all of them: "the
+      # user is forbidden from accessing the bucket". Granting roles against
+      # that message is guesswork.
+      #
+      # The runner already HAS the source and already has Docker. Building here
+      # removes the staging bucket, the upload, and the whole permission
+      # surface behind it: the deployer now needs only artifactregistry.writer
+      # to push and run.developer to deploy, both of which it had from the
+      # start. It is also faster, because the source never leaves the runner.
+      - name: Authenticate Docker to Artifact Registry
+        run: gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+
+      - name: Build and push the image
         run: |
           TAG="${REGION}-docker.pkg.dev/${PROJECT}/client-sites/pbm:${GITHUB_SHA::7}"
           echo "TAG=$TAG" >> "$GITHUB_ENV"
-          gcloud builds submit . --tag="$TAG" --project="$PROJECT" --timeout=1200
+          docker build -t "$TAG" .
+          docker push "$TAG"
 
       - name: Deploy to Cloud Run
         run: |
