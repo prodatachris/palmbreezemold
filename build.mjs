@@ -310,7 +310,10 @@ ${mediaHero({
 ${servicesHub.sections.map(renderSection).join('\n\n')}
 
 <section class="section section--ruled defer">
-  <div class="wrap wrap--mid">
+  ${'' /* .wrap, not .wrap--mid: the sibling deflist above renders through
+        renderSection at full wrap width, and two consecutive instances of
+        the same ruled component were ending on different right rails. */}
+  <div class="wrap">
     ${sectionHead({
       eyebrow: 'Not sure which',
       h2: 'A short way to figure out where to start',
