@@ -1895,7 +1895,22 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 }
 
 /* ── CTA band ──────────────────────────────────────────────────────────────── */
-.cta-band { background: var(--ink); color: var(--haze); }
+/* Depth instead of a flat pour. A brand glow rises behind the heading, a
+   fainter sky answer sits behind the number, and a whisper of turbulence
+   grain keeps the big navy field from reading as vinyl. The glows are held
+   deliberately weak: the meta line is 11px mono, and at sky 0.16 its ground
+   lightened enough to fall to 4.3:1, so the sky layer is capped at 0.10 and
+   the meta colour steps up a shade below. The hairline on top is the logo's
+   sky, separating the band from the paper above it. */
+.cta-band {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E"),
+    radial-gradient(52rem 30rem at 12% -10%, rgba(21, 94, 124, 0.5), transparent 62%),
+    radial-gradient(38rem 24rem at 98% 120%, rgba(123, 184, 196, 0.1), transparent 58%),
+    var(--ink);
+  border-top: 1px solid rgba(123, 184, 196, 0.3);
+  color: var(--haze);
+}
 .cta-band__grid {
   display: grid;
   gap: clamp(1.5rem, 3vw, 2.5rem);
@@ -1906,15 +1921,19 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 }
 .cta-band h2 { font-size: clamp(1.7rem, 1.3rem + 1.7vw, 2.5rem); color: #fff; max-width: 18ch; }
 .cta-band p { color: #b6c6d6; margin-top: 1rem; max-width: 46ch; }
-.cta-band .eyebrow { color: #e29a5c; display: block; margin-bottom: 0.9rem; }
+.cta-band .eyebrow { color: #f0b072; display: block; margin-bottom: 0.9rem; }
+/* The number is the band's hero: it is the one thing on the page a reader
+   can act on in the next ten seconds, so it outweighs the heading. */
 .cta-band__phone {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.6rem);
-  letter-spacing: -0.035em;
+  font-size: clamp(2.1rem, 1.4rem + 2.8vw, 3.4rem);
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
   color: #fff;
   text-decoration: none;
   display: inline-block;
+  transition: color 0.16s ease;
 }
 .cta-band__phone:hover { color: #f0b072; }
 /* Selector carries p deliberately: .cta-band p is (0,1,1) and a lone
@@ -1935,7 +1954,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   font-size: 0.7rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #8ba0b5;
+  color: #9db1c4;
   margin-top: 0.75rem;
   line-height: 1.8;
 }
