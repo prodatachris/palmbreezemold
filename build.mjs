@@ -216,7 +216,7 @@ ${mediaHero({
   <div class="wrap">
     ${sectionHead({ eyebrow: home.whyDifferent.eyebrow, h2: home.whyDifferent.h2, wide: true })}
     ${deflist(home.whyDifferent.items.map((i) => ({ term: i.title, text: i.text })))}
-    <p class="mt-lg"><a class="btn btn--ghost" href="${url.process}">See every stage of the process &rarr;</a></p>
+    <p class="mt-lg"><a class="btn btn--ghost" href="${url.process}">See every stage of the process <span class="arr">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -240,7 +240,7 @@ ${mediaHero({
     </div>`,
       )
       .join('\n    ')}
-    <p class="mt-lg"><a class="btn btn--ghost" href="${url.areas}">Full coverage map &rarr;</a></p>
+    <p class="mt-lg"><a class="btn btn--ghost" href="${url.areas}">Full coverage map <span class="arr">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -248,7 +248,7 @@ ${mediaHero({
   <div class="wrap wrap--mid">
     ${sectionHead({ eyebrow: 'Common questions', h2: 'Before you call' })}
     ${faqList(home.faqs)}
-    <p class="mt-lg"><a class="btn btn--ghost" href="${url.faq}">All questions &rarr;</a></p>
+    <p class="mt-lg"><a class="btn btn--ghost" href="${url.faq}">All questions <span class="arr">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -537,7 +537,7 @@ ${mediaHero({
           <span class="card__eyebrow">${esc(c.short)} County</span>
           <span class="card__t">${esc(a.name)}</span>
           <span class="card__d">${text(a.short)}</span>
-          <span class="card__more">What we find here &rarr;</span>
+          <span class="card__more">What we find here <span class="arr">&rarr;</span></span>
         </a>`,
           )
           .join('\n        ')}
@@ -773,7 +773,7 @@ ${mediaHero({
         <span class="card__eyebrow">${esc(g.eyebrow)}</span>
         <span class="card__t">${text(g.nav)}</span>
         <span class="card__d">${text(g.short)}</span>
-        <span class="card__more">Read the guide &rarr;</span>
+        <span class="card__more">Read the guide <span class="arr">&rarr;</span></span>
       </a>`,
         )
         .join('\n      ')}

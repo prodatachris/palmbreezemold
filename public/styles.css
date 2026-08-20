@@ -1381,8 +1381,24 @@ a.card:hover {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand);
+  transition: color 0.18s ease;
 }
 a.card:hover .card__more { color: var(--brand-deep); }
+
+/* The arrow is the part that moves. Wrapped in .arr so the glyph can slide
+   without dragging the label, on hover and on keyboard focus alike — the em
+   unit keeps the distance proportional at the mono label's small size. The
+   translate is gated behind no-preference: the global reduce block only
+   zeroes durations, which would turn this into a jump instead of removing
+   it. */
+.arr { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .arr { transition: translate 0.22s cubic-bezier(0.2, 0.6, 0.2, 1); }
+  a.card:hover .arr,
+  a.card:focus-visible .arr,
+  .btn:hover .arr,
+  .btn:focus-visible .arr { translate: 0.3em 0; }
+}
 
 /* The specialty card carries the amber marker — it is the one thing we lead with */
 .card--flag { border-color: var(--flag); background: linear-gradient(180deg, var(--flag-wash) 0%, var(--paper) 46%); }
@@ -1482,6 +1498,10 @@ a.card--photo:hover {
   box-shadow: var(--lift-2);
 }
 a.card--photo:hover .card__bg img { transform: scale(1.045); }
+/* The generic hover keyline is --brand, which against a photo card's dark
+   edge is invisible. --sky is the logo's own light blue and reads as
+   selection without shouting. */
+a.card--photo:hover { border-color: var(--sky); }
 a.card--photo:hover .card__more { color: #f8cfa2; }
 
 /* The specialty card keeps its identity over a photograph through an amber rule

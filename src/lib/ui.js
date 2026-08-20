@@ -499,7 +499,7 @@ export const serviceCard = (s) => `
   <span class="card__eyebrow">${text(s.eyebrow)}</span>
   <span class="card__t">${text(s.navLong)}</span>
   <span class="card__d">${text(s.short)}</span>
-  <span class="card__more">Read more &rarr;</span>
+  <span class="card__more">Read more <span class="arr">&rarr;</span></span>
 </a>`;
 
 export const relatedBlock = (slugs, allServices) => {
