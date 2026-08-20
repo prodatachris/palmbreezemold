@@ -265,6 +265,11 @@ a:hover { color: var(--brand-deep); }
 .wrap--mid > * { max-width: 62rem; }
 
 .section { padding-block: var(--sec-pad); background: var(--haze); }
+/* A dissolving gradient hairline was tried here and reverted the same day:
+   a background-image on the section makes backdrop() classify every text
+   inside it as "over an image", which routes half the site through the
+   pixel-capture contrast path for a 1px whisper nobody would miss. The
+   plain border costs nothing and measures cleanly. */
 .section--ruled { border-top: 1px solid var(--rule); }
 .section--wash { background: var(--haze-deep); }
 
@@ -325,6 +330,20 @@ h1, h2, h3, h4 {
 .sec-head--wide .h2 { max-width: 30ch; }
 
 /* ── Buttons ───────────────────────────────────────────────────────────────── */
+/* Rebuilt 2026-08-20 after the owner called the originals mundane — which they
+   were: flat fills, hairline outlines, and hovers that only darkened. The
+   upgrade is weight, not noise. A machined edge (inset top highlight over a
+   seated darker border), a warm shadow that ties the call button to --flag,
+   1px of lift on hover and a press on :active. All of it is transform and
+   shadow, so none of it can shift layout, and the reduced-motion block
+   already zeroes every transition-duration.
+
+   Contrast picked the colours. White at 1rem/620 is not "large text", so the
+   fill needs 4.5:1 everywhere under the label: the gradient tops out at
+   #ad5510 (5.1:1 with white) and seats at #94480c, brighter overall than the
+   old flat --flag-deep but never past the ratio. The ghost border moves from
+   --rule (1.5:1, reads as decoration) to --slate, which clears the 3:1 that
+   WCAG 1.4.11 asks of a control boundary. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -334,35 +353,66 @@ h1, h2, h3, h4 {
   font-size: 1rem;
   letter-spacing: -0.01em;
   line-height: 1;
-  padding: 0.95rem 1.4rem;
-  border-radius: var(--radius);
+  padding: 0.95rem 1.45rem;
+  /* 5px against the house 3px: a button is the one element on the page that is
+     a tool rather than a sheet of paper, and the two extra pixels are what
+     make it read as made rather than drawn. */
+  border-radius: 5px;
   border: 1px solid transparent;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease,
+    transform 0.16s ease, box-shadow 0.16s ease;
 }
-.btn:active { transform: translateY(1px); }
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); transition-duration: 0.06s; }
 
 .btn--call {
-  background: var(--flag-deep);
+  background-color: #94480c; /* seat: what paints if the gradient ever does not */
+  background-image: linear-gradient(180deg, #ad5510, #94480c);
   color: #fff;
-  border-color: var(--flag-deep);
+  border-color: #7d3c08;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 1px 2px rgba(10, 34, 71, 0.18),
+    0 3px 10px -2px rgba(158, 78, 13, 0.35);
 }
-.btn--call:hover { background: #8f460b; border-color: #8f460b; color: #fff; }
+.btn--call:hover {
+  background-color: #9b4c0d;
+  background-image: linear-gradient(180deg, #b45a12, #9b4c0d);
+  border-color: #7d3c08;
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 2px 5px rgba(10, 34, 71, 0.16),
+    0 7px 18px -4px rgba(158, 78, 13, 0.45);
+}
+.btn--call:active {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 2px rgba(10, 34, 71, 0.18);
+}
 
 .btn--ghost {
   background: transparent;
   color: var(--ink);
-  border-color: var(--rule);
+  border-color: var(--slate);
+  box-shadow: var(--lift);
 }
-.btn--ghost:hover { border-color: var(--ink); color: var(--ink); background: var(--paper); }
+/* Full inversion. The old hover — the border one shade darker over a paper
+   fill — was invisible at arm's length. An outline button that fills with the
+   ink it was drawn in is unambiguous about being pressable. */
+.btn--ghost:hover { border-color: var(--ink); color: var(--paper); background: var(--ink); box-shadow: var(--lift-2); }
 
 .btn--onink {
-  background: transparent;
-  color: var(--haze);
-  border-color: rgba(237, 240, 236, 0.35);
+  background: rgba(237, 240, 236, 0.07);
+  color: #fff;
+  border-color: rgba(237, 240, 236, 0.42);
+  /* Frosted over the hero media. Where the parent is solid ink (the mobile
+     call bar) the blur has nothing to sample and quietly does nothing. */
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  backdrop-filter: blur(10px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 1px 2px rgba(5, 15, 35, 0.25);
 }
-.btn--onink:hover { background: rgba(237, 240, 236, 0.1); color: #fff; border-color: rgba(237, 240, 236, 0.6); }
+.btn--onink:hover { background: rgba(237, 240, 236, 0.16); color: #fff; border-color: rgba(237, 240, 236, 0.75); }
 
 .btn__num { font-family: var(--font-mono); font-weight: 500; }
 
@@ -385,6 +435,26 @@ h1, h2, h3, h4 {
 }
 @supports not (backdrop-filter: blur(1px)) {
   .hdr { background: var(--haze); }
+}
+/* At rest the header is a labelled edge of the page; once content is moving
+   underneath it, it is a surface floating over that content and should say
+   so. The shadow fades in across the first 120px of scroll — driven by
+   scroll position, not by time, so there is nothing to pause and it can
+   never be mid-animation. Shadow only: resizing a sticky header on scroll
+   shifts everything below it by the delta, which is exactly the layout
+   jump the CLS work spent a pass removing. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .hdr {
+      animation: hdr-elevate linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 120px;
+    }
+    @keyframes hdr-elevate {
+      from { box-shadow: 0 4px 18px -14px rgba(10, 34, 71, 0); }
+      to   { box-shadow: 0 4px 18px -8px rgba(10, 34, 71, 0.22); }
+    }
+  }
 }
 
 .hdr__bar {
@@ -437,12 +507,18 @@ h1, h2, h3, h4 {
   padding: 0.5rem 0.7rem;
   border-radius: var(--radius);
   white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 .nav a:hover { background: var(--haze-deep); color: var(--ink); }
+/* The old marker was an inset box-shadow across the full pill, padding and
+   all — it read as a stray border. Underlining the label itself, seated a
+   little below the baseline, marks the word rather than the box. */
 .nav a[aria-current] {
   color: var(--brand-deep);
-  box-shadow: inset 0 -2px 0 var(--brand);
-  border-radius: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--brand);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.45em;
 }
 
 .hdr__call {
@@ -452,9 +528,10 @@ h1, h2, h3, h4 {
   text-decoration: none;
   padding: 0.4rem 0.85rem;
   border: 1px solid var(--flag);
-  border-radius: var(--radius);
+  border-radius: 5px; /* matches the button family, not the paper radius */
   color: var(--flag-deep);
   flex-shrink: 0;
+  transition: background-color 0.15s ease;
 }
 .hdr__call:hover { background: var(--flag-wash); color: var(--flag-deep); }
 .hdr__call span {
@@ -762,6 +839,12 @@ h1, h2, h3, h4 {
 }
 
 /* ── The signature: air path diagram ───────────────────────────────────────── */
+/* The runway occupies the grid slot the figure used to, so it needs the same
+   escape from the grid item's min-content floor. Without it the diagram's
+   34rem mobile min-width propagates up through the wrapper and pushes the
+   whole home page into sideways scroll at 320: the exact bug the zoom tool's
+   header documents, one wrapper higher. */
+.dg-runway { min-width: 0; }
 .diagram {
   margin: 0;
   min-width: 0;
@@ -844,6 +927,12 @@ h1, h2, h3, h4 {
   to { stroke-dashoffset: 0; }
 }
 
+/* Chevrons descending into the rooms. Shared by native and fallback paths. */
+@keyframes dg-air-in {
+  from { opacity: 0; translate: 0 -12px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
 /* Keyframes shared by BOTH paths: the native scroll-timeline block below and
    the paused-and-scrubbed fallback that follows. They were defined inside
    that @supports block, which meant Firefox -- the browser the fallback
@@ -902,18 +991,19 @@ figure.diagram[data-scroll-fallback] .dg-ring {
   animation-fill-mode: both;
   animation-iteration-count: 1;
 }
-/* Draw, cover 0 -> 22%. The native rule starts at entry 10%, which has no
-   cover equivalent; 0 is the closest honest mapping and the line is drawn by
-   the time the figure is a fifth of the way across either way. */
+/* Without native support there is no pin either (the sticky rule sits in the
+   same @supports), so these fractions are the figure's own transit, shifted
+   late enough that the show plays in front of the reader instead of under
+   the fold: draw 24-34, branches 30-40, pulse 34-64, chevrons from 60. */
 figure.diagram[data-scroll-fallback] .dg-flow {
   animation-name: dg-draw;
   animation-timing-function: cubic-bezier(0.36, 0.02, 0.2, 1);
-  animation-delay: calc(-1s * clamp(0, var(--dg-cover, 0) / 0.22, 1));
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.24) / 0.10, 1));
 }
 figure.diagram[data-scroll-fallback] .dg-flow--b,
 figure.diagram[data-scroll-fallback] .dg-flow--c,
 figure.diagram[data-scroll-fallback] .dg-flow--d {
-  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.18) / 0.12, 1));
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.30) / 0.10, 1));
 }
 /* The pulse, cover 18 -> 48%, on the same eased keyframes as the native path
    so it still arrives at each marker where that marker sits. */
@@ -921,7 +1011,7 @@ figure.diagram[data-scroll-fallback] .dg-pulse {
   animation-name: dg-travel-scroll;
   animation-timing-function: linear;
   opacity: 1;
-  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.18) / 0.30, 1));
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.34) / 0.30, 1));
 }
 /* Markers light in airflow order. --lead is a percentage in the markup, so it
    is divided by 100% to reach the unitless fraction calc needs here. */
@@ -934,6 +1024,15 @@ figure.diagram[data-scroll-fallback] .dg-ring {
   animation-name: dg-ping-scroll;
   animation-timing-function: ease-out;
   animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - (var(--lead) / 100%)) / 0.08, 1));
+}
+figure.diagram[data-scroll-fallback] .dg-air {
+  animation-name: dg-air-in;
+  animation-duration: 1s;
+  animation-play-state: paused;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.2, 1);
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.60 - var(--i, 0) * 0.03) / 0.10, 1));
 }
 
 /* A slow travelling pulse that reads as air moving through the system */
@@ -1058,23 +1157,35 @@ figure.diagram[data-scroll-fallback] .dg-ring {
     /* The diagram <figure> is the timeline subject on both pages that carry
        it — the home page wraps it in .mech beside the thesis copy, the HVAC
        page places it alone after the intro. */
-    figure.diagram { view-timeline: --airpath block; }
-    /* The legend is a sibling of .mech, not a descendant, so the named
-       timeline is out of its scope. timeline-scope on the shared ancestor
-       (the section's .wrap) hoists the name so both can read one clock. */
-    #mechanism > .wrap, .section > .wrap:has(> figure.diagram) { timeline-scope: --airpath; }
+    /* The runway is what the timeline reads, and the figure inside it is
+       sticky, so the page holds with fig. 1 in view while the reader's own
+       scroll drives the sequence. The owner's complaint was precise: the
+       animation used to be over before anyone saw it, because it played
+       across the figure's transit and the figure transits fast. 240svh of
+       runway minus the figure's ~50svh leaves about 1.9 viewports of held
+       scroll, and the arithmetic holds across viewports because every term
+       is svh or rem. Every consumer of --airpath lives inside the runway,
+       so the name reaches them by ordinary descendant visibility. */
+    .dg-runway { view-timeline: --airpath block; height: 240svh; }
+    .dg-runway figure.diagram {
+      position: sticky;
+      top: max(5.5rem, calc(50svh - 15rem));
+    }
+    /* timeline-scope hoisting used to sit here for the legend. The legend
+       reveals on its own view() now and every --airpath consumer is inside
+       .dg-runway, so the scope rule left with the runway change. */
     figure.diagram .dg-flow {
       animation: dg-draw auto cubic-bezier(0.36, 0.02, 0.2, 1) both;
       animation-timeline: --airpath;
-      animation-range: entry 10% cover 22%;
+      animation-range: cover 24% cover 34%;
     }
     figure.diagram .dg-flow--b, figure.diagram .dg-flow--c, figure.diagram .dg-flow--d {
-      animation-range: cover 18% cover 30%;
+      animation-range: cover 30% cover 40%;
     }
     figure.diagram .dg-pulse {
       animation: dg-travel-scroll auto linear both;
       animation-timeline: --airpath;
-      animation-range: cover 18% cover 48%;
+      animation-range: cover 34% cover 64%;
     }
     /* Not linear, and the offsets are not arbitrary. Each stop below puts the
        pulse at the exact point on the path where a marker sits at the moment
@@ -1095,22 +1206,16 @@ figure.diagram[data-scroll-fallback] .dg-ring {
        scroll-timeline path and the JS fallback share ONE definition. */
     /* Markers light in airflow order. Each one's window is offset by its index
        so 1 lights first and 5 last, tracking the pulse's arrival. */
-    /* Windows sit where each marker is actually on screen. The first schedule
-       (20% + i×13%, ten-point windows, marker 5 at 72–82%) lit 4 and 5 after
-       they had scrolled under the sticky header on every viewport measured —
-       marker 5's centre was at viewport y −79 at 1440×900 when it hit full
-       opacity, and y −41 on a 390×844 phone. The climax played off-screen.
-       The anchor is where a reader actually stops: measured with
-       scrollIntoView({block:'center'}) the figure's top settles at cover
-       31–43% (phone 31%, home desktop 43%, the tall HVAC figure 32%) — not
-       50%, because centring puts the top edge mid-viewport and a phone will
-       not scroll the figure under its sticky header. So the sequence runs
-       24–50%: 1 lights 24–29, 2 30–35, 3 33–38, 4 38–43, 5 45–50. The
-       gaps are uneven because 2 and 3 sit within 3% of each other on the
-       path, and lighting them five points apart would overstate that.
-       Arriving,
-       the reader sees 1–2 lit and the air moving; a small nudge down brings
-       3, 4 and 5 in — all with the figure still on screen. */
+    /* Retuned when the figure went sticky. The old 24-50% schedule was
+       paced for a figure that scrolled past, and lit everything during the
+       one stretch it happened to be fully visible. The figure now pins
+       inside .dg-runway from roughly cover 23% to 79% (svh arithmetic, so
+       the window holds across viewports) and the whole sequence sits inside
+       the pin: line 24-34, branches 30-40, pulse 34-64, markers at
+       40/46/49/54/61 with five-point windows, chevrons 60-76. The pulse
+       keyframe stops did not move: the new leads keep the same relative
+       positions in the new range, and assertDiagramPulseSync checks the
+       mapping rather than this comment. */
     figure.diagram .dg-mark {
       /* --lead is set per marker in the markup. See src/lib/ui.js. */
       animation: dg-arrive auto ease-out both;
@@ -1123,6 +1228,14 @@ figure.diagram[data-scroll-fallback] .dg-ring {
       animation: dg-ping-scroll auto ease-out both;
       animation-timeline: --airpath;
       animation-range: cover var(--lead) cover calc(var(--lead) + 8%);
+    }
+    /* Once the pulse is in the trunk the registers deliver: each column's
+       chevrons drop into their room, staggered left to right by --i from
+       the markup. Supply is the end of the story the diagram tells. */
+    figure.diagram .dg-air {
+      animation: dg-air-in auto cubic-bezier(0.2, 0.6, 0.2, 1) both;
+      animation-timeline: --airpath;
+      animation-range: cover calc(60% + var(--i, 0) * 3%) cover calc(70% + var(--i, 0) * 3%);
     }
     /* @keyframes dg-ping-scroll is defined outside this block, above, so the
        scroll-timeline path and the JS fallback share ONE definition. */
@@ -1225,21 +1338,40 @@ figure.diagram[data-scroll-fallback] .dg-ring {
 .legend__d { font-size: 0.94rem; line-height: 1.55; color: var(--slate); grid-column: 2; }
 
 /* ── Signals — the measured numbers ────────────────────────────────────────── */
+/* Restyled from joined haze cells with 1px rule gaps, which read as a strip
+   of spreadsheet. Each number is now its own instrument readout: a paper
+   card under the house lift, opened with a short brand-to-sky tick. The tick
+   is the logo's own colour pair and deliberately not --flag, which this
+   stylesheet reserves for risk and action; these are measurements. */
 .signals {
   display: grid;
-  gap: 1px;
-  background: var(--rule);
-  border-block: 1px solid var(--rule);
+  gap: clamp(0.75rem, 1.6vw, 1rem);
   list-style: none;
   padding: 0;
 }
 @media (min-width: 780px) { .signals { grid-template-columns: repeat(3, 1fr); } }
-.signals li { background: var(--haze); padding: 1.6rem clamp(1rem, 2.5vw, 1.75rem); }
+.signals li {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--lift);
+  padding: 1.6rem clamp(1rem, 2.5vw, 1.75rem);
+}
+.signals li::before {
+  content: '';
+  display: block;
+  width: 2.25rem;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--sky));
+  margin-bottom: 1rem;
+}
 .signals__v {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.85rem, 1.3rem + 1.7vw, 2.6rem);
   letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
   color: var(--brand-deep);
   line-height: 1;
   margin-bottom: 0.7rem;
@@ -1309,8 +1441,24 @@ a.card:hover {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand);
+  transition: color 0.18s ease;
 }
 a.card:hover .card__more { color: var(--brand-deep); }
+
+/* The arrow is the part that moves. Wrapped in .arr so the glyph can slide
+   without dragging the label, on hover and on keyboard focus alike — the em
+   unit keeps the distance proportional at the mono label's small size. The
+   translate is gated behind no-preference: the global reduce block only
+   zeroes durations, which would turn this into a jump instead of removing
+   it. */
+.arr { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .arr { transition: translate 0.22s cubic-bezier(0.2, 0.6, 0.2, 1); }
+  a.card:hover .arr,
+  a.card:focus-visible .arr,
+  .btn:hover .arr,
+  .btn:focus-visible .arr { translate: 0.3em 0; }
+}
 
 /* The specialty card carries the amber marker — it is the one thing we lead with */
 .card--flag { border-color: var(--flag); background: linear-gradient(180deg, var(--flag-wash) 0%, var(--paper) 46%); }
@@ -1399,14 +1547,22 @@ a.card--flag:hover { border-color: var(--flag-deep); }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.card--photo .card__more { color: #e8a163; margin-top: 0; padding-top: 0.35rem; }
+/* #e8a163 measured 4.41:1 over the lightest photo pixels under it at 320px —
+   the same shade the card eyebrows had to give up, failing the same way.
+   #f3b87c (the old hover colour) clears 5.4:1 at the same spot; hover steps
+   up from there. */
+.card--photo .card__more { color: #f3b87c; margin-top: 0; padding-top: 0.35rem; }
 
 a.card--photo:hover {
   border-color: rgba(232, 161, 99, 0.6);
   box-shadow: var(--lift-2);
 }
 a.card--photo:hover .card__bg img { transform: scale(1.045); }
-a.card--photo:hover .card__more { color: #f3b87c; }
+/* The generic hover keyline is --brand, which against a photo card's dark
+   edge is invisible. --sky is the logo's own light blue and reads as
+   selection without shouting. */
+a.card--photo:hover { border-color: var(--sky); }
+a.card--photo:hover .card__more { color: #f8cfa2; }
 
 /* The specialty card keeps its identity over a photograph through an amber rule
    rather than the amber wash, which a photo would swallow. */
@@ -1557,9 +1713,24 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 
 /* ── FAQ accordion ─────────────────────────────────────────────────────────── */
 .faq { border-top: 1px solid var(--rule); }
+/* The rows bleed 1rem past the text column on both sides, so hover and open
+   washes can paint a ground without moving a single glyph: padding and the
+   negative margin cancel exactly, and the wrap's gutter (min 20px) still
+   clears the 16px bleed at 320. The open item lifts to paper behind a brand
+   spine, which is what lets a reader scan a long FAQ for the ones they
+   opened. */
 .faq details {
   border-bottom: 1px solid var(--rule-soft);
+  padding-inline: 1rem;
+  margin-inline: -1rem;
+  transition: background-color 0.18s ease;
 }
+.faq details:not([open]):hover { background-color: rgba(255, 255, 255, 0.55); }
+.faq details[open] {
+  background-color: var(--paper);
+  box-shadow: inset 3px 0 0 var(--brand);
+}
+.faq details[open] summary { color: var(--brand-deep); }
 .faq summary {
   list-style: none;
   cursor: pointer;
@@ -1583,8 +1754,9 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   border-right: 1.5px solid var(--brand);
   border-bottom: 1.5px solid var(--brand);
   transform: rotate(45deg);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, top 0.2s ease, border-color 0.15s ease;
 }
+.faq summary:hover::after { border-color: var(--brand-deep); }
 .faq details[open] summary::after { transform: rotate(-135deg); top: 1.85rem; }
 .faq summary:hover { color: var(--brand-deep); }
 /* No right padding: the 2.5rem on the summary exists to clear the chevron,
@@ -1592,6 +1764,13 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
    answer 40px of width and made it the narrowest text on a phone (35ch vs
    40-44ch everywhere else). max-width still holds the desktop measure. */
 .faq__a { padding: 0 0 1.5rem; color: var(--slate); max-width: 70ch; }
+@media (prefers-reduced-motion: no-preference) {
+  .faq details[open] .faq__a { animation: faq-in 0.28s cubic-bezier(0.2, 0.6, 0.2, 1); }
+  @keyframes faq-in {
+    from { opacity: 0; translate: 0 -4px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+}
 .faq__a > * + * { margin-top: 0.9em; }
 
 /* In-page navigation, used by the FAQ and by any page with four or more
@@ -1649,7 +1828,9 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 @media (min-width: 720px) {
   .jump-nav li:nth-last-child(2):nth-child(odd) a { border-bottom: 0; }
 }
-.jump-nav a:hover { color: var(--brand-deep); }
+.jump-nav a { transition: color 0.15s ease, border-color 0.15s ease; }
+.jump-nav a:hover { color: var(--brand-deep); border-bottom-color: var(--brand); }
+.jump-nav li:last-child a:hover { border-bottom: 0; }
 .jump-nav a span {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -1727,10 +1908,18 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   letter-spacing: 0.01em;
   padding: 0.42rem 0.7rem;
   border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border-radius: 999px; /* these are tags, not paper: the pill says "label" */
   background: var(--paper);
   text-decoration: none;
   color: var(--ink-soft);
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+/* Only anchors invite: the span chips are deliberate non-links (no doorway
+   pages), so they carry no hover story at all. */
+.chips a:hover {
+  border-color: var(--brand);
+  background: var(--brand-wash);
+  color: var(--brand-deep);
 }
 .chips a:hover { border-color: var(--brand); color: var(--brand-deep); background: var(--brand-wash); }
 .chips span { color: var(--mist); background: transparent; }
@@ -1744,7 +1933,22 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 }
 
 /* ── CTA band ──────────────────────────────────────────────────────────────── */
-.cta-band { background: var(--ink); color: var(--haze); }
+/* Depth instead of a flat pour. A brand glow rises behind the heading, a
+   fainter sky answer sits behind the number, and a whisper of turbulence
+   grain keeps the big navy field from reading as vinyl. The glows are held
+   deliberately weak: the meta line is 11px mono, and at sky 0.16 its ground
+   lightened enough to fall to 4.3:1, so the sky layer is capped at 0.10 and
+   the meta colour steps up a shade below. The hairline on top is the logo's
+   sky, separating the band from the paper above it. */
+.cta-band {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E"),
+    radial-gradient(52rem 30rem at 12% -10%, rgba(21, 94, 124, 0.5), transparent 62%),
+    radial-gradient(38rem 24rem at 98% 120%, rgba(123, 184, 196, 0.1), transparent 58%),
+    var(--ink);
+  border-top: 1px solid rgba(123, 184, 196, 0.3);
+  color: var(--haze);
+}
 .cta-band__grid {
   display: grid;
   gap: clamp(1.5rem, 3vw, 2.5rem);
@@ -1755,15 +1959,19 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 }
 .cta-band h2 { font-size: clamp(1.7rem, 1.3rem + 1.7vw, 2.5rem); color: #fff; max-width: 18ch; }
 .cta-band p { color: #b6c6d6; margin-top: 1rem; max-width: 46ch; }
-.cta-band .eyebrow { color: #e29a5c; display: block; margin-bottom: 0.9rem; }
+.cta-band .eyebrow { color: #f0b072; display: block; margin-bottom: 0.9rem; }
+/* The number is the band's hero: it is the one thing on the page a reader
+   can act on in the next ten seconds, so it outweighs the heading. */
 .cta-band__phone {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.6rem);
-  letter-spacing: -0.035em;
+  font-size: clamp(2.1rem, 1.4rem + 2.8vw, 3.4rem);
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
   color: #fff;
   text-decoration: none;
   display: inline-block;
+  transition: color 0.16s ease;
 }
 .cta-band__phone:hover { color: #f0b072; }
 /* Selector carries p deliberately: .cta-band p is (0,1,1) and a lone
@@ -1784,7 +1992,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   font-size: 0.7rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #8ba0b5;
+  color: #9db1c4;
   margin-top: 0.75rem;
   line-height: 1.8;
 }
@@ -1835,6 +2043,13 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   text-transform: uppercase;
   color: var(--slate);
 }
+/* The system's own logic, continued: buttons are raised tools, so inputs are
+   recessed wells. A faint inset seat at rest, a slate border on hover so the
+   pointer learns the field is live before it commits, and on focus a brand
+   border under a brand-wash halo. The halo alone would fail WCAG 2.4.11
+   against paper, so it never works alone: the border change carries the
+   indicator and keyboard focus keeps an outline as well, recoloured to the
+   brand family for these controls only. */
 .field input,
 .field select,
 .field textarea {
@@ -1842,14 +2057,32 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   font-size: 1rem;
   padding: 0.8rem 0.9rem;
   border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border-radius: 5px; /* the button family's radius: interactive, not paper */
   background: var(--paper);
   color: var(--ink);
   width: 100%;
+  box-shadow: inset 0 1px 2px rgba(10, 34, 71, 0.05);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
+.field input:hover,
+.field select:hover,
+.field textarea:hover { border-color: var(--slate); }
 .field input:focus,
 .field select:focus,
-.field textarea:focus { border-color: var(--brand); }
+.field textarea:focus {
+  border-color: var(--brand);
+  box-shadow: inset 0 1px 2px rgba(10, 34, 71, 0.05), 0 0 0 3px var(--brand-wash);
+}
+.field :focus-visible { outline-color: var(--brand-deep); }
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2320395c' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.4rem;
+}
+.form { accent-color: var(--brand); }
 .field textarea { min-height: 8rem; resize: vertical; }
 .field__hint { font-size: 0.88rem; color: var(--mist); margin-top: 0.45rem; max-width: 60ch; }
 .field-row { display: grid; gap: 1.1rem; }
@@ -1875,8 +2108,19 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 }
 
 /* ── Footer ────────────────────────────────────────────────────────────────── */
-.ftr { background: var(--ink); color: #b6c6d6; padding-block: clamp(3rem, 6vw, 4.5rem) 2rem; }
-.ftr a { color: #d3dfea; text-decoration: none; }
+/* The top edge is the one expressive divider the site allows itself: the
+   logo's breeze, brand into sky, fading out before the right margin. It is
+   painted as a background layer rather than a border so it costs no layout.
+   The column-heading ticks below echo the stat cards' gauge ticks, which
+   keeps the instrument language running through to the last block. */
+.ftr {
+  background:
+    linear-gradient(90deg, var(--brand), var(--sky) 38%, transparent 82%) top / 100% 2px no-repeat,
+    var(--ink);
+  color: #b6c6d6;
+  padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
+}
+.ftr a { color: #d3dfea; text-decoration: none; text-underline-offset: 0.22em; transition: color 0.15s ease; }
 .ftr a:hover { color: #fff; text-decoration: underline; }
 .ftr__grid {
   display: grid;
@@ -1910,6 +2154,15 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   text-transform: uppercase;
   color: #7f93a8;
   margin-bottom: 1rem;
+}
+.ftr h2::before {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--brand), var(--sky));
+  margin-bottom: 0.6rem;
 }
 .ftr ul { list-style: none; padding: 0; display: grid; gap: 0.55rem; font-size: 0.95rem; }
 .ftr__meta { font-size: 0.92rem; line-height: 1.65; }
@@ -2030,6 +2283,8 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 /* Print — people do print these pages for insurance files */
 @media print {
   .hdr, .callbar, .cta-band, .ftr__grid { display: none; }
+  /* Runways are scroll furniture. On paper they are just blank pages. */
+  .mhero-runway, .dg-runway { height: auto; }
   body { background: #fff; font-size: 11pt; padding: 0; }
   .section { padding-block: 1rem; }
   a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8pt; color: #555; }
@@ -2068,7 +2323,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   /* The contact form's submit is white on the flag orange, which also does not
      print. It is a disabled control on paper regardless, so it prints as an
      outline rather than a solid block. */
-  .btn--call, button.btn { color: var(--ink); background: none; border: 1px solid var(--rule); }
+  .btn--call, button.btn { color: var(--ink); background: none; border: 1px solid var(--rule); box-shadow: none; }
 
   /* Where pages are allowed to break. Without this a process step splits from
      its own "how to check" line, a definition term lands at the foot of one

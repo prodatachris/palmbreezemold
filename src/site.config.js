@@ -287,7 +287,7 @@ export const site = {
    *  testing, so it was a promise the phone could not keep. If a real window
    *  is ever committed to, put it here — it reaches the header of every page,
    *  the CTA band, and the contact page. */
-  responseWindow: 'By appointment — call and we will tell you the soonest we can be there',
+  responseWindow: 'By appointment: call and we will tell you the soonest we can be there',
 
   // ── Proof (⚠️ ALL PLACEHOLDER — replace or delete; never invent reviews) ────
   /** Set `reviews.show: false` until you have real, verifiable review counts.

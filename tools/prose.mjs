@@ -95,8 +95,16 @@ const PORT = 9342;
  * section meant an identical string on 18 pages went unreported. The sentinel
  * for this file is exactly that case.
  */
+/* noscript is here for a reason that is not obvious. With scripting enabled —
+   which it is, this runs in Chrome — a noscript element's children are never
+   parsed. Its whole content stays a single text node holding the literal
+   markup, so the contact form's fallback reached this checker as the string
+   `<p class="notice">This form needs JavaScript…` and was reported as prose
+   using a straight quote. The .notice selector below cannot help: there is no
+   element there to match. Nobody ever reads that string — with scripting off
+   it parses as real markup instead — so the element goes, not the quotes. */
 const CHROME = ['header', 'footer', 'nav', 'svg', 'code', 'kbd', 'samp', 'pre',
-                '.skip', '.notice', '.crumbs',
+                'noscript', '.skip', '.notice', '.crumbs',
                 '.jump-nav', '.signals', '.assure', '.card', '.see-also',
                 '.cta-band', '.related', '.grid--services'];
 

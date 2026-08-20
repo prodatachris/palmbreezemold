@@ -20,6 +20,9 @@
 
 import { spawn } from 'node:child_process';
 import { setTimeout as sleep } from 'node:timers/promises';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
+import { site } from '../src/site.config.js';
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const args = process.argv.slice(2);
@@ -32,28 +35,27 @@ const WIDTH = Number(flag('width', 1440));
 const HEIGHT = Number(flag('height', 900));
 const PORT = 9333;
 
-const ROUTES = [
-  '/', '/services/', '/service-areas/', '/guides/', '/process/', '/faq/', '/about/', '/contact/', '/404.html',
-  '/guides/closing-a-florida-home-for-the-summer/',
-  '/guides/comparing-mold-remediation-quotes/',
-  '/guides/first-48-hours-after-water-damage/',
-  '/guides/mold-on-the-outside-of-your-house/',
-  '/services/hvac-air-conditioner-mold-remediation/',
-  '/services/mold-remediation/',
-  '/services/mold-inspection-testing/',
-  '/services/air-duct-cleaning-sanitizing/',
-  '/services/black-mold-removal/',
-  '/services/water-damage-mold-cleanup/',
-  '/service-areas/fort-lauderdale/', '/service-areas/pompano-beach/',
-  '/service-areas/coral-springs/', '/service-areas/hollywood/',
-  '/service-areas/pembroke-pines/', '/service-areas/west-palm-beach/',
-  '/service-areas/boca-raton/', '/service-areas/delray-beach/',
-  '/service-areas/boynton-beach/', '/service-areas/jupiter/',
-  '/service-areas/plantation/', '/service-areas/wellington/',
-  '/service-areas/deerfield-beach/', '/service-areas/lake-worth-beach/',
-  '/service-areas/weston/', '/service-areas/riviera-beach/',
-  '/service-areas/miramar/', '/service-areas/palm-beach-gardens/',
-];
+/**
+ * Walked from dist/, never listed by hand. This was a literal array of 36
+ * paths, and adding /privacy/ to the site did not add it here — so the new
+ * page went unaudited while the footer link to it was reported as broken,
+ * which reads as the page being missing rather than the list being stale.
+ * A hardcoded ORIGIN a few hundred lines down had failed the same way.
+ *
+ * 404.html is appended separately: it is a real page with no index.html, so
+ * the walk cannot see it.
+ */
+const ROUTES = (() => {
+  const found = [];
+  (function walk(dir) {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, e.name);
+      if (e.isDirectory()) walk(full);
+      else if (e.name === 'index.html') found.push('/' + (dir === 'dist' ? '' : dir.slice(5) + '/'));
+    }
+  })('dist');
+  return ['/404.html', ...found.sort()];
+})();
 
 /* ── The script evaluated inside each page ─────────────────────────────────── */
 /**
@@ -178,6 +180,7 @@ function probeBody() {
     }
     if (overMedia) {
       overImageText.push(label);
+      el.dataset.cbox = String(out.overImageBoxes.length);
       // Handed to the Node side, which screenshots this exact box with the text
       // hidden and measures the pixels actually painted behind it.
       out.overImageBoxes.push({
@@ -681,7 +684,14 @@ const idsByRoute = new Map();
 const fragmentLinks = new Set();
 /** Fragment-bearing urls found inside JSON-LD, checked the same way. */
 const schemaFragmentLinks = new Set();
-const ORIGIN = 'https://www.palmbreezemold.com';
+/* Read from the config, never restated here. This was hardcoded with a www.
+   that site.config.js later dropped, and the mismatch made
+   href.replace(ORIGIN, '') a no-op: every schema url kept its scheme and host,
+   matched no route, and landed in the "not crawled" bucket. The check caught
+   it — that bucket exists precisely so skipped links are never dropped quietly
+   — but it reported 145 uncrawled pages when the real fault was one stale
+   string in the checker. Deriving it means the two cannot disagree. */
+const ORIGIN = site.origin.replace(/\/$/, '');
 
 try {
   const cdp = await connect();
@@ -731,13 +741,28 @@ try {
 
   console.log(`\n▸ Auditing ${ROUTES.length} pages at ${WIDTH}px — ${BASE}\n`);
 
+/* The mask hides the GLYPHS, not the element. It used visibility: hidden,
+   which also removes the element's own background — and the moment a button
+   took a gradient (a background-image, which backdrop() rightly refuses to
+   guess at), the pixel path hid the whole button and measured its white label
+   against the paper behind it: 1.14:1, on a control that renders at 5:1. A
+   state that cannot paint is not a finding. Transparent color/fill keeps every
+   layer that really sits under the text — own gradient, scrim, photograph —
+   which is also more honest for the photo cases this path was built for.
+   The full style attribute is saved and restored because several elements
+   carry real inline styles (--i indexes, --lead offsets). */
 const MASK_ON = `document.querySelectorAll('body *').forEach((e) => {
   if ([...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) {
-    e.dataset.cmask = e.style.visibility || ''; e.style.visibility = 'hidden';
+    e.dataset.cmask = e.getAttribute('style') || '';
+    e.style.color = 'transparent';
+    e.style.fill = 'transparent';
+    e.style.textShadow = 'none';
   }
 });`;
 const MASK_OFF = `document.querySelectorAll('[data-cmask]').forEach((e) => {
-  e.style.visibility = e.dataset.cmask; delete e.dataset.cmask;
+  if (e.dataset.cmask) e.setAttribute('style', e.dataset.cmask);
+  else e.removeAttribute('style');
+  delete e.dataset.cmask;
 });`;
 
   for (const route of ROUTES) {
@@ -773,13 +798,34 @@ const MASK_OFF = `document.querySelectorAll('[data-cmask]').forEach((e) => {
         })()`,
       });
       await new Promise((res) => setTimeout(res, 450));
+      /* Fixed and sticky elements paint at VIEWPORT coordinates while these
+         captures address DOCUMENT coordinates, so the mobile call bar's orange
+         button landed across the first card's arrow box at 390 (doc y 839,
+         inside the bar's 776..844 band) and measured 3.99:1 against a control
+         the text is never under. Overlay chrome is not the resting ground of
+         in-flow text — but "hide everything fixed or sticky" is wrong too: the
+         hero is sticky and IS the ground of its own headline, and hiding it
+         failed 74 boxes at once. So each box hides only the viewport-anchored
+         elements that do not contain it, capture by capture. */
       await cdp.send('Runtime.evaluate', { expression: MASK_ON });
       const overBad = [];
-      for (const b of boxes) {
+      for (const [bi, b] of boxes.entries()) {
+        await cdp.send('Runtime.evaluate', { expression: `(() => {
+          const t = document.querySelector('[data-cbox="${bi}"]');
+          document.querySelectorAll('body *').forEach((e) => {
+            const p = getComputedStyle(e).position;
+            if ((p === 'fixed' || p === 'sticky') && (!t || !e.contains(t))) {
+              e.dataset.cmaskv = e.style.visibility || ''; e.style.visibility = 'hidden';
+            }
+          });
+        })()` });
         const shot = await cdp.send('Page.captureScreenshot', {
           format: 'png', captureBeyondViewport: true,
           clip: { x: b.x, y: b.y, width: b.w, height: b.h, scale: 1 },
         }).catch(() => null);
+        await cdp.send('Runtime.evaluate', { expression: `document.querySelectorAll('[data-cmaskv]').forEach((e) => {
+          e.style.visibility = e.dataset.cmaskv; delete e.dataset.cmaskv;
+        });` });
         if (!shot) continue;
         const px = await cdp.send('Runtime.evaluate', {
           awaitPromise: true, returnByValue: true, expression: `
@@ -802,9 +848,20 @@ const MASK_OFF = `document.querySelectorAll('[data-cmask]').forEach((e) => {
         const L = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
         const CR = (a, c) => { const [hi, lo] = [L(a), L(c)].sort((x, y) => y - x); return (hi + 0.05) / (lo + 0.05); };
         const m = CR(b.fg, mean), w = CR(b.fg, worst);
+        if (process.env.AUDIT_DEBUG && b.label.includes(process.env.AUDIT_DEBUG)) {
+          console.log(`    [dbg] ${b.label} @${b.x},${b.y} ${b.w}x${b.h} fg rgb(${b.fg}) mean rgb(${mean}) -> ${m.toFixed(2)}:1`);
+          if (m < b.need) {
+            const { writeFileSync } = await import('node:fs');
+            writeFileSync(`${process.env.AUDIT_DEBUG_DIR || '/tmp'}/fail-${route.replace(/\//g,'_')}-${b.y}.png`, Buffer.from(shot.data, 'base64'));
+            const wide = await cdp.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true,
+              clip: { x: Math.max(b.x - 80, 0), y: Math.max(b.y - 80, 0), width: b.w + 160, height: b.h + 160, scale: 2 } });
+            writeFileSync(`${process.env.AUDIT_DEBUG_DIR || '/tmp'}/fail-wide-${route.replace(/\//g,'_')}-${b.y}.png`, Buffer.from(wide.data, 'base64'));
+          }
+        }
         if (m < b.need) overBad.push(`${b.label} — ${m.toFixed(2)}:1 over the photo (worst pixel ${w.toFixed(2)}:1), needs ${b.need}:1 (${b.size}px)`);
       }
       await cdp.send('Runtime.evaluate', { expression: MASK_OFF });
+      await cdp.send('Runtime.evaluate', { expression: `document.querySelectorAll('[data-cbox]').forEach((e) => { delete e.dataset.cbox; });` });
       if (overBad.length) {
         r.issues.push('contrast below WCAG AA over an image (' + overBad.length + '):');
         overBad.slice(0, 6).forEach((c) => r.issues.push('    \u21b3 ' + c));

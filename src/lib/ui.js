@@ -73,6 +73,7 @@ export const url = {
   faq: '/faq/',
   about: '/about/',
   contact: '/contact/',
+  privacy: '/privacy/',
 };
 
 export const abs = (path) => `${site.origin}${path}`;
@@ -135,7 +136,7 @@ export function header(path) {
   return `
 <header class="hdr">
   <div class="wrap hdr__bar">
-    <a class="brand" href="/" aria-label="${esc(site.name)} &mdash; home">
+    <a class="brand" href="/" aria-label="${esc(site.name)}, home">
       ${brandLockup({ cls: 'brand__logo' })}
       <span class="brand__sub">${esc(site.tagline)}</span>
     </a>
@@ -324,9 +325,9 @@ const node = (n, x, y, lead) => `
   <rect class="dg-part" x="566" y="156" width="48" height="10"/>
 
   <!-- Supply air entering each room: whatever grew upstream arrives here -->
-  <path class="dg-air" d="M316 182 L330 196 L344 182 M316 204 L330 218 L344 204"/>
-  <path class="dg-air" d="M446 182 L460 196 L474 182 M446 204 L460 218 L474 204"/>
-  <path class="dg-air" d="M576 182 L590 196 L604 182 M576 204 L590 218 L604 204"/>
+  <path class="dg-air" style="--i:0" d="M316 182 L330 196 L344 182 M316 204 L330 218 L344 204"/>
+  <path class="dg-air" style="--i:1" d="M446 182 L460 196 L474 182 M446 204 L460 218 L474 204"/>
+  <path class="dg-air" style="--i:2" d="M576 182 L590 196 L604 182 M576 204 L590 218 L604 204"/>
 
   <!-- Rooms -->
   <text class="dg-label dg-label--room" x="317" y="404">Bedroom</text>
@@ -367,11 +368,11 @@ const node = (n, x, y, lead) => `
   <path class="dg-pulse" pathLength="1" d="M28 373 H156 V110 H660"/>
 
   <!-- Findings, numbered in the order the air reaches them -->
-  ${node(1, 66, 373, 24)}
-  ${node(2, 156, 250, 30)}
-  ${node(3, 156, 294, 33)}
-  ${node(4, 156, 148, 38)}
-  ${node(5, 460, 142, 45)}
+  ${node(1, 66, 373, 40)}
+  ${node(2, 156, 250, 46)}
+  ${node(3, 156, 294, 49)}
+  ${node(4, 156, 148, 54)}
+  ${node(5, 460, 142, 61)}
 </svg>
 </div>`;
 }
@@ -498,7 +499,7 @@ export const serviceCard = (s) => `
   <span class="card__eyebrow">${text(s.eyebrow)}</span>
   <span class="card__t">${text(s.navLong)}</span>
   <span class="card__d">${text(s.short)}</span>
-  <span class="card__more">Read more &rarr;</span>
+  <span class="card__more">Read more <span class="arr">&rarr;</span></span>
 </a>`;
 
 export const relatedBlock = (slugs, allServices) => {
@@ -523,7 +524,7 @@ export function ctaBand({ h2, body, eyebrow = 'Next step' } = {}) {
     <div>
       <span class="eyebrow">${text(eyebrow)}</span>
       <h2>${text(h2 || 'Tell us what you are seeing and we will tell you what it is')}</h2>
-      <p>${text(body || 'We come out, look at what is happening, and write you a scope you could hand to another company. Walkthrough rather than assessment on purpose — assessment is the separately licensed job we refer out. If it turns out you do not need remediation, we will say so — that is the most useful thing we can tell you.')}</p>
+      <p>${text(body || 'We come out, look at what is happening, and write you a scope you could hand to another company. Walkthrough rather than assessment on purpose: assessment is the separately licensed job we refer out. If it turns out you do not need remediation, we will say so. That is the most useful thing we can tell you.')}</p>
     </div>
     <div>
       <a class="cta-band__phone" href="tel:${esc(site.phoneHref)}">${esc(site.phoneDisplay)}</a>
@@ -590,6 +591,7 @@ export function footer() {
           <li><a href="${url.guides}">Guides</a></li>
           <li><a href="${url.faq}">FAQ</a></li>
           <li><a href="${url.contact}">Contact</a></li>
+          <li><a href="${url.privacy}">Privacy</a></li>
         </ul>
       </div>
     </div>
@@ -606,7 +608,7 @@ export function footer() {
     </div>
 
     <!-- Paper only. Printing hides the header, the call bar and the CTA band,
-         which between them carry every phone number on the page — a printed
+         which between them carry every phone number on the page. A printed
          copy of the process checklist had the license number and no way to
          reach anybody. These pages get printed and handed to a spouse, a board,
          or an adjuster, so the number goes on the sheet. -->
@@ -709,7 +711,7 @@ export function page({
     url: abs(sharePath),
     w: measured ? measured.w : (ogImage ? 1376 : 1200),
     h: measured ? measured.h : (ogImage ? 768 : 630),
-    alt: ogImage ? ogImageAlt : `${site.name} — ${site.tagline}`,
+    alt: ogImage ? ogImageAlt : `${site.name}: ${site.tagline}`,
   };
   const jsonld = schema.length
     ? `<script type="application/ld+json">${JSON.stringify(schema.length === 1 ? schema[0] : schema).replace(/</g, '\\u003c')}</script>`

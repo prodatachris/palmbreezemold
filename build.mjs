@@ -17,7 +17,7 @@ import site from './src/site.config.js';
 import { services, serviceBySlug } from './src/data/services.js';
 import { areas, counties } from './src/data/areas.js';
 import { guides } from './src/data/guides.js';
-import { home, process as processContent, faqPage, about, contact, media, servicesHub, guidesHub } from './src/data/content.js';
+import { home, process as processContent, faqPage, about, contact, privacy, media, servicesHub, guidesHub } from './src/data/content.js';
 import {
   page, url, abs, esc, text, paras,
   sectionHead, signals, deflist, stepList, faqList,
@@ -171,7 +171,7 @@ ${mediaHero({
   video: 'hero-air-handler',
   alt: altOf('air-handler-closet'),
   actions: heroActions,
-  caption: 'Air handler, evaporator coil and drain pan — the wettest assembly in a South Florida house.',
+  caption: 'Air handler, evaporator coil and drain pan: the wettest assembly in a South Florida house.',
   extra: `<dl class="assure assure--onink">
       ${home.assurances
         .map(
@@ -186,10 +186,12 @@ ${mediaHero({
     ${sectionHead({ eyebrow: home.thesis.eyebrow, h2: home.thesis.h2, wide: true })}
     <div class="mech">
       <div class="body-block">${paras(home.thesis.body)}</div>
+      <div class="dg-runway">
       <figure class="diagram">
         ${airPathDiagram('home')}
-        <figcaption>Fig. 1 &mdash; Air path through a typical Broward or Palm Beach single-story home. Markers 1&ndash;5 are the five commonest places growth turns up, numbered in the order the air reaches them.</figcaption>
+        <figcaption>Fig. 1: Air path through a typical Broward or Palm Beach single-story home. Markers 1&ndash;5 are the five commonest places growth turns up, numbered in the order the air reaches them.</figcaption>
       </figure>
+      </div>
     </div>
     <div class="mt-lg">${airPathLegend()}</div>
   </div>
@@ -216,7 +218,7 @@ ${mediaHero({
   <div class="wrap">
     ${sectionHead({ eyebrow: home.whyDifferent.eyebrow, h2: home.whyDifferent.h2, wide: true })}
     ${deflist(home.whyDifferent.items.map((i) => ({ term: i.title, text: i.text })))}
-    <p class="mt-lg"><a class="btn btn--ghost" href="${url.process}">See every stage of the process &rarr;</a></p>
+    <p class="mt-lg"><a class="btn btn--ghost" href="${url.process}">See every stage of the process <span class="arr">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -240,7 +242,7 @@ ${mediaHero({
     </div>`,
       )
       .join('\n    ')}
-    <p class="mt-lg"><a class="btn btn--ghost" href="${url.areas}">Full coverage map &rarr;</a></p>
+    <p class="mt-lg"><a class="btn btn--ghost" href="${url.areas}">Full coverage map <span class="arr">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -248,7 +250,7 @@ ${mediaHero({
   <div class="wrap wrap--mid">
     ${sectionHead({ eyebrow: 'Common questions', h2: 'Before you call' })}
     ${faqList(home.faqs)}
-    <p class="mt-lg"><a class="btn btn--ghost" href="${url.faq}">All questions &rarr;</a></p>
+    <p class="mt-lg"><a class="btn btn--ghost" href="${url.faq}">All questions <span class="arr">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -290,7 +292,7 @@ async function buildServices() {
 ${mediaHero({
   eyebrow: 'Services',
   h1: 'Six services, and an honest read on which one you need',
-  lede: 'Every page below explains the mechanism, not just the offer — what causes the problem in South Florida specifically, what the work involves, and where the industry cuts corners.',
+  lede: 'Every page below explains the mechanism, not just the offer: what causes the problem in South Florida specifically, what the work involves, and where the industry cuts corners.',
   image: 'duct-board-plenum',
   alt: altOf('duct-board-plenum'),
   caption: 'Fiberglass duct board plenum interior. Cleaning does not restore a colonized fiber mat.',
@@ -316,7 +318,7 @@ ${servicesHub.sections.map(renderSection).join('\n\n')}
     })}
     ${deflist([
       { term: 'You can smell it when the AC runs', text: 'Start with HVAC and AC mold remediation. A smell that tracks with the air conditioning cycle is coming from the equipment or the ducts, not from a room.' },
-      { term: 'You can see it on a wall or ceiling', text: 'Start with mold remediation. If there is a dark ring specifically around an AC register, read the HVAC page too — that is a condensation pattern, not a roof leak.' },
+      { term: 'You can see it on a wall or ceiling', text: 'Start with mold remediation. If there is a dark ring specifically around an AC register, read the HVAC page too. That is a condensation pattern, not a roof leak.' },
       { term: 'Something is wet right now', text: 'Water damage and mold cleanup, today. The window between a water loss and a mold job is about two days in this climate.' },
       { term: 'You have symptoms but cannot find anything', text: 'Mold inspection and testing. That is the case where sampling genuinely earns its cost, because you need to know whether there is an interior source at all.' },
       { term: 'You are buying a house', text: 'Mold inspection and testing, from an independent licensed assessor. A standard home inspection is not a mold assessment and most inspectors say so in their own report.' },
@@ -412,10 +414,12 @@ ${mediaHero({
   <div class="wrap">
     <div class="body-block">${paras(s.intro)}</div>
     ${isHvac ? `
+    <div class="dg-runway">
     <figure class="diagram mt-lg">
       ${airPathDiagram('svc')}
-      <figcaption>Fig. 1 &mdash; The air path, numbered in the order the air reaches each point. These are five of the seven places listed below; the list is ordered by how often we find each one instead, so the numbers here and the numbers there are answering different questions.</figcaption>
-    </figure>` : ''}
+      <figcaption>Fig. 1: The air path, numbered in the order the air reaches each point. These are five of the seven places listed below; the list is ordered by how often we find each one instead, so the numbers here and the numbers there are answering different questions.</figcaption>
+    </figure>
+    </div>` : ''}
     ${nav}
   </div>
 </section>
@@ -463,7 +467,7 @@ ${svcGuides.length ? `
   <div class="wrap">
     ${sectionHead({ eyebrow: 'Related', h2: 'Where people go from here' })}
     ${relatedBlock(s.related, services)}
-    <p class="mt-lg muted">Serving ${counties.map((c) => c.name).join(' and ')} &mdash; <a href="${url.areas}">see every city we cover</a>.</p>
+    <p class="mt-lg muted">Serving ${counties.map((c) => c.name).join(' and ')}. <a href="${url.areas}">See every city we cover</a>.</p>
   </div>
 </section>
 
@@ -505,13 +509,13 @@ async function buildAreas() {
   const trail = [{ name: 'Home', href: '/' }, { name: 'Service Areas' }];
   const title = 'Service Areas | Mold Remediation Broward & Palm Beach';
   const description =
-    'Every city we cover across Broward and Palm Beach County, from Hallandale Beach to Jupiter — with what the housing stock in each one actually does.';
+    'Every city we cover across Broward and Palm Beach County, from Hallandale Beach to Jupiter, with what the housing stock in each one actually does.';
 
   const body = `
 ${mediaHero({
   eyebrow: 'Coverage',
   h1: 'Broward and Palm Beach County, city by city',
-  lede: site.serviceRadiusNote + ' Housing stock changes every few miles down here — a 1952 CBS ranch in Victoria Park and a 2004 Valencia home in Boynton fail in completely different ways.',
+  lede: site.serviceRadiusNote + ' Housing stock changes every few miles down here: a 1952 CBS ranch in Victoria Park and a 2004 Valencia home in Boynton fail in completely different ways.',
   image: 'broward-street',
   alt: altOf('broward-street'),
   caption: 'East Broward concrete block and stucco, mid-century. Sealed up decades after it was built to breathe.',
@@ -537,7 +541,7 @@ ${mediaHero({
           <span class="card__eyebrow">${esc(c.short)} County</span>
           <span class="card__t">${esc(a.name)}</span>
           <span class="card__d">${text(a.short)}</span>
-          <span class="card__more">What we find here &rarr;</span>
+          <span class="card__more">What we find here <span class="arr">&rarr;</span></span>
         </a>`,
           )
           .join('\n        ')}
@@ -603,7 +607,7 @@ ${mediaHero({
           .map((x) => `[${x.name}](${url.area(x.slug)})`);
         if (!kin.length) return `Typical ${a.name} housing stock. The failure modes below follow from how these houses were built.`;
         const list = kin.length === 1 ? kin[0] : `${kin.slice(0, -1).join(', ')} and ${kin[kin.length - 1]}`;
-        return `Housing stock ${a.name} shares with ${list} — which is why the failure modes below are the same in all of them.`;
+        return `Housing stock ${a.name} shares with ${list}, which is why the failure modes below are the same in all of them.`;
       })(),
   actions: heroActions,
 })}
@@ -635,7 +639,7 @@ ${mediaHero({
       // Palm Beach County." standing alone on nine pages, which the prose check
       // correctly failed. The city-specific half has to be in the same sentence
       // as the shared half for the whole line to be distinct.
-      note: `The same six services run across ${a.county} County, and which of them a job turns into depends on what is actually happening — in ${a.name} that usually starts with ${
+      note: `The same six services run across ${a.county} County, and which of them a job turns into depends on what is actually happening: in ${a.name} that usually starts with ${
         a.watch && a.watch[0] ? a.watch[0].term.charAt(0).toLowerCase() + a.watch[0].term.slice(1) : 'the conditions above'
       }.`,
     })}
@@ -773,7 +777,7 @@ ${mediaHero({
         <span class="card__eyebrow">${esc(g.eyebrow)}</span>
         <span class="card__t">${text(g.nav)}</span>
         <span class="card__d">${text(g.short)}</span>
-        <span class="card__more">Read the guide &rarr;</span>
+        <span class="card__more">Read the guide <span class="arr">&rarr;</span></span>
       </a>`,
         )
         .join('\n      ')}
@@ -874,7 +878,7 @@ ${g.sections.map(renderSection).join('\n\n')}
       h2: 'Where people go from here',
     })}
     ${relatedBlock(g.relatedServices, services)}
-    <p class="mt-lg muted"><a href="${url.process}">See every stage of a real remediation &rarr;</a> &mdash; the page this guide is asking you to hold a contractor to.</p>`}
+    <p class="mt-lg muted"><a href="${url.process}">See every stage of a real remediation &rarr;</a>. It is the page this guide is asking you to hold a contractor to.</p>`}
   </div>
 </section>
 
@@ -911,7 +915,7 @@ ${ctaBand(g.cta || {})}`;
               // Derived, not hardcoded: this was one guide's title applied to
               // every guide, so three shipped a step list announcing the wrong
               // article.
-              name: `${plain(checklist.h2)} — ${plain(g.h1)}`,
+              name: `${plain(checklist.h2)}: ${plain(g.h1)}`,
               description: g.description,
               steps: checklist.steps,
               path: p,
@@ -1103,7 +1107,7 @@ ${(about.sections || []).map(renderSection).join('\n\n')}
       if (site.license) rows.push(`<li><span class="deflist__t">${esc(site.licenseLabel)}</span><span class="deflist__d">${esc(site.license)}</span></li>`);
       if (site.certifications && site.certifications.length) rows.push(`<li><span class="deflist__t">Certifications</span><span class="deflist__d">${site.certifications.map(text).join('<br>')}</span></li>`);
       if (site.insurance) rows.push(`<li><span class="deflist__t">Insurance</span><span class="deflist__d">${text(site.insurance)}</span></li>`);
-      rows.push(`<li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear}${site.yearsInBusiness > 0 ? ` &mdash; ${site.yearsInBusiness} year${site.yearsInBusiness === 1 ? '' : 's'}` : ''} across Broward and Palm Beach County.</span></li>`);
+      rows.push(`<li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear}${site.yearsInBusiness > 0 ? ` (${site.yearsInBusiness} year${site.yearsInBusiness === 1 ? '' : 's'})` : ''} across Broward and Palm Beach County.</span></li>`);
       return `${sectionHead({ eyebrow: 'The company', h2: 'Who you are hiring' })}
     <ul class="deflist" role="list">
       ${rows.join('\n      ')}
@@ -1239,6 +1243,66 @@ ${(contact.sections || []).map(renderSection).join('\n\n')}
 /* ═══════════════════════════════════════════════════════════════════════════
    404
    ═══════════════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Privacy
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Added 2026-08-20, and it is the only page on this site that exists for a
+ * legal reason rather than a reader’s. GA4 and a live form endpoint both went
+ * in without one, which leaves visitors giving up a name and a phone number
+ * with nothing on the site saying where either goes. Google’s own Analytics
+ * terms require a notice disclosing the cookies too.
+ *
+ * It carries noindex. It is linked from the footer so a reader can always
+ * reach it, but it is not a page anybody should arrive at from a search, and
+ * leaving it out of the index also keeps it clear of the local-SEO surface
+ * the rest of the site is built for. It stays out of sitemap.xml for the same
+ * reason — see buildMeta.
+ */
+async function buildPrivacy() {
+  const p = url.privacy;
+  const trail = [{ name: 'Home', href: '/' }, { name: 'Privacy' }];
+
+  const body = `
+<section class="wrap phead">
+  <span class="eyebrow">${text(privacy.eyebrow)}</span>
+  <h1>${text(privacy.h1)}</h1>
+  <p class="lede">${text(privacy.lede)}</p>
+</section>
+
+${/* Everything except the last section, which is "Changes" and belongs after
+      the how-to-reach-us box rather than before it — a policy that explains how
+      it gets amended before it says who to ask is in the wrong order. */''}
+${privacy.sections.slice(0, -1).map(renderSection).join('\n\n')}
+
+<section class="section section--ruled defer">
+  <div class="wrap wrap--mid">
+    <div class="flagbox">
+      <h2 class="h3" id="${anchorId('Asking us about your information')}" tabindex="-1">Asking us about your information</h2>
+      <div class="body-block">
+        <p>Call <a href="tel:${site.phoneHref}">${esc(site.phoneDisplay)}</a> and ask. We can tell you what we hold from an enquiry you sent, and delete it if you want it gone.</p>
+        <p>${site.email ? `You can also write to <a href="mailto:${esc(site.email)}">${esc(site.email)}</a>.` : 'This site does not publish an email address yet, so the phone is the only route, and it is a real one.'}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+${renderSection(privacy.sections.at(-1))}
+
+<section class="section section--ruled">
+  <div class="wrap wrap--mid">
+    <p class="fineprint">Last updated ${text(privacy.updated)}.</p>
+  </div>
+</section>`;
+
+  await emit(p, page({
+    path: p, title: privacy.title, description: privacy.description, body, trail,
+    noindex: true,
+    schema: [graph({ path: p, title: privacy.title, description: privacy.description, trail })],
+  }));
+}
+
 async function build404() {
   const body = `
 <section class="wrap phead">
@@ -1281,7 +1345,7 @@ Allow: /
 Sitemap: ${site.origin}/sitemap.xml
 `
       : `# Not launched. Every page carries <meta name="robots" content="noindex">
-# until every claim in src/site.config.js is confirmed — see site.verified.
+# until every claim in src/site.config.js is confirmed. See site.verified.
 # Crawling stays allowed on purpose: a crawler has to fetch the page to read
 # the noindex on it, and Disallow alone can still leave the URL indexed.
 User-agent: *
@@ -1300,7 +1364,11 @@ Allow: /
     return '0.6';
   };
 
-  const routes = site.launchReady ? written.filter((r) => r !== '/404.html').sort() : [];
+  /* /privacy/ is excluded alongside the 404 because both are noindex, and a
+     sitemap that lists a noindex URL asks Google to crawl a page it is then
+     told to drop. The footer link is how readers reach it. */
+  const NO_SITEMAP = new Set(['/404.html', url.privacy]);
+  const routes = site.launchReady ? written.filter((r) => !NO_SITEMAP.has(r)).sort() : [];
   const urls = (
     await Promise.all(
       routes.map(async (r) => `  <url>
@@ -1499,6 +1567,68 @@ async function assertDiagramPulseSync() {
     throw new Error('diagram: pulse keyframes must move the dash forward — stroke-dashoffset has to fall monotonically');
 }
 
+/**
+ * The privacy page describes mechanisms that live in three other files: the
+ * GA4 id in site.config.js, the form endpoint in content.js, and the storage
+ * key in public/site.js. Prose cannot follow a refactor, so a privacy notice
+ * rots into a false statement the moment one of them moves — and unlike most
+ * stale copy, that one is a compliance problem rather than an untidy sentence.
+ *
+ * Each fact is re-read from its real source and looked for on the built page.
+ * Deliberately one-directional: this proves the page names what the site does,
+ * not that it names everything. Adding a tracker still needs a human to write
+ * the paragraph — no assertion can catch a silence.
+ */
+async function assertPrivacyDescribesReality() {
+  /* Scripts stripped first, and that is the whole point of this line. Searching
+     the raw html let the GA4 tag satisfy the GA4 assertion — the measurement id
+     appears in the gtag src on every page, so changing it kept the check green
+     while the disclosure still named the old one. The check has to read what a
+     visitor reads. */
+  const html = (await readFile(path.join(DIST, url.privacy, 'index.html'), 'utf8'))
+    .replace(/<script[\s\S]*?<\/script>/g, '');
+  const js = await readFile(path.join(ROOT, 'public/site.js'), 'utf8');
+  const endpointHost = contact.form.endpoint ? new URL(contact.form.endpoint).hostname : null;
+  const storageKey = (js.match(/var KEY = '([^']+)'/) || [])[1];
+
+  const facts = [
+    [site.analyticsId, 'the GA4 measurement id from site.config.js'],
+    [endpointHost, 'the form endpoint host from content.js'],
+    [storageKey, 'the localStorage key from public/site.js'],
+  ];
+  for (const [value, what] of facts) {
+    if (!value) continue;   // nothing configured is nothing to disclose
+    if (!html.includes(value))
+      throw new Error(`privacy: the page does not mention ${value} — ${what}. ` +
+        'Update /privacy/ to match, or it is describing a site that no longer exists.');
+  }
+  if (site.analyticsId && !html.includes('noindex'))
+    throw new Error('privacy: the page lost its noindex');
+}
+
+/**
+ * The owner banned em-dashes from the copy (2026-08-20). Every writer on this
+ * project since is an ex-user of them, so the ban is enforced where it can be
+ * seen: the built pages. Checks the character and the entity, in everything
+ * that renders, JSON-LD and attributes included. En-dashes in ranges are
+ * allowed. JS comments never reach dist; HTML comments do ship in the page
+ * bytes, so they are held to the ban too rather than stripped and excused:
+ * a zero nobody can argue with in view-source is the only clean zero.
+ */
+async function assertNoEmDash() {
+  for (const route of written) {
+    const file = route === '/404.html' ? path.join(DIST, '404.html') : path.join(DIST, route, 'index.html');
+    const html = await readFile(file, 'utf8');
+    for (const needle of ['\u2014', '&mdash;']) {
+      const i = html.indexOf(needle);
+      if (i !== -1)
+        throw new Error(
+          `em-dash on ${route}: "...${html.slice(Math.max(i - 50, 0), i + 50).replace(/\s+/g, ' ')}..." ` +
+          '(the owner banned them from the copy; rewrite with a colon, comma, or a new sentence)');
+    }
+  }
+}
+
 async function assertRoutingConsistent() {
   const problems = [];
   const indexable = new Map();
@@ -1543,6 +1673,7 @@ async function main() {
   await buildFaq();
   await buildAbout();
   await buildContact();
+  await buildPrivacy();
   await build404();
 
   // Static assets: fonts, stylesheet, favicon, client script
@@ -1553,6 +1684,8 @@ async function main() {
   assertProfileLinks();
   await assertRoutingConsistent();
   await assertDiagramPulseSync();
+  await assertPrivacyDescribesReality();
+  await assertNoEmDash();
   await assertSignalsUnique();
   await assertCopyClaimsMatch();
 
