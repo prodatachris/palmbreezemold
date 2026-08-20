@@ -2093,8 +2093,19 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 }
 
 /* ── Footer ────────────────────────────────────────────────────────────────── */
-.ftr { background: var(--ink); color: #b6c6d6; padding-block: clamp(3rem, 6vw, 4.5rem) 2rem; }
-.ftr a { color: #d3dfea; text-decoration: none; }
+/* The top edge is the one expressive divider the site allows itself: the
+   logo's breeze, brand into sky, fading out before the right margin. It is
+   painted as a background layer rather than a border so it costs no layout.
+   The column-heading ticks below echo the stat cards' gauge ticks, which
+   keeps the instrument language running through to the last block. */
+.ftr {
+  background:
+    linear-gradient(90deg, var(--brand), var(--sky) 38%, transparent 82%) top / 100% 2px no-repeat,
+    var(--ink);
+  color: #b6c6d6;
+  padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
+}
+.ftr a { color: #d3dfea; text-decoration: none; text-underline-offset: 0.22em; transition: color 0.15s ease; }
 .ftr a:hover { color: #fff; text-decoration: underline; }
 .ftr__grid {
   display: grid;
@@ -2128,6 +2139,15 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   text-transform: uppercase;
   color: #7f93a8;
   margin-bottom: 1rem;
+}
+.ftr h2::before {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--brand), var(--sky));
+  margin-bottom: 0.6rem;
 }
 .ftr ul { list-style: none; padding: 0; display: grid; gap: 0.55rem; font-size: 0.95rem; }
 .ftr__meta { font-size: 0.92rem; line-height: 1.65; }
