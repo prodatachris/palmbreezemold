@@ -20,6 +20,7 @@
 
 import { spawn } from 'node:child_process';
 import { setTimeout as sleep } from 'node:timers/promises';
+import { site } from '../src/site.config.js';
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const args = process.argv.slice(2);
@@ -681,7 +682,14 @@ const idsByRoute = new Map();
 const fragmentLinks = new Set();
 /** Fragment-bearing urls found inside JSON-LD, checked the same way. */
 const schemaFragmentLinks = new Set();
-const ORIGIN = 'https://www.palmbreezemold.com';
+/* Read from the config, never restated here. This was hardcoded with a www.
+   that site.config.js later dropped, and the mismatch made
+   href.replace(ORIGIN, '') a no-op: every schema url kept its scheme and host,
+   matched no route, and landed in the "not crawled" bucket. The check caught
+   it — that bucket exists precisely so skipped links are never dropped quietly
+   — but it reported 145 uncrawled pages when the real fault was one stale
+   string in the checker. Deriving it means the two cannot disagree. */
+const ORIGIN = site.origin.replace(/\/$/, '');
 
 try {
   const cdp = await connect();

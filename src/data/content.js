@@ -178,7 +178,7 @@ export const home = {
       },
       {
         title: 'We do not grade our own work',
-        text: 'Florida licenses assessors and remediators separately, and a company that assessed a property is barred from remediating it — [the specific rule runs twelve months](/faq/#does-florida-license-mold-remediation). Your clearance test comes from an independent assessor. That is what makes the passing result mean anything.',
+        text: 'Florida licenses assessors and remediators separately, and a company that assessed a property is barred from remediating it — [why that separation is the whole point](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate). Your clearance test comes from an independent assessor. That is what makes the passing result mean anything.',
       },
       {
         title: 'We fix the condition, not just the growth',

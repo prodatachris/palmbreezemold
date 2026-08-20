@@ -255,7 +255,7 @@ guides.push({
         },
         {
           title: 'Who does the clearance test?',
-          text: 'The answer you want is the name of an independent assessor, or an offer to refer you to one. Florida licenses assessment and remediation separately and restricts one company from doing both on the same property. [How to check a license number](/faq/#does-florida-license-mold-remediation) takes about a minute.',
+          text: 'The answer you want is the name of an independent assessor, or an offer to refer you to one. Florida licenses assessment and remediation separately and restricts one company from doing both on the same property. [The conflict that rule removes](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate) is worth a minute before you choose anyone.',
           check: 'If a company offers to test its own work, you have learned everything you need to know about how it operates.',
         },
         {
