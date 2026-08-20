@@ -844,6 +844,98 @@ h1, h2, h3, h4 {
   to { stroke-dashoffset: 0; }
 }
 
+/* Keyframes shared by BOTH paths: the native scroll-timeline block below and
+   the paused-and-scrubbed fallback that follows. They were defined inside
+   that @supports block, which meant Firefox -- the browser the fallback
+   exists for -- had no definition for them at all, and every fallback rule
+   referencing one silently did nothing. Defined once, out here, so the two
+   paths cannot drift and neither can be missing them. */
+@keyframes dg-travel-scroll {
+      0%    { stroke-dashoffset: 1;     opacity: 0; }
+      6%    { opacity: 0.9; }
+      20%   { stroke-dashoffset: 0.958; }  /* 1 return plenum */
+      40%   { stroke-dashoffset: 0.735; }  /* 2 evaporator coil */
+      50%   { stroke-dashoffset: 0.705; }  /* 3 drain pan */
+      66.7% { stroke-dashoffset: 0.606; }  /* 4 supply plenum */
+      90%   { stroke-dashoffset: 0.224; }  /* 5 register boot */
+      94%   { opacity: 0.9; }
+      100%  { stroke-dashoffset: 0;     opacity: 0; }
+    }
+@keyframes dg-arrive {
+      from { opacity: 0.35; }
+      to   { opacity: 1; }
+    }
+@keyframes dg-ping-scroll {
+      0%   { transform: scale(0.75); opacity: 0.55; }
+      70%  { transform: scale(1.75); opacity: 0; }
+      100% { transform: scale(1.75); opacity: 0; }
+    }
+
+/* ── Fig 1 without scroll-timeline ───────────────────────────────────────────
+   The diagram's whole thesis is that the reader's own scroll moves the air
+   through the system. Where animation-timeline is supported (Chrome and Edge
+   since 115, Safari since 26) the block far below does that natively and this
+   is not used.
+
+   FIREFOX HAS NO SUPPORT, and what it got instead was the timed one-shot on
+   .dg-pulse: 4.5s starting 2.6s after load, once. A reader who arrives at the
+   top of the page and scrolls down reaches the figure long after that has
+   finished, so the animation played to nobody and the diagram sat static. Not
+   a degraded version of the effect -- the absence of it.
+
+   So site.js drives --dg-cover (0 to 1, the figure's progress across the
+   viewport) and every animation below is PAUSED and scrubbed by a negative
+   delay. Duration is 1s purely so the delay arithmetic reads as a fraction;
+   nothing runs on a clock. The ranges mirror the native block exactly, which
+   is the point: two implementations of one effect that disagree is worse than
+   one that is missing.
+
+   Applied by attribute rather than by @supports-not, because site.js has
+   already made the same feature test and a second one in CSS is a second
+   thing to keep in step. */
+figure.diagram[data-scroll-fallback] .dg-flow,
+figure.diagram[data-scroll-fallback] .dg-pulse,
+figure.diagram[data-scroll-fallback] .dg-mark,
+figure.diagram[data-scroll-fallback] .dg-ring {
+  animation-duration: 1s;
+  animation-play-state: paused;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+}
+/* Draw, cover 0 -> 22%. The native rule starts at entry 10%, which has no
+   cover equivalent; 0 is the closest honest mapping and the line is drawn by
+   the time the figure is a fifth of the way across either way. */
+figure.diagram[data-scroll-fallback] .dg-flow {
+  animation-name: dg-draw;
+  animation-timing-function: cubic-bezier(0.36, 0.02, 0.2, 1);
+  animation-delay: calc(-1s * clamp(0, var(--dg-cover, 0) / 0.22, 1));
+}
+figure.diagram[data-scroll-fallback] .dg-flow--b,
+figure.diagram[data-scroll-fallback] .dg-flow--c,
+figure.diagram[data-scroll-fallback] .dg-flow--d {
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.18) / 0.12, 1));
+}
+/* The pulse, cover 18 -> 48%, on the same eased keyframes as the native path
+   so it still arrives at each marker where that marker sits. */
+figure.diagram[data-scroll-fallback] .dg-pulse {
+  animation-name: dg-travel-scroll;
+  animation-timing-function: linear;
+  opacity: 1;
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.18) / 0.30, 1));
+}
+/* Markers light in airflow order. --lead is a percentage in the markup, so it
+   is divided by 100% to reach the unitless fraction calc needs here. */
+figure.diagram[data-scroll-fallback] .dg-mark {
+  animation-name: dg-arrive;
+  animation-timing-function: ease-out;
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - (var(--lead) / 100%)) / 0.05, 1));
+}
+figure.diagram[data-scroll-fallback] .dg-ring {
+  animation-name: dg-ping-scroll;
+  animation-timing-function: ease-out;
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - (var(--lead) / 100%)) / 0.08, 1));
+}
+
 /* A slow travelling pulse that reads as air moving through the system */
 .dg-pulse {
   fill: none;
@@ -999,17 +1091,8 @@ h1, h2, h3, h4 {
        plenums, where four of the five markers stack inside the first 40% of
        the run, then travels once it reaches open duct. That is also the
        order a technician works in, and roughly how the air behaves. */
-    @keyframes dg-travel-scroll {
-      0%    { stroke-dashoffset: 1;     opacity: 0; }
-      6%    { opacity: 0.9; }
-      20%   { stroke-dashoffset: 0.958; }  /* 1 return plenum */
-      40%   { stroke-dashoffset: 0.735; }  /* 2 evaporator coil */
-      50%   { stroke-dashoffset: 0.705; }  /* 3 drain pan */
-      66.7% { stroke-dashoffset: 0.606; }  /* 4 supply plenum */
-      90%   { stroke-dashoffset: 0.224; }  /* 5 register boot */
-      94%   { opacity: 0.9; }
-      100%  { stroke-dashoffset: 0;     opacity: 0; }
-    }
+    /* @keyframes dg-travel-scroll is defined outside this block, above, so the
+       scroll-timeline path and the JS fallback share ONE definition. */
     /* Markers light in airflow order. Each one's window is offset by its index
        so 1 lights first and 5 last, tracking the pulse's arrival. */
     /* Windows sit where each marker is actually on screen. The first schedule
@@ -1034,20 +1117,15 @@ h1, h2, h3, h4 {
       animation-timeline: --airpath;
       animation-range: cover var(--lead) cover calc(var(--lead) + 5%);
     }
-    @keyframes dg-arrive {
-      from { opacity: 0.35; }
-      to   { opacity: 1; }
-    }
+    /* @keyframes dg-arrive is defined outside this block, above, so the
+       scroll-timeline path and the JS fallback share ONE definition. */
     figure.diagram .dg-ring {
       animation: dg-ping-scroll auto ease-out both;
       animation-timeline: --airpath;
       animation-range: cover var(--lead) cover calc(var(--lead) + 8%);
     }
-    @keyframes dg-ping-scroll {
-      0%   { transform: scale(0.75); opacity: 0.55; }
-      70%  { transform: scale(1.75); opacity: 0; }
-      100% { transform: scale(1.75); opacity: 0; }
-    }
+    /* @keyframes dg-ping-scroll is defined outside this block, above, so the
+       scroll-timeline path and the JS fallback share ONE definition. */
     /* The legend entries beside the diagram arrive with their marker. */
     /* The legend sits ~740px below the diagram on the home page — it cannot
        light "with its marker" in the same viewport, and on a phone it was

@@ -301,3 +301,83 @@
       });
   });
 })();
+
+/* ── Fig 1: scroll-drive the diagram where CSS cannot ─────────────────────
+   The air-path diagram's thesis is that the reader's own scroll carries the
+   air through the system. Chrome and Edge (115+) and Safari (26+) do that
+   natively with animation-timeline; Firefox has no support, and what it got
+   instead was a 4.5s clip starting 2.6s after load, once — finished long
+   before anyone scrolled down to the figure. The animation played to nobody.
+
+   So where the feature is missing, this drives --dg-cover and the paused
+   animations in styles.css are scrubbed by it. Same ranges, same keyframes,
+   one effect.
+
+   NOTHING RUNS WHERE THE NATIVE PATH WORKS. The feature test is the same one
+   the CSS uses, and on a supporting browser this returns immediately without
+   attaching a listener. */
+(function () {
+  var figures = document.querySelectorAll('figure.diagram');
+  if (!figures.length) return;
+
+  /* Identical to the CSS @supports condition. The animation-range half is not
+     optional: some browsers shipped animation-timeline without it, and a
+     partial implementation is the one case where both paths would run. */
+  var native = window.CSS && CSS.supports &&
+    CSS.supports('(animation-timeline: view()) and (animation-range: entry)');
+  if (native) return;
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduce && reduce.matches) return;
+
+  var frame = null;
+
+  function cover(el) {
+    /* The `cover` range, matching the CSS: 0 when the element's top edge meets
+       the bottom of the viewport, 1 when its bottom edge leaves the top. The
+       denominator is viewport + element height, which is the distance the
+       element travels through the viewport. */
+    var r = el.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var travelled = vh - r.top;
+    var total = vh + r.height;
+    var p = travelled / total;
+    return p < 0 ? 0 : p > 1 ? 1 : p;
+  }
+
+  function update() {
+    frame = null;
+    for (var i = 0; i < figures.length; i++) {
+      figures[i].style.setProperty('--dg-cover', cover(figures[i]).toFixed(4));
+    }
+  }
+
+  function onScroll() {
+    if (frame !== null) return;
+    frame = window.requestAnimationFrame(update);
+  }
+
+  for (var i = 0; i < figures.length; i++) {
+    figures[i].setAttribute('data-scroll-fallback', '');
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+
+  /* Turning the preference on mid-session stops it and hands the figure back
+     to its static state, rather than leaving it frozen mid-animation. */
+  if (reduce) {
+    var off = function () {
+      if (!reduce.matches) return;
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      for (var j = 0; j < figures.length; j++) {
+        figures[j].removeAttribute('data-scroll-fallback');
+        figures[j].style.removeProperty('--dg-cover');
+      }
+    };
+    if (reduce.addEventListener) reduce.addEventListener('change', off);
+    else if (reduce.addListener) reduce.addListener(off);
+  }
+})();
