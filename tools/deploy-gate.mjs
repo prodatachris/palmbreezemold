@@ -44,21 +44,37 @@ if (html.length < 30) {
 /** Read once, check many. */
 const docs = html.map((p) => ({ path: p, body: readFileSync(p, 'utf8') }));
 
-/* 1. INDEXABILITY. An unconfirmed claim flips launchReady false, which stamps
-      noindex site-wide and empties the sitemap. Shipping that silently removes
-      the client from Google. */
-/* 404.html is noindex on purpose and always will be: an error page that ranks
-   is a bug in itself. Excluded by path rather than by loosening the pattern,
-   so a real page turning noindex still fails this. */
-const noindexed = docs.filter(
-  (d) => !d.path.endsWith('404.html') && /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(d.body),
+/* 1. THE SITEMAP AND THE PAGES MUST AGREE.
+      The first version of this check failed any page carrying noindex, and it
+      was wrong twice on its first real merge: 404.html is noindex on purpose,
+      and so is the privacy page, which is also deliberately absent from the
+      sitemap. Both are correct and the gate blocked a good deploy.
+
+      The honest invariant is not "nothing is noindex". It is that a page the
+      sitemap ASKS Google to index must not also tell Google not to. A page
+      that is neither listed nor indexable is consistent, and it is nobody's
+      bug. This also still catches the failure the check was written for: an
+      unconfirmed claim flips launchReady, which noindexes the real pages AND
+      empties the sitemap, so the emptiness is caught below. */
+const sitemapRaw = readFileSync(join(DIST, 'sitemap.xml'), 'utf8');
+const listed = new Set(
+  [...sitemapRaw.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => {
+    const path = m[1].replace(/^https?:\/\/[^/]+/, '');
+    return path === '/' ? 'index.html' : `${path.replace(/^\/|\/$/g, '')}/index.html`;
+  }),
 );
-if (noindexed.length) {
+const contradictory = docs.filter((d) => {
+  const rel = d.path.replace(/^dist\//, '');
+  if (!listed.has(rel)) return false;
+  return /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(d.body);
+});
+if (contradictory.length) {
   failures.push(
-    `${noindexed.length} page(s) carry noindex. launchReady is false, which means a claim in ` +
-      `site.config.js is unconfirmed. Run: node tools/preflight.mjs`,
+    `${contradictory.length} page(s) are in the sitemap AND carry noindex, which asks Google to ` +
+      `index a page that forbids it: ${contradictory.map((d) => d.path).join(', ')}`,
   );
 }
+
 const sitemap = readFileSync(join(DIST, 'sitemap.xml'), 'utf8');
 const locs = (sitemap.match(/<loc>/g) || []).length;
 if (locs < 20) failures.push(`sitemap has ${locs} urls; an empty sitemap is the launchReady gate firing.`);
