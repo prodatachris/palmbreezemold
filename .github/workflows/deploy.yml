@@ -1,0 +1,95 @@
+# Push to main, and the site is live a few minutes later.
+#
+# NO KEYS. Authentication is Workload Identity Federation: GitHub mints a
+# short-lived OIDC token, Google exchanges it for a credential, and nothing
+# long-lived is ever stored in this repository. The trust is scoped to this one
+# repo -- the binding names prodatachris/palmbreezemold specifically, so a fork
+# or another repo in the same account cannot impersonate the deployer.
+#
+# THE GATE IS THE POINT, not the deploy. An unconfirmed claim in site.config.js
+# does not fail the build: it flips launchReady false, stamps noindex on every
+# page and empties the sitemap, and the build then reports success. On a
+# push-to-deploy pipeline that means the site silently leaves Google's index
+# with nobody reading the log. tools/deploy-gate.mjs reads the BUILT pages and
+# refuses on that, on a rendered "null", on a lost form endpoint, on a missing
+# analytics tag, and on the placeholder credentials that were live once.
+#
+# Cloud Build fetches the source from GitHub, so nothing is uploaded from a
+# laptop. That also removes the failure that made the first four manual deploys
+# time out.
+
+name: Deploy palmbreezemold.com
+
+on:
+  push:
+    branches: [main]
+  # Buildable on demand, for a redeploy with no code change.
+  workflow_dispatch:
+
+# Two at once would race to serve traffic; the later push should win.
+concurrency:
+  group: deploy-pbm
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write        # required to mint the OIDC token
+
+env:
+  PROJECT: rankengineai
+  REGION: us-central1
+  SERVICE: client-pbm
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # The generator has no dependencies, so there is nothing to install.
+      - name: Build the site
+        run: node build.mjs
+
+      - name: Deploy gate
+        run: node tools/deploy-gate.mjs
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/852121584956/locations/global/workloadIdentityPools/github/providers/github-oidc
+          service_account: client-site-deployer@rankengineai.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build the image
+        run: |
+          TAG="${REGION}-docker.pkg.dev/${PROJECT}/client-sites/pbm:${GITHUB_SHA::7}"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          gcloud builds submit . --tag="$TAG" --project="$PROJECT" --timeout=1200
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy "$SERVICE" \
+            --image="$TAG" \
+            --region="$REGION" \
+            --project="$PROJECT" \
+            --port=8080 --cpu=1 --memory=512Mi \
+            --concurrency=80 --timeout=300 --max-instances=5 \
+            --ingress=all \
+            --service-account=client-site-runtime@rankengineai.iam.gserviceaccount.com \
+            --allow-unauthenticated
+
+      # The domain mapping is never touched here. It is created once and traffic
+      # follows the service, not the image; re-mapping per deploy would be a way
+      # to break a live customer for no reason.
+      - name: Verify the live site
+        run: |
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /dev/null -m 20 -w '%{http_code}' https://palmbreezemold.com/ || true)
+            [ "$CODE" = "200" ] && echo "live: $CODE" && exit 0
+            echo "attempt $i: $CODE"; sleep 10
+          done
+          echo "the domain is not serving 200 after deploy"; exit 1
