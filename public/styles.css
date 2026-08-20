@@ -1708,9 +1708,24 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 
 /* ── FAQ accordion ─────────────────────────────────────────────────────────── */
 .faq { border-top: 1px solid var(--rule); }
+/* The rows bleed 1rem past the text column on both sides, so hover and open
+   washes can paint a ground without moving a single glyph: padding and the
+   negative margin cancel exactly, and the wrap's gutter (min 20px) still
+   clears the 16px bleed at 320. The open item lifts to paper behind a brand
+   spine, which is what lets a reader scan a long FAQ for the ones they
+   opened. */
 .faq details {
   border-bottom: 1px solid var(--rule-soft);
+  padding-inline: 1rem;
+  margin-inline: -1rem;
+  transition: background-color 0.18s ease;
 }
+.faq details:not([open]):hover { background-color: rgba(255, 255, 255, 0.55); }
+.faq details[open] {
+  background-color: var(--paper);
+  box-shadow: inset 3px 0 0 var(--brand);
+}
+.faq details[open] summary { color: var(--brand-deep); }
 .faq summary {
   list-style: none;
   cursor: pointer;
@@ -1734,8 +1749,9 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   border-right: 1.5px solid var(--brand);
   border-bottom: 1.5px solid var(--brand);
   transform: rotate(45deg);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, top 0.2s ease, border-color 0.15s ease;
 }
+.faq summary:hover::after { border-color: var(--brand-deep); }
 .faq details[open] summary::after { transform: rotate(-135deg); top: 1.85rem; }
 .faq summary:hover { color: var(--brand-deep); }
 /* No right padding: the 2.5rem on the summary exists to clear the chevron,
@@ -1743,6 +1759,13 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
    answer 40px of width and made it the narrowest text on a phone (35ch vs
    40-44ch everywhere else). max-width still holds the desktop measure. */
 .faq__a { padding: 0 0 1.5rem; color: var(--slate); max-width: 70ch; }
+@media (prefers-reduced-motion: no-preference) {
+  .faq details[open] .faq__a { animation: faq-in 0.28s cubic-bezier(0.2, 0.6, 0.2, 1); }
+  @keyframes faq-in {
+    from { opacity: 0; translate: 0 -4px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+}
 .faq__a > * + * { margin-top: 0.9em; }
 
 /* In-page navigation, used by the FAQ and by any page with four or more
