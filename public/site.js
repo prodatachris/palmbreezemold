@@ -374,6 +374,12 @@
         form.reset();
         say('Thank you. We have your message and will call you back.', true);
         button.textContent = 'Sent';
+        /* On acceptance, not on send. Firing when the request leaves counts
+           leads the endpoint rejected, and a conversion number that is higher
+           than the leads actually captured is worse than no number. */
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'generate_lead', { form_source: 'contact', page_path: window.location.pathname });
+        }
       })
       .catch(function () {
         /* Never claim it sent. The phone number is the recovery route, and it
@@ -463,4 +469,25 @@
     if (reduce.addEventListener) reduce.addEventListener('change', off);
     else if (reduce.addListener) reduce.addListener(off);
   }
+})();
+
+/* ── Phone clicks as a conversion ─────────────────────────────────────────
+   The form is not the main channel here: the copy tells people to call, the
+   number is in the header on every page, and the site says a call takes about
+   four minutes. Counting only form submits would credit the wrong pages and
+   understate the site's actual output.
+
+   Delegated from the document, because the number appears in the header, the
+   hero, the CTA band and the footer, and a listener per link is four listeners
+   per page that all do the same thing. */
+(function () {
+  if (typeof window.gtag !== 'function') return;
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href^="tel:"]');
+    if (!a) return;
+    window.gtag('event', 'contact', {
+      method: 'phone',
+      page_path: window.location.pathname
+    });
+  }, { passive: true });
 })();

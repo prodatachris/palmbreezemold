@@ -59,6 +59,21 @@ export const site = {
     lng: -80.1373,
   },
   hideAddress: true,
+  /**
+   * GA4 measurement id. Empty string means no analytics is emitted at all,
+   * which is the state this site launched in.
+   *
+   * gtag DIRECTLY RATHER THAN THROUGH TAG MANAGER, and the reason is what this
+   * site is. GTM earns its container when somebody who cannot deploy needs to
+   * add tags; here the same people who would open that console also run the
+   * deploy, which is one command. What the container costs is a second place
+   * where configuration lives, outside version control, that no code review
+   * ever sees -- and 90 KB and an extra request in front of a 20 KB script on
+   * a site whose readers are on phones. If a third party ever needs tag access
+   * without deploy access, that is the day GTM starts paying for itself.
+   */
+  analyticsId: 'G-EE6SMM9HMT',
+
   /** Real: Broward and Palm Beach County are both America/New_York. Used to
    *  date the sitemap — see the note on lastmodFor in build.mjs. */
   timezone: 'America/New_York',

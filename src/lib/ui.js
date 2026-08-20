@@ -752,6 +752,14 @@ ${noindex ? '<meta name="robots" content="noindex, follow">\n' : ''}<meta name="
 <link rel="icon" href="/assets/favicon-64.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 ${jsonld}
+${site.analyticsId ? `<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=${esc(site.analyticsId)}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '${esc(site.analyticsId)}');
+</script>` : ''}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
