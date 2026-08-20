@@ -136,7 +136,7 @@ export function header(path) {
   return `
 <header class="hdr">
   <div class="wrap hdr__bar">
-    <a class="brand" href="/" aria-label="${esc(site.name)} &mdash; home">
+    <a class="brand" href="/" aria-label="${esc(site.name)}, home">
       ${brandLockup({ cls: 'brand__logo' })}
       <span class="brand__sub">${esc(site.tagline)}</span>
     </a>
@@ -524,7 +524,7 @@ export function ctaBand({ h2, body, eyebrow = 'Next step' } = {}) {
     <div>
       <span class="eyebrow">${text(eyebrow)}</span>
       <h2>${text(h2 || 'Tell us what you are seeing and we will tell you what it is')}</h2>
-      <p>${text(body || 'We come out, look at what is happening, and write you a scope you could hand to another company. Walkthrough rather than assessment on purpose — assessment is the separately licensed job we refer out. If it turns out you do not need remediation, we will say so — that is the most useful thing we can tell you.')}</p>
+      <p>${text(body || 'We come out, look at what is happening, and write you a scope you could hand to another company. Walkthrough rather than assessment on purpose: assessment is the separately licensed job we refer out. If it turns out you do not need remediation, we will say so. That is the most useful thing we can tell you.')}</p>
     </div>
     <div>
       <a class="cta-band__phone" href="tel:${esc(site.phoneHref)}">${esc(site.phoneDisplay)}</a>
@@ -608,7 +608,7 @@ export function footer() {
     </div>
 
     <!-- Paper only. Printing hides the header, the call bar and the CTA band,
-         which between them carry every phone number on the page — a printed
+         which between them carry every phone number on the page. A printed
          copy of the process checklist had the license number and no way to
          reach anybody. These pages get printed and handed to a spouse, a board,
          or an adjuster, so the number goes on the sheet. -->
@@ -711,7 +711,7 @@ export function page({
     url: abs(sharePath),
     w: measured ? measured.w : (ogImage ? 1376 : 1200),
     h: measured ? measured.h : (ogImage ? 768 : 630),
-    alt: ogImage ? ogImageAlt : `${site.name} — ${site.tagline}`,
+    alt: ogImage ? ogImageAlt : `${site.name}: ${site.tagline}`,
   };
   const jsonld = schema.length
     ? `<script type="application/ld+json">${JSON.stringify(schema.length === 1 ? schema[0] : schema).replace(/</g, '\\u003c')}</script>`

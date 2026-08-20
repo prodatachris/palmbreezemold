@@ -171,7 +171,7 @@ ${mediaHero({
   video: 'hero-air-handler',
   alt: altOf('air-handler-closet'),
   actions: heroActions,
-  caption: 'Air handler, evaporator coil and drain pan — the wettest assembly in a South Florida house.',
+  caption: 'Air handler, evaporator coil and drain pan: the wettest assembly in a South Florida house.',
   extra: `<dl class="assure assure--onink">
       ${home.assurances
         .map(
@@ -189,7 +189,7 @@ ${mediaHero({
       <div class="dg-runway">
       <figure class="diagram">
         ${airPathDiagram('home')}
-        <figcaption>Fig. 1 &mdash; Air path through a typical Broward or Palm Beach single-story home. Markers 1&ndash;5 are the five commonest places growth turns up, numbered in the order the air reaches them.</figcaption>
+        <figcaption>Fig. 1: Air path through a typical Broward or Palm Beach single-story home. Markers 1&ndash;5 are the five commonest places growth turns up, numbered in the order the air reaches them.</figcaption>
       </figure>
       </div>
     </div>
@@ -292,7 +292,7 @@ async function buildServices() {
 ${mediaHero({
   eyebrow: 'Services',
   h1: 'Six services, and an honest read on which one you need',
-  lede: 'Every page below explains the mechanism, not just the offer — what causes the problem in South Florida specifically, what the work involves, and where the industry cuts corners.',
+  lede: 'Every page below explains the mechanism, not just the offer: what causes the problem in South Florida specifically, what the work involves, and where the industry cuts corners.',
   image: 'duct-board-plenum',
   alt: altOf('duct-board-plenum'),
   caption: 'Fiberglass duct board plenum interior. Cleaning does not restore a colonized fiber mat.',
@@ -318,7 +318,7 @@ ${servicesHub.sections.map(renderSection).join('\n\n')}
     })}
     ${deflist([
       { term: 'You can smell it when the AC runs', text: 'Start with HVAC and AC mold remediation. A smell that tracks with the air conditioning cycle is coming from the equipment or the ducts, not from a room.' },
-      { term: 'You can see it on a wall or ceiling', text: 'Start with mold remediation. If there is a dark ring specifically around an AC register, read the HVAC page too — that is a condensation pattern, not a roof leak.' },
+      { term: 'You can see it on a wall or ceiling', text: 'Start with mold remediation. If there is a dark ring specifically around an AC register, read the HVAC page too. That is a condensation pattern, not a roof leak.' },
       { term: 'Something is wet right now', text: 'Water damage and mold cleanup, today. The window between a water loss and a mold job is about two days in this climate.' },
       { term: 'You have symptoms but cannot find anything', text: 'Mold inspection and testing. That is the case where sampling genuinely earns its cost, because you need to know whether there is an interior source at all.' },
       { term: 'You are buying a house', text: 'Mold inspection and testing, from an independent licensed assessor. A standard home inspection is not a mold assessment and most inspectors say so in their own report.' },
@@ -417,7 +417,7 @@ ${mediaHero({
     <div class="dg-runway">
     <figure class="diagram mt-lg">
       ${airPathDiagram('svc')}
-      <figcaption>Fig. 1 &mdash; The air path, numbered in the order the air reaches each point. These are five of the seven places listed below; the list is ordered by how often we find each one instead, so the numbers here and the numbers there are answering different questions.</figcaption>
+      <figcaption>Fig. 1: The air path, numbered in the order the air reaches each point. These are five of the seven places listed below; the list is ordered by how often we find each one instead, so the numbers here and the numbers there are answering different questions.</figcaption>
     </figure>
     </div>` : ''}
     ${nav}
@@ -467,7 +467,7 @@ ${svcGuides.length ? `
   <div class="wrap">
     ${sectionHead({ eyebrow: 'Related', h2: 'Where people go from here' })}
     ${relatedBlock(s.related, services)}
-    <p class="mt-lg muted">Serving ${counties.map((c) => c.name).join(' and ')} &mdash; <a href="${url.areas}">see every city we cover</a>.</p>
+    <p class="mt-lg muted">Serving ${counties.map((c) => c.name).join(' and ')}. <a href="${url.areas}">See every city we cover</a>.</p>
   </div>
 </section>
 
@@ -509,13 +509,13 @@ async function buildAreas() {
   const trail = [{ name: 'Home', href: '/' }, { name: 'Service Areas' }];
   const title = 'Service Areas | Mold Remediation Broward & Palm Beach';
   const description =
-    'Every city we cover across Broward and Palm Beach County, from Hallandale Beach to Jupiter — with what the housing stock in each one actually does.';
+    'Every city we cover across Broward and Palm Beach County, from Hallandale Beach to Jupiter, with what the housing stock in each one actually does.';
 
   const body = `
 ${mediaHero({
   eyebrow: 'Coverage',
   h1: 'Broward and Palm Beach County, city by city',
-  lede: site.serviceRadiusNote + ' Housing stock changes every few miles down here — a 1952 CBS ranch in Victoria Park and a 2004 Valencia home in Boynton fail in completely different ways.',
+  lede: site.serviceRadiusNote + ' Housing stock changes every few miles down here: a 1952 CBS ranch in Victoria Park and a 2004 Valencia home in Boynton fail in completely different ways.',
   image: 'broward-street',
   alt: altOf('broward-street'),
   caption: 'East Broward concrete block and stucco, mid-century. Sealed up decades after it was built to breathe.',
@@ -607,7 +607,7 @@ ${mediaHero({
           .map((x) => `[${x.name}](${url.area(x.slug)})`);
         if (!kin.length) return `Typical ${a.name} housing stock. The failure modes below follow from how these houses were built.`;
         const list = kin.length === 1 ? kin[0] : `${kin.slice(0, -1).join(', ')} and ${kin[kin.length - 1]}`;
-        return `Housing stock ${a.name} shares with ${list} — which is why the failure modes below are the same in all of them.`;
+        return `Housing stock ${a.name} shares with ${list}, which is why the failure modes below are the same in all of them.`;
       })(),
   actions: heroActions,
 })}
@@ -639,7 +639,7 @@ ${mediaHero({
       // Palm Beach County." standing alone on nine pages, which the prose check
       // correctly failed. The city-specific half has to be in the same sentence
       // as the shared half for the whole line to be distinct.
-      note: `The same six services run across ${a.county} County, and which of them a job turns into depends on what is actually happening — in ${a.name} that usually starts with ${
+      note: `The same six services run across ${a.county} County, and which of them a job turns into depends on what is actually happening: in ${a.name} that usually starts with ${
         a.watch && a.watch[0] ? a.watch[0].term.charAt(0).toLowerCase() + a.watch[0].term.slice(1) : 'the conditions above'
       }.`,
     })}
@@ -878,7 +878,7 @@ ${g.sections.map(renderSection).join('\n\n')}
       h2: 'Where people go from here',
     })}
     ${relatedBlock(g.relatedServices, services)}
-    <p class="mt-lg muted"><a href="${url.process}">See every stage of a real remediation &rarr;</a> &mdash; the page this guide is asking you to hold a contractor to.</p>`}
+    <p class="mt-lg muted"><a href="${url.process}">See every stage of a real remediation &rarr;</a>. It is the page this guide is asking you to hold a contractor to.</p>`}
   </div>
 </section>
 
@@ -915,7 +915,7 @@ ${ctaBand(g.cta || {})}`;
               // Derived, not hardcoded: this was one guide's title applied to
               // every guide, so three shipped a step list announcing the wrong
               // article.
-              name: `${plain(checklist.h2)} — ${plain(g.h1)}`,
+              name: `${plain(checklist.h2)}: ${plain(g.h1)}`,
               description: g.description,
               steps: checklist.steps,
               path: p,
@@ -1107,7 +1107,7 @@ ${(about.sections || []).map(renderSection).join('\n\n')}
       if (site.license) rows.push(`<li><span class="deflist__t">${esc(site.licenseLabel)}</span><span class="deflist__d">${esc(site.license)}</span></li>`);
       if (site.certifications && site.certifications.length) rows.push(`<li><span class="deflist__t">Certifications</span><span class="deflist__d">${site.certifications.map(text).join('<br>')}</span></li>`);
       if (site.insurance) rows.push(`<li><span class="deflist__t">Insurance</span><span class="deflist__d">${text(site.insurance)}</span></li>`);
-      rows.push(`<li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear}${site.yearsInBusiness > 0 ? ` &mdash; ${site.yearsInBusiness} year${site.yearsInBusiness === 1 ? '' : 's'}` : ''} across Broward and Palm Beach County.</span></li>`);
+      rows.push(`<li><span class="deflist__t">In business since</span><span class="deflist__d">${site.foundingYear}${site.yearsInBusiness > 0 ? ` (${site.yearsInBusiness} year${site.yearsInBusiness === 1 ? '' : 's'})` : ''} across Broward and Palm Beach County.</span></li>`);
       return `${sectionHead({ eyebrow: 'The company', h2: 'Who you are hiring' })}
     <ul class="deflist" role="list">
       ${rows.join('\n      ')}
@@ -1345,7 +1345,7 @@ Allow: /
 Sitemap: ${site.origin}/sitemap.xml
 `
       : `# Not launched. Every page carries <meta name="robots" content="noindex">
-# until every claim in src/site.config.js is confirmed — see site.verified.
+# until every claim in src/site.config.js is confirmed. See site.verified.
 # Crawling stays allowed on purpose: a crawler has to fetch the page to read
 # the noindex on it, and Disallow alone can still leave the URL indexed.
 User-agent: *
@@ -1606,6 +1606,29 @@ async function assertPrivacyDescribesReality() {
     throw new Error('privacy: the page lost its noindex');
 }
 
+/**
+ * The owner banned em-dashes from the copy (2026-08-20). Every writer on this
+ * project since is an ex-user of them, so the ban is enforced where it can be
+ * seen: the built pages. Checks the character and the entity, in everything
+ * that renders, JSON-LD and attributes included. En-dashes in ranges are
+ * allowed. JS comments never reach dist; HTML comments do ship in the page
+ * bytes, so they are held to the ban too rather than stripped and excused:
+ * a zero nobody can argue with in view-source is the only clean zero.
+ */
+async function assertNoEmDash() {
+  for (const route of written) {
+    const file = route === '/404.html' ? path.join(DIST, '404.html') : path.join(DIST, route, 'index.html');
+    const html = await readFile(file, 'utf8');
+    for (const needle of ['\u2014', '&mdash;']) {
+      const i = html.indexOf(needle);
+      if (i !== -1)
+        throw new Error(
+          `em-dash on ${route}: "...${html.slice(Math.max(i - 50, 0), i + 50).replace(/\s+/g, ' ')}..." ` +
+          '(the owner banned them from the copy; rewrite with a colon, comma, or a new sentence)');
+    }
+  }
+}
+
 async function assertRoutingConsistent() {
   const problems = [];
   const indexable = new Map();
@@ -1662,6 +1685,7 @@ async function main() {
   await assertRoutingConsistent();
   await assertDiagramPulseSync();
   await assertPrivacyDescribesReality();
+  await assertNoEmDash();
   await assertSignalsUnique();
   await assertCopyClaimsMatch();
 
