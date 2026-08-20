@@ -447,7 +447,7 @@ ${items
 </ul>`;
 
 export const stepList = (items) => `
-<ol class="steps" role="list">
+<ol class="steps${items.some((i) => i.duration) ? ' steps--timed' : ''}" role="list">
 ${items
   .map(
     (s) => `  <li>

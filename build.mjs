@@ -349,6 +349,21 @@ function renderSection(sec) {
   ].filter(Boolean).join('\n      ');
 
   if (sec.flag) {
+    /* With an eyebrow the head hoists out of the box and joins the standard
+       section grammar (sectionHead carries the same anchor id, so jump-nav
+       fragments survive); the box keeps only the content it is flagging.
+       Without one, the compact all-in-box form stays — the privacy and
+       process flag sections read better small. */
+    if (sec.eyebrow) {
+      return `<section class="section section--ruled defer">
+  <div class="wrap">
+    ${sectionHead({ eyebrow: sec.eyebrow, h2: sec.h2, note: sec.note, wide: true })}
+    <div class="flagbox">
+      ${inner}
+    </div>
+  </div>
+</section>`;
+    }
     return `<section class="section section--ruled defer">
   <div class="wrap wrap--mid">
     <div class="flagbox">

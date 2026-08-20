@@ -1662,6 +1662,21 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 @media (min-width: 820px) {
   .steps > li { grid-template-columns: 3.5rem minmax(0, 1fr); }
   .steps > li::before { grid-row: 1 / span 4; }
+  /* Timed lists (the ten process stages) give the duration its own right
+     rail: the one instrument reading per stage was hiding as an 11px label
+     under the title while the row's rule overshot 400px of empty haze. Only
+     lists that actually carry durations take the third column. */
+  .steps--timed > li { grid-template-columns: 3.5rem minmax(0, 1fr) 9.5rem; }
+  .steps--timed .steps__meta {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    text-align: right;
+    margin-top: 0.4rem;
+  }
+  .steps--timed .steps__t,
+  .steps--timed .steps__d,
+  .steps--timed .steps__check { grid-column: 2; }
 }
 .steps > li::before {
   content: counter(step, decimal-leading-zero);
@@ -1674,8 +1689,10 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 .steps__t {
   font-family: var(--font-display);
   font-weight: 660;
-  font-size: 1.12rem;
-  letter-spacing: -0.022em;
+  /* One step up the scale: at 1.12rem the ten stage titles sat visually
+     below the 19px serif body they head. */
+  font-size: 1.26rem;
+  letter-spacing: -0.024em;
   text-wrap: balance;
 }
 /* Measured at 103ch without this. Body prose elsewhere on the site holds

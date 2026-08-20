@@ -272,6 +272,7 @@ guides.push({
     },
     {
       h2: 'Three quotes that should worry you',
+      eyebrow: 'The red flags',
       flag: true,
       body: [
         'A free mold inspection followed by that same company’s remediation quote. In Florida those are two separate licenses and [one company is restricted from doing both](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate) on the same structure. A free visual walkthrough from a remediation company is a normal sales call and is fine. A free “inspection” presented as an assessment is not the same thing.',
