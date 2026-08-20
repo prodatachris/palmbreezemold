@@ -1333,21 +1333,40 @@ figure.diagram[data-scroll-fallback] .dg-air {
 .legend__d { font-size: 0.94rem; line-height: 1.55; color: var(--slate); grid-column: 2; }
 
 /* ── Signals — the measured numbers ────────────────────────────────────────── */
+/* Restyled from joined haze cells with 1px rule gaps, which read as a strip
+   of spreadsheet. Each number is now its own instrument readout: a paper
+   card under the house lift, opened with a short brand-to-sky tick. The tick
+   is the logo's own colour pair and deliberately not --flag, which this
+   stylesheet reserves for risk and action; these are measurements. */
 .signals {
   display: grid;
-  gap: 1px;
-  background: var(--rule);
-  border-block: 1px solid var(--rule);
+  gap: clamp(0.75rem, 1.6vw, 1rem);
   list-style: none;
   padding: 0;
 }
 @media (min-width: 780px) { .signals { grid-template-columns: repeat(3, 1fr); } }
-.signals li { background: var(--haze); padding: 1.6rem clamp(1rem, 2.5vw, 1.75rem); }
+.signals li {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--lift);
+  padding: 1.6rem clamp(1rem, 2.5vw, 1.75rem);
+}
+.signals li::before {
+  content: '';
+  display: block;
+  width: 2.25rem;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--sky));
+  margin-bottom: 1rem;
+}
 .signals__v {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.85rem, 1.3rem + 1.7vw, 2.6rem);
   letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
   color: var(--brand-deep);
   line-height: 1;
   margin-bottom: 0.7rem;
