@@ -180,6 +180,7 @@ function probeBody() {
     }
     if (overMedia) {
       overImageText.push(label);
+      el.dataset.cbox = String(out.overImageBoxes.length);
       // Handed to the Node side, which screenshots this exact box with the text
       // hidden and measures the pixels actually painted behind it.
       out.overImageBoxes.push({
@@ -797,13 +798,34 @@ const MASK_OFF = `document.querySelectorAll('[data-cmask]').forEach((e) => {
         })()`,
       });
       await new Promise((res) => setTimeout(res, 450));
+      /* Fixed and sticky elements paint at VIEWPORT coordinates while these
+         captures address DOCUMENT coordinates, so the mobile call bar's orange
+         button landed across the first card's arrow box at 390 (doc y 839,
+         inside the bar's 776..844 band) and measured 3.99:1 against a control
+         the text is never under. Overlay chrome is not the resting ground of
+         in-flow text — but "hide everything fixed or sticky" is wrong too: the
+         hero is sticky and IS the ground of its own headline, and hiding it
+         failed 74 boxes at once. So each box hides only the viewport-anchored
+         elements that do not contain it, capture by capture. */
       await cdp.send('Runtime.evaluate', { expression: MASK_ON });
       const overBad = [];
-      for (const b of boxes) {
+      for (const [bi, b] of boxes.entries()) {
+        await cdp.send('Runtime.evaluate', { expression: `(() => {
+          const t = document.querySelector('[data-cbox="${bi}"]');
+          document.querySelectorAll('body *').forEach((e) => {
+            const p = getComputedStyle(e).position;
+            if ((p === 'fixed' || p === 'sticky') && (!t || !e.contains(t))) {
+              e.dataset.cmaskv = e.style.visibility || ''; e.style.visibility = 'hidden';
+            }
+          });
+        })()` });
         const shot = await cdp.send('Page.captureScreenshot', {
           format: 'png', captureBeyondViewport: true,
           clip: { x: b.x, y: b.y, width: b.w, height: b.h, scale: 1 },
         }).catch(() => null);
+        await cdp.send('Runtime.evaluate', { expression: `document.querySelectorAll('[data-cmaskv]').forEach((e) => {
+          e.style.visibility = e.dataset.cmaskv; delete e.dataset.cmaskv;
+        });` });
         if (!shot) continue;
         const px = await cdp.send('Runtime.evaluate', {
           awaitPromise: true, returnByValue: true, expression: `
@@ -826,9 +848,20 @@ const MASK_OFF = `document.querySelectorAll('[data-cmask]').forEach((e) => {
         const L = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
         const CR = (a, c) => { const [hi, lo] = [L(a), L(c)].sort((x, y) => y - x); return (hi + 0.05) / (lo + 0.05); };
         const m = CR(b.fg, mean), w = CR(b.fg, worst);
+        if (process.env.AUDIT_DEBUG && b.label.includes(process.env.AUDIT_DEBUG)) {
+          console.log(`    [dbg] ${b.label} @${b.x},${b.y} ${b.w}x${b.h} fg rgb(${b.fg}) mean rgb(${mean}) -> ${m.toFixed(2)}:1`);
+          if (m < b.need) {
+            const { writeFileSync } = await import('node:fs');
+            writeFileSync(`${process.env.AUDIT_DEBUG_DIR || '/tmp'}/fail-${route.replace(/\//g,'_')}-${b.y}.png`, Buffer.from(shot.data, 'base64'));
+            const wide = await cdp.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true,
+              clip: { x: Math.max(b.x - 80, 0), y: Math.max(b.y - 80, 0), width: b.w + 160, height: b.h + 160, scale: 2 } });
+            writeFileSync(`${process.env.AUDIT_DEBUG_DIR || '/tmp'}/fail-wide-${route.replace(/\//g,'_')}-${b.y}.png`, Buffer.from(wide.data, 'base64'));
+          }
+        }
         if (m < b.need) overBad.push(`${b.label} — ${m.toFixed(2)}:1 over the photo (worst pixel ${w.toFixed(2)}:1), needs ${b.need}:1 (${b.size}px)`);
       }
       await cdp.send('Runtime.evaluate', { expression: MASK_OFF });
+      await cdp.send('Runtime.evaluate', { expression: `document.querySelectorAll('[data-cbox]').forEach((e) => { delete e.dataset.cbox; });` });
       if (overBad.length) {
         r.issues.push('contrast below WCAG AA over an image (' + overBad.length + '):');
         overBad.slice(0, 6).forEach((c) => r.issues.push('    \u21b3 ' + c));
