@@ -1310,6 +1310,16 @@ figure.diagram[data-scroll-fallback] .dg-air {
 .legend li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .legend li:last-child:nth-child(odd) .legend__d,
 .legend li:last-child:nth-child(odd) .legend__t { max-width: 60ch; }
+/* The spanning row used to leave half its full-width cell bare. Above 900px
+   its description flows in two balanced columns instead; the title keeps its
+   measure. */
+@media (min-width: 900px) {
+  .legend li:last-child:nth-child(odd) .legend__d {
+    max-width: none;
+    columns: 2;
+    column-gap: 2.5rem;
+  }
+}
 .legend li {
   background: var(--paper);
   padding: 1.15rem 1.25rem;

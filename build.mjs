@@ -617,6 +617,11 @@ ${mediaHero({
 
 <section class="section section--ruled">
   <div class="wrap">
+    ${/* The intro was the flattest moment on every city page: half a screen of
+        bare serif landing straight off the hero, the one section that never
+        joined the system. The head is factual and per-city; "failure modes"
+        is the site's own vocabulary. */''}
+    ${sectionHead({ eyebrow: 'The pattern', h2: `How ${a.name} homes fail`, wide: true })}
     <div class="body-block">${paras(a.intro)}</div>
   </div>
 </section>
@@ -697,16 +702,23 @@ ${cityGuides.length ? `
 
 <section class="section section--ruled defer">
   <div class="wrap">
-    ${sectionHead({ eyebrow: 'Nearby', h2: 'Other areas we cover' })}
+    ${sectionHead({ eyebrow: 'Nearby', h2: 'Other areas we cover',
+      note: nearby.every((n) => n.county === nearby[0].county) ? `All in ${nearby[0].county} County.` : undefined })}
+    ${/* When every nearby city shares one county the per-cell eyebrow
+        stuttered three times in a phone screen; the label moves up to the
+        section note and the cells keep only their differences. */''}
     <div class="related">
-      ${nearby
-        .map(
-          (n) => `<a href="${url.area(n.slug)}">
-        <span class="related__e">${esc(n.county)} County</span>
+      ${(() => {
+        const oneCounty = nearby.every((n) => n.county === nearby[0].county);
+        return nearby
+          .map(
+            (n) => `<a href="${url.area(n.slug)}">
+        ${oneCounty ? '' : `<span class="related__e">${esc(n.county)} County</span>`}
         <span class="related__t">Mold remediation in ${esc(n.name)}</span>
       </a>`,
-        )
-        .join('\n      ')}
+          )
+          .join('\n      ');
+      })()}
     </div>
     <p class="mt-lg"><a class="btn btn--ghost" href="${url.areas}">See every city in Broward and Palm Beach County <span class="arr">&rarr;</span></a></p>
   </div>
