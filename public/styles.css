@@ -322,6 +322,7 @@ h1, h2, h3, h4 {
 .sec-head .eyebrow { display: block; margin-bottom: 0.9rem; }
 .sec-head .h2 { max-width: 22ch; }
 .sec-head__note {
+  text-wrap: pretty;
   margin-top: 1rem;
   color: var(--slate);
   max-width: 58ch;
@@ -732,7 +733,9 @@ h1, h2, h3, h4 {
 .mhero .assure--onink {
   border-top-color: rgba(207, 220, 215, 0.25);
   margin-top: 2.25rem;
-  max-width: 34rem;
+  /* 34rem wrapped two of the three values to a second line while the first
+     held one: the strip bottoms ended 1/2/2 under a shared hairline. */
+  max-width: 40rem;
 }
 .assure--onink .assure__label { color: #8ba0b5; }
 .assure--onink .assure__val { color: #eef3f8; }
@@ -1652,6 +1655,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   font-weight: 660;
   font-size: 1.12rem;
   letter-spacing: -0.022em;
+  text-wrap: balance;
 }
 /* Measured at 103ch without this. Body prose elsewhere on the site holds
    66-68ch; these surfaces carry most of the page content and were the only
@@ -1922,7 +1926,11 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   color: var(--brand-deep);
 }
 .chips a:hover { border-color: var(--brand); color: var(--brand-deep); background: var(--brand-wash); }
-.chips span { color: var(--mist); background: transparent; }
+/* The ghost look read as disabled controls next to the linked chips. Spans
+   stay printed tags (paper, rule, slate); anchors join the link family so the
+   doors are tellable from the labels at rest. */
+.chips span { color: var(--slate); }
+.chips a { color: var(--brand-deep); }
 
 .ziplist {
   font-family: var(--font-mono);
@@ -1930,6 +1938,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   color: var(--slate);
   letter-spacing: 0.02em;
   line-height: 1.9;
+  text-wrap: balance;
 }
 
 /* ── CTA band ──────────────────────────────────────────────────────────────── */
@@ -1941,12 +1950,15 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
    the meta colour steps up a shade below. The hairline on top is the logo's
    sky, separating the band from the paper above it. */
 .cta-band {
+  /* The breeze edge, not a flat hairline: four reviewers independently
+     flagged the seam where this band and the footer, two stacked ink blocks,
+     opened with different edges. Both now open with the same one. */
   background:
+    linear-gradient(90deg, var(--brand), var(--sky) 38%, transparent 82%) top / 100% 2px no-repeat,
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E"),
     radial-gradient(52rem 30rem at 12% -10%, rgba(21, 94, 124, 0.5), transparent 62%),
     radial-gradient(38rem 24rem at 98% 120%, rgba(123, 184, 196, 0.1), transparent 58%),
     var(--ink);
-  border-top: 1px solid rgba(123, 184, 196, 0.3);
   color: var(--haze);
 }
 .cta-band__grid {
@@ -1955,7 +1967,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   align-items: center;
 }
 @media (min-width: 860px) {
-  .cta-band__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+  .cta-band__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; }
 }
 .cta-band h2 { font-size: clamp(1.7rem, 1.3rem + 1.7vw, 2.5rem); color: #fff; max-width: 18ch; }
 .cta-band p { color: #b6c6d6; margin-top: 1rem; max-width: 46ch; }
@@ -1974,6 +1986,21 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   transition: color 0.16s ease;
 }
 .cta-band__phone:hover { color: #f0b072; }
+/* The same instrument on a light ground. The contact page used the band's
+   component with an inline colour patch, which also killed its hover — the
+   largest link on the page answered the pointer with nothing. */
+.call-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 1.4rem + 2.8vw, 3.4rem);
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.16s ease;
+}
+.call-number:hover { color: var(--flag-deep); }
 /* Selector carries p deliberately: .cta-band p is (0,1,1) and a lone
    .cta-band__meta is (0,1,0), so the cap below silently kept winning. */
 .cta-band p.cta-band__meta {
@@ -1996,6 +2023,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   margin-top: 0.75rem;
   line-height: 1.8;
 }
+.cta-band__meta-line { display: block; }
 
 /* ── Related links ─────────────────────────────────────────────────────────── */
 .related { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
@@ -2083,8 +2111,33 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   padding-right: 2.4rem;
 }
 .form { accent-color: var(--brand); }
+@media (max-width: 759px) {
+  /* Seven fields end in the page's smallest control otherwise. */
+  .form button[type='submit'] { width: 100%; justify-content: center; }
+}
 .field textarea { min-height: 8rem; resize: vertical; }
 .field__hint { font-size: 0.88rem; color: var(--mist); margin-top: 0.45rem; max-width: 60ch; }
+/* The one message every converting visitor is guaranteed to see had no rule
+   at all. Success speaks in the check-chip grammar, failure in the notice
+   grammar, and the element sits directly above the Send button so the answer
+   appears where the reader is already looking. */
+.form__status {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 0.8rem 1rem;
+  border-radius: 5px;
+  margin: 0;
+}
+.form__status[data-state='ok'] {
+  background: var(--brand-wash);
+  border-left: 2px solid var(--brand);
+  color: var(--ink-soft);
+}
+.form__status[data-state='error'] {
+  background: var(--flag-wash);
+  border: 1px dashed var(--flag);
+  color: var(--ink-soft);
+}
 .field-row { display: grid; gap: 1.1rem; }
 @media (min-width: 600px) { .field-row { grid-template-columns: 1fr 1fr; } }
 
@@ -2138,6 +2191,13 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
    has six items and each county column has ten. Four divides evenly into two. */
 @media (min-width: 560px) and (max-width: 999px) {
   .ftr__grid { grid-template-columns: repeat(2, 1fr); }
+}
+/* Below 560 the county lists ran ~19 one-word links single file: two phone
+   screens of undifferentiated scroll tail. The labels are short; two tracks
+   halve the tail without crowding. */
+@media (max-width: 559px) {
+  .ftr__grid > div:nth-child(4) ul,
+  .ftr__grid > div:nth-child(5) ul { grid-template-columns: 1fr 1fr; column-gap: 1.25rem; }
 }
 @media (min-width: 1000px) {
   .ftr__grid { grid-template-columns: 1.6fr 1fr 1fr 1fr 0.9fr; }

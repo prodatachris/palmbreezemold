@@ -347,7 +347,10 @@
     var parts = [];
     if (val('issue')) parts.push(val('issue'));
     if (val('city')) parts.push('City: ' + val('city'));
-    if (val('message')) parts.push(val('message'));
+    /* The textarea is name="detail". This read 'message' for a while, so
+       every visitor's typed detail was silently dropped from the payload;
+       a design review caught it by reading the source. */
+    if (val('detail')) parts.push(val('detail'));
 
     fetch(endpoint, {
       method: 'POST',

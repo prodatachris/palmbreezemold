@@ -529,7 +529,7 @@ export function ctaBand({ h2, body, eyebrow = 'Next step' } = {}) {
     <div>
       <a class="cta-band__phone" href="tel:${esc(site.phoneHref)}">${esc(site.phoneDisplay)}</a>
       <p class="cta-band__meta">
-        ${text(site.hoursText)}<br>
+        <span class="cta-band__meta-line">${text(site.hoursText)}</span>
         ${text(site.responseWindow)}
       </p>
       <p class="mt-md"><a class="btn btn--onink" href="${url.contact}">Request an inspection</a></p>
@@ -621,10 +621,15 @@ export function footer() {
 </footer>`;
 }
 
-export const callBar = () => `
+/* Path-aware for one reason: on /contact/ the inspection button used to link
+   to /contact/ — a permanently visible control that reloaded the page and
+   dumped the visitor at the top, away from the form it names. There it now
+   deep-links the form. The verb matches the hero and the CTA band; three
+   reviewers flagged 'Get inspection' as the one stray name for the action. */
+export const callBar = (path) => `
 <div class="callbar">
   <a class="btn btn--call" href="tel:${esc(site.phoneHref)}">Call ${esc(site.phoneDisplay)}</a>
-  <a class="btn btn--onink" href="${url.contact}">Get inspection</a>
+  <a class="btn btn--onink" href="${path === url.contact ? '#write-it-down' : url.contact}">Request inspection</a>
 </div>`;
 
 /* ── Page shell ────────────────────────────────────────────────────────────── */
@@ -771,7 +776,7 @@ ${breadcrumbs(trail)}
 ${body}
 </main>
 ${footer()}
-${callBar()}
+${callBar(path)}
 <script src="/site.js" defer></script>
 ${site.ga4Id ? gaSnippet(site.ga4Id) : ''}
 </body>

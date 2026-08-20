@@ -265,7 +265,8 @@ guides.push({
         },
         {
           title: 'Is reconstruction in this number or not?',
-          text: 'Removal leaves holes. Somebody has to close them. Whether that is in the quote, quoted separately, or your problem entirely is the most common reason two apparently similar numbers are not similar at all.',
+          text: 'Removal leaves holes. Somebody has to close them. Whether that is in the quote, quoted separately, or your problem entirely is the most common reason two apparently similar numbers are not similar at all.',          check: 'The quote says which of the three it is in writing. If it does not say, the answer is your problem entirely.'
+
         },
       ],
     },

@@ -362,7 +362,7 @@ function renderSection(sec) {
 
   return `<section class="section section--ruled defer">
   <div class="wrap">
-    ${sectionHead({ h2: sec.h2, note: sec.note, wide: true })}
+    ${sectionHead({ eyebrow: sec.eyebrow, h2: sec.h2, note: sec.note, wide: true })}
     ${inner}
   </div>
 </section>`;
@@ -591,7 +591,10 @@ async function buildAreaPage(a) {
   const body = `
 ${mediaHero({
   eyebrow: `${a.county} County`,
-  h1: `Mold remediation in ${a.name}, Florida`,
+  /* Non-breaking spaces inside the city name for the H1 only: balance was
+     severing proper nouns at 390 ('in Fort / Lauderdale'). The schema name
+     below keeps plain spaces; machines do not wrap. */
+  h1: `Mold remediation in ${a.name.replace(/ /g, '\u00A0')}, Florida`,
   lede: a.lede,
   image: a.media.image,
   alt: altOf(a.media.image),
@@ -705,7 +708,7 @@ ${cityGuides.length ? `
         )
         .join('\n      ')}
     </div>
-    <p class="mt-lg muted"><a href="${url.areas}">See every city in Broward and Palm Beach County &rarr;</a></p>
+    <p class="mt-lg"><a class="btn btn--ghost" href="${url.areas}">See every city in Broward and Palm Beach County <span class="arr">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -1141,7 +1144,6 @@ async function buildContact() {
     : f.hasBackend ? `action="${esc(f.action)}" method="POST"` : 'onsubmit="return false"'}>
   ${f.hasBackend ? '' : `<p class="notice"><b>This form is not taking messages yet</b>Nothing typed here will reach us. Call <a href="tel:${site.phoneHref}">${site.phoneDisplay}</a> instead and we will take it from there.</p>`}
   ${f.hasBackend && f.endpoint ? `<noscript><p class="notice"><b>This form needs JavaScript</b>It is switched off in this browser, so nothing typed here can be sent. Call <a href="tel:${site.phoneHref}">${site.phoneDisplay}</a> and we will take it from there.</p></noscript>` : ''}
-  <p class="form__status" data-form-status hidden></p>
   <div class="field-row">
     <div class="field">
       <label for="name">Your name <span class="field__req">required</span></label>
@@ -1158,7 +1160,7 @@ async function buildContact() {
   </div>
   <div class="field">
     <label for="city">City</label>
-    <input id="city" name="city" type="text" autocomplete="address-level2" list="cities" placeholder="Fort Lauderdale">
+    <input id="city" name="city" type="text" autocomplete="address-level2" list="cities" placeholder="e.g. Fort Lauderdale">
     <datalist id="cities">
       ${areas.map((a) => `<option value="${esc(a.name)}">`).join('\n      ')}
     </datalist>
@@ -1166,6 +1168,7 @@ async function buildContact() {
   <div class="field">
     <label for="issue">What are you seeing?</label>
     <select id="issue" name="issue">
+      <option value="" selected>Choose the closest match</option>
       <option>Musty smell when the AC runs</option>
       <option>Visible growth on a wall or ceiling</option>
       <option>Dark ring around an AC vent</option>
@@ -1180,6 +1183,7 @@ async function buildContact() {
     <textarea id="detail" name="detail" aria-describedby="detail-hint" placeholder="How long it has been going on, whether anything is wet right now, the age of the house and the AC system."></textarea>
     <p class="field__hint" id="detail-hint">The age of the air handler is genuinely useful. So is whether the smell is worst in the first minute of a cycle.</p>
   </div>
+  <p class="form__status" data-form-status hidden></p>
   <div>
     <button class="btn btn--call" type="submit"${f.hasBackend ? '' : ' disabled'}>Send</button>
   </div>
@@ -1197,7 +1201,7 @@ async function buildContact() {
     <div class="grid grid--2">
       <div>
         <h2 class="h3">Call</h2>
-        <p class="mt-md"><a class="cta-band__phone" style="color:var(--ink)" href="tel:${esc(site.phoneHref)}">${esc(site.phoneDisplay)}</a></p>
+        <p class="mt-md"><a class="call-number" href="tel:${esc(site.phoneHref)}">${esc(site.phoneDisplay)}</a></p>
         <ul class="deflist mt-lg" role="list">
           <li><span class="deflist__t">Hours</span><span class="deflist__d">${text(site.hoursText)}</span></li>
           <li><span class="deflist__t">Response</span><span class="deflist__d">${text(site.responseWindow)}</span></li>
@@ -1207,7 +1211,7 @@ async function buildContact() {
         </ul>
       </div>
       <div>
-        <h2 class="h3">Or write it down</h2>
+        <h2 class="h3" id="write-it-down" tabindex="-1">Or write it down</h2>
         <div class="mt-md">${formHtml}</div>
       </div>
     </div>
@@ -1222,7 +1226,7 @@ ${(contact.sections || []).map(renderSection).join('\n\n')}
     ${counties
       .map(
         (c) => `<div class="county">
-      <div class="county__head"><h3 class="h3">${esc(c.name)}</h3></div>
+      <div class="county__head"><h3 class="h3">${esc(c.name)}</h3><span class="county__count">${c.areas.length} city pages &middot; ${c.alsoServing.length}+ more served</span></div>
       <ul class="chips" role="list">
         ${c.areas.map((a) => `<li><a href="${url.area(a.slug)}">${esc(a.name)}</a></li>`).join('\n        ')}
         ${c.alsoServing.map((n) => `<li><span>${esc(n)}</span></li>`).join('\n        ')}

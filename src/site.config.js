@@ -272,10 +272,15 @@ export const site = {
       const days = h.days.length > 1
         ? `${ABBR[h.days[0]]}–${ABBR[h.days[h.days.length - 1]]}`
         : ABBR[h.days[0]];
-      return `${days} ${clock(h.opens)} – ${clock(h.closes)}`;
+      /* Non-breaking spaces inside each span, and the middot bound to the
+         span before it. Five reviewers reported facets of one bug: the CTA
+         band broke a line before the dot and the footer stranded '– 4:00pm'
+         alone, because every space in this string was equally breakable. Now
+         a line can only break after a complete day-range and its dot. */
+      return `${days}\u00A0${clock(h.opens)}\u00A0–\u00A0${clock(h.closes)}`;
     });
     if (this.emergencyText) spans.push(this.emergencyText);
-    return spans.join(' · ');
+    return spans.join('\u00A0· ');
   },
   /** The single source for opening hours — both the schema and hoursText read this. */
   openingHours: [

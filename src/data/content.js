@@ -252,6 +252,7 @@ export const guidesHub = {
 export const servicesHub = {
   sections: [
     {
+      eyebrow: 'The method',
       h2: 'What runs through all six',
       body: [
         'The services are separate because the work is, but the method underneath them does not change. Find the water first, because growth is a symptom and the moisture source is what decides the scope and the cost. Contain the area before disturbing anything, because disturbing growth without containment is how one room becomes four. Remove what is porous rather than treating it, because no chemical restores material that growth has gone into. Then have somebody independent confirm it worked.',
@@ -259,6 +260,7 @@ export const servicesHub = {
       ],
     },
     {
+      eyebrow: 'Commonly confused',
       h2: 'Two pairs people mix up',
       note: 'The first two cost real money to get wrong, and neither is obvious from the names. The third is not a pair at all, and it is the one most likely to save you a call.',
       list: [
@@ -641,6 +643,7 @@ export const contact = {
 
   sections: [
     {
+      eyebrow: 'If it is happening now',
       h2: 'Before you call, depending on what is happening',
       note: 'Two of them have something you can do before anyone arrives that changes what the job turns into: switching the air conditioning off, and photographing the damage before anything gets moved. Both are free, and both stop being possible quickly.',
       list: [
@@ -667,6 +670,7 @@ export const contact = {
       ],
     },
     {
+      eyebrow: 'Before the call',
       h2: 'What is useful to have to hand',
       note: 'None of it is required. It just makes the call shorter and the answer better. If what you actually want to know is what happens after the call, [our process](/process/) sets out all ten steps, and says at each one what to ask us to show you.',
       list: [

@@ -36,7 +36,7 @@ export const services = [
 
     signals: [
       { value: '40–45°F', label: 'Evaporator coil surface temperature, below the dew point of indoor air in South Florida for most of the calendar year.' },
-      { value: 'Under 60%', label: 'The line that matters for indoor humidity. The EPA puts the ideal band at 30 to 50%. We aim for 45 to 55% in occupied South Florida homes, because holding lower than that here means running the equipment almost continuously.' },
+      { value: 'Under 60%', label: 'The line that matters for indoor humidity. The EPA ideal band is 30 to 50%. We aim for 45 to 55% in occupied South Florida homes.' },
       { value: '24–48 hrs', label: 'How long a wet organic surface has before growth begins at our ambient temperatures.' },
     ],
 
