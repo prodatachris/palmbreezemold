@@ -325,6 +325,20 @@ h1, h2, h3, h4 {
 .sec-head--wide .h2 { max-width: 30ch; }
 
 /* ── Buttons ───────────────────────────────────────────────────────────────── */
+/* Rebuilt 2026-08-20 after the owner called the originals mundane — which they
+   were: flat fills, hairline outlines, and hovers that only darkened. The
+   upgrade is weight, not noise. A machined edge (inset top highlight over a
+   seated darker border), a warm shadow that ties the call button to --flag,
+   1px of lift on hover and a press on :active. All of it is transform and
+   shadow, so none of it can shift layout, and the reduced-motion block
+   already zeroes every transition-duration.
+
+   Contrast picked the colours. White at 1rem/620 is not "large text", so the
+   fill needs 4.5:1 everywhere under the label: the gradient tops out at
+   #ad5510 (5.1:1 with white) and seats at #94480c, brighter overall than the
+   old flat --flag-deep but never past the ratio. The ghost border moves from
+   --rule (1.5:1, reads as decoration) to --slate, which clears the 3:1 that
+   WCAG 1.4.11 asks of a control boundary. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -334,35 +348,66 @@ h1, h2, h3, h4 {
   font-size: 1rem;
   letter-spacing: -0.01em;
   line-height: 1;
-  padding: 0.95rem 1.4rem;
-  border-radius: var(--radius);
+  padding: 0.95rem 1.45rem;
+  /* 5px against the house 3px: a button is the one element on the page that is
+     a tool rather than a sheet of paper, and the two extra pixels are what
+     make it read as made rather than drawn. */
+  border-radius: 5px;
   border: 1px solid transparent;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease,
+    transform 0.16s ease, box-shadow 0.16s ease;
 }
-.btn:active { transform: translateY(1px); }
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); transition-duration: 0.06s; }
 
 .btn--call {
-  background: var(--flag-deep);
+  background-color: #94480c; /* seat: what paints if the gradient ever does not */
+  background-image: linear-gradient(180deg, #ad5510, #94480c);
   color: #fff;
-  border-color: var(--flag-deep);
+  border-color: #7d3c08;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 1px 2px rgba(10, 34, 71, 0.18),
+    0 3px 10px -2px rgba(158, 78, 13, 0.35);
 }
-.btn--call:hover { background: #8f460b; border-color: #8f460b; color: #fff; }
+.btn--call:hover {
+  background-color: #9b4c0d;
+  background-image: linear-gradient(180deg, #b45a12, #9b4c0d);
+  border-color: #7d3c08;
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 2px 5px rgba(10, 34, 71, 0.16),
+    0 7px 18px -4px rgba(158, 78, 13, 0.45);
+}
+.btn--call:active {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 2px rgba(10, 34, 71, 0.18);
+}
 
 .btn--ghost {
   background: transparent;
   color: var(--ink);
-  border-color: var(--rule);
+  border-color: var(--slate);
+  box-shadow: var(--lift);
 }
-.btn--ghost:hover { border-color: var(--ink); color: var(--ink); background: var(--paper); }
+/* Full inversion. The old hover — the border one shade darker over a paper
+   fill — was invisible at arm's length. An outline button that fills with the
+   ink it was drawn in is unambiguous about being pressable. */
+.btn--ghost:hover { border-color: var(--ink); color: var(--paper); background: var(--ink); box-shadow: var(--lift-2); }
 
 .btn--onink {
-  background: transparent;
-  color: var(--haze);
-  border-color: rgba(237, 240, 236, 0.35);
+  background: rgba(237, 240, 236, 0.07);
+  color: #fff;
+  border-color: rgba(237, 240, 236, 0.42);
+  /* Frosted over the hero media. Where the parent is solid ink (the mobile
+     call bar) the blur has nothing to sample and quietly does nothing. */
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  backdrop-filter: blur(10px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 1px 2px rgba(5, 15, 35, 0.25);
 }
-.btn--onink:hover { background: rgba(237, 240, 236, 0.1); color: #fff; border-color: rgba(237, 240, 236, 0.6); }
+.btn--onink:hover { background: rgba(237, 240, 236, 0.16); color: #fff; border-color: rgba(237, 240, 236, 0.75); }
 
 .btn__num { font-family: var(--font-mono); font-weight: 500; }
 
@@ -1399,14 +1444,18 @@ a.card--flag:hover { border-color: var(--flag-deep); }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.card--photo .card__more { color: #e8a163; margin-top: 0; padding-top: 0.35rem; }
+/* #e8a163 measured 4.41:1 over the lightest photo pixels under it at 320px —
+   the same shade the card eyebrows had to give up, failing the same way.
+   #f3b87c (the old hover colour) clears 5.4:1 at the same spot; hover steps
+   up from there. */
+.card--photo .card__more { color: #f3b87c; margin-top: 0; padding-top: 0.35rem; }
 
 a.card--photo:hover {
   border-color: rgba(232, 161, 99, 0.6);
   box-shadow: var(--lift-2);
 }
 a.card--photo:hover .card__bg img { transform: scale(1.045); }
-a.card--photo:hover .card__more { color: #f3b87c; }
+a.card--photo:hover .card__more { color: #f8cfa2; }
 
 /* The specialty card keeps its identity over a photograph through an amber rule
    rather than the amber wash, which a photo would swallow. */
@@ -2068,7 +2117,7 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
   /* The contact form's submit is white on the flag orange, which also does not
      print. It is a disabled control on paper regardless, so it prints as an
      outline rather than a solid block. */
-  .btn--call, button.btn { color: var(--ink); background: none; border: 1px solid var(--rule); }
+  .btn--call, button.btn { color: var(--ink); background: none; border: 1px solid var(--rule); box-shadow: none; }
 
   /* Where pages are allowed to break. Without this a process step splits from
      its own "how to check" line, a definition term lands at the foot of one

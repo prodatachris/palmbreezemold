@@ -740,13 +740,28 @@ try {
 
   console.log(`\n▸ Auditing ${ROUTES.length} pages at ${WIDTH}px — ${BASE}\n`);
 
+/* The mask hides the GLYPHS, not the element. It used visibility: hidden,
+   which also removes the element's own background — and the moment a button
+   took a gradient (a background-image, which backdrop() rightly refuses to
+   guess at), the pixel path hid the whole button and measured its white label
+   against the paper behind it: 1.14:1, on a control that renders at 5:1. A
+   state that cannot paint is not a finding. Transparent color/fill keeps every
+   layer that really sits under the text — own gradient, scrim, photograph —
+   which is also more honest for the photo cases this path was built for.
+   The full style attribute is saved and restored because several elements
+   carry real inline styles (--i indexes, --lead offsets). */
 const MASK_ON = `document.querySelectorAll('body *').forEach((e) => {
   if ([...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) {
-    e.dataset.cmask = e.style.visibility || ''; e.style.visibility = 'hidden';
+    e.dataset.cmask = e.getAttribute('style') || '';
+    e.style.color = 'transparent';
+    e.style.fill = 'transparent';
+    e.style.textShadow = 'none';
   }
 });`;
 const MASK_OFF = `document.querySelectorAll('[data-cmask]').forEach((e) => {
-  e.style.visibility = e.dataset.cmask; delete e.dataset.cmask;
+  if (e.dataset.cmask) e.setAttribute('style', e.dataset.cmask);
+  else e.removeAttribute('style');
+  delete e.dataset.cmask;
 });`;
 
   for (const route of ROUTES) {
