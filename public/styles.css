@@ -431,6 +431,26 @@ h1, h2, h3, h4 {
 @supports not (backdrop-filter: blur(1px)) {
   .hdr { background: var(--haze); }
 }
+/* At rest the header is a labelled edge of the page; once content is moving
+   underneath it, it is a surface floating over that content and should say
+   so. The shadow fades in across the first 120px of scroll — driven by
+   scroll position, not by time, so there is nothing to pause and it can
+   never be mid-animation. Shadow only: resizing a sticky header on scroll
+   shifts everything below it by the delta, which is exactly the layout
+   jump the CLS work spent a pass removing. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .hdr {
+      animation: hdr-elevate linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 120px;
+    }
+    @keyframes hdr-elevate {
+      from { box-shadow: 0 4px 18px -14px rgba(10, 34, 71, 0); }
+      to   { box-shadow: 0 4px 18px -8px rgba(10, 34, 71, 0.22); }
+    }
+  }
+}
 
 .hdr__bar {
   display: flex;
@@ -482,12 +502,18 @@ h1, h2, h3, h4 {
   padding: 0.5rem 0.7rem;
   border-radius: var(--radius);
   white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 .nav a:hover { background: var(--haze-deep); color: var(--ink); }
+/* The old marker was an inset box-shadow across the full pill, padding and
+   all — it read as a stray border. Underlining the label itself, seated a
+   little below the baseline, marks the word rather than the box. */
 .nav a[aria-current] {
   color: var(--brand-deep);
-  box-shadow: inset 0 -2px 0 var(--brand);
-  border-radius: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--brand);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.45em;
 }
 
 .hdr__call {
@@ -497,9 +523,10 @@ h1, h2, h3, h4 {
   text-decoration: none;
   padding: 0.4rem 0.85rem;
   border: 1px solid var(--flag);
-  border-radius: var(--radius);
+  border-radius: 5px; /* matches the button family, not the paper radius */
   color: var(--flag-deep);
   flex-shrink: 0;
+  transition: background-color 0.15s ease;
 }
 .hdr__call:hover { background: var(--flag-wash); color: var(--flag-deep); }
 .hdr__call span {
