@@ -213,6 +213,83 @@
   });
 })();
 
+/* ── First-touch attribution ──────────────────────────────────────────────
+   Records HOW someone arrived, once, and keeps it until they enquire.
+
+   WHY IT HAS TO EXIST HERE. The enquiry form posts to RankEngineAI's capture
+   endpoint, and that endpoint derives the marketing channel from utm tags, ad
+   click ids and the referrer. A post carrying none of them classifies as
+   "direct" no matter where the visitor actually came from, so every lead would
+   have looked self-generated and the source column would have been a column of
+   one repeated word.
+
+   FIRST touch, not last. The tags are read on the visit that has them and kept;
+   a visitor who arrives from a Google result, reads three pages and enquires on
+   the fourth is still a Google lead, and a same-site referrer must not overwrite
+   the search that started it. Nothing here overwrites a stored bag.
+
+   The visitor id is a random v4 minted once per browser. It is the join key the
+   dashboard uses to stitch a later call or a second visit back to the same
+   person, and it identifies nobody: no name, no email, no fingerprinting, and it
+   never leaves this domain except attached to an enquiry that person chose to
+   send. */
+(function () {
+  var KEY = 're_first_touch';
+  var store = null;
+  try {
+    store = window.localStorage;
+    store.setItem('__t', '1'); store.removeItem('__t');   /* Safari private mode throws on write */
+  } catch (e) { store = null; }
+
+  var memory = null;   /* when localStorage is unavailable the bag lasts the pageview */
+
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0;
+      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
+  }
+
+  function read() {
+    if (memory) return memory;
+    if (!store) return null;
+    try { return JSON.parse(store.getItem(KEY) || 'null'); } catch (e) { return null; }
+  }
+
+  function capture() {
+    var existing = read();
+    if (existing && existing.visitor_id) return existing;   /* first touch wins, always */
+
+    var q = new URLSearchParams(window.location.search);
+    var bag = { visitor_id: (existing && existing.visitor_id) || uuid() };
+
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+     'gclid', 'wbraid', 'gbraid', 'msclkid', 'fbclid'].forEach(function (k) {
+      var v = q.get(k);
+      if (v) bag[k] = v.slice(0, 200);
+    });
+
+    /* A referrer from this same site is internal navigation, not a referral.
+       Storing it would mint a phantom source for anyone who landed on a guide
+       and enquired from the contact page. */
+    var ref = document.referrer || '';
+    if (ref) {
+      var sameSite = false;
+      try { sameSite = new URL(ref).hostname.replace(/^www\./, '') === window.location.hostname.replace(/^www\./, ''); } catch (e) {}
+      if (!sameSite) bag.referer = ref.slice(0, 500);
+    }
+    bag.landing_path = (window.location.pathname || '/').slice(0, 200);
+
+    memory = bag;
+    if (store) { try { store.setItem(KEY, JSON.stringify(bag)); } catch (e) {} }
+    return bag;
+  }
+
+  /* Exposed for the enquiry form, which merges it into the post body. */
+  window.__reFirstTouch = capture();
+})();
+
 /* ── Contact form ─────────────────────────────────────────────────────────
    Sends the enquiry to RankEngineAI's lead capture as JSON.
 
@@ -275,16 +352,22 @@
     fetch(endpoint, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        client_id: clientId,
-        name: val('name'),
-        phone: val('phone'),
-        email: val('email'),
-        message: parts.join('\n'),
-        city: val('city'),
-        form_source: 'contact',
-        landing_path: window.location.pathname
-      })
+      body: JSON.stringify((function () {
+        /* The enquiry, plus how this visitor arrived. The first-touch bag is
+           spread FIRST so the fields below always win: form_source describes
+           this submit, not the visit that started weeks ago. */
+        var bag = window.__reFirstTouch || {};
+        var payload = {};
+        for (var k in bag) if (Object.prototype.hasOwnProperty.call(bag, k)) payload[k] = bag[k];
+        payload.client_id = clientId;
+        payload.name = val('name');
+        payload.phone = val('phone');
+        payload.email = val('email');
+        payload.message = parts.join('\n');
+        payload.city = val('city');
+        payload.form_source = 'contact';
+        return payload;
+      })())
     })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(String(r.status))); })
       .then(function () {
