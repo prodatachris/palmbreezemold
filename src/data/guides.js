@@ -32,26 +32,26 @@ export const guides = [
     eyebrow: 'Guide',
     media: { image: 'flat-roof-villa', video: 'hero-villa', caption: 'Seasonal housing, Palm Beach County. Five months closed is the whole problem.' },
     lede:
-      'The advice people give each other at the clubhouse — set it to 80, shut off the water, see you in November — is the single most reliable way to produce a mold problem in this market. Here is what actually works, and why.',
+      'The advice people give each other at the clubhouse (set it to 80, shut off the water, see you in November) is the single most reliable way to produce a mold problem in this market. Here is what actually works, and why.',
     short: 'Set it to 80 and shut off the water is the most reliable way to come back to mold. What works instead.',
 
     signals: [
-      { value: '55%', label: 'Relative humidity to hold while the house is empty. Not a temperature target — a humidity target.' },
+      { value: '55%', label: 'Relative humidity to hold while the house is empty. Not a temperature target, a humidity target.' },
       { value: '5 months', label: 'Typical May-to-October vacancy, which is also the hottest and wettest part of the year.' },
-      { value: 'Tens vs thousands', label: 'What holding humidity costs each month against what remediating the result costs. We are not going to invent a figure for your power bill — it depends on the equipment, the house and the rate you pay — but the two numbers are not in the same range, and that is the whole argument.' },
+      { value: 'Tens vs thousands', label: 'What holding humidity costs each month against what remediating the result costs. We are not going to invent a figure for your power bill: it depends on the equipment, the house and the rate you pay. But the two numbers are not in the same range, and that is the whole argument.' },
     ],
 
     intro: [
       'Every year between Thanksgiving and January we take a run of calls that all start the same way: the owner opened the door for the first time since spring, and the smell hit them before they got their bag inside. Almost none of those houses had a leak. They had five months of unmanaged humidity.',
       'This page is the whole answer, and it is deliberately written so you can act on it without calling anybody.',
-    'One number to set expectations before the detail. [The EPA puts indoor humidity below 60 per cent, ideally between 30 and 50](https://www.epa.gov/mold/mold-course-chapter-2). The figure recommended below for a closed-up Florida house is 55 per cent, which sits above that ideal band on purpose. Chasing 45 in August means an air conditioner running almost continuously in an empty building. And the failure we actually get called to is never the house held at 55 — it is the house left at 80 degrees with no dehumidification at all. Under 60 is the line that matters. Lower is better if your equipment can hold it without running itself into the ground.',
+    'One number to set expectations before the detail. [The EPA puts indoor humidity below 60 per cent, ideally between 30 and 50](https://www.epa.gov/mold/mold-course-chapter-2). The figure recommended below for a closed-up Florida house is 55 per cent, which sits above that ideal band on purpose. Chasing 45 in August means an air conditioner running almost continuously in an empty building. And the failure we actually get called to is never the house held at 55. It is the house left at 80 degrees with no dehumidification at all. Under 60 is the line that matters. Lower is better if your equipment can hold it without running itself into the ground.',
     ],
 
     sections: [
       {
         h2: 'Why “set it to 80” fails',
         body: [
-          'An air conditioner removes moisture as a side effect of running. The coil sits below the dew point, water condenses on it, and that water leaves through the drain. No run time, no dehumidification — it is that direct.',
+          'An air conditioner removes moisture as a side effect of running. The coil sits below the dew point, water condenses on it, and that water leaves through the drain. No run time, no dehumidification. It is that direct.',
           'Set the thermostat to 80°F in a closed South Florida house in July and the system satisfies that setpoint almost immediately, then sits idle for hours. Total run time collapses. Meanwhile moisture keeps entering through the slab, through the envelope, and through every humid air exchange, with nothing removing it. Interior humidity climbs into the seventies and stays there.',
           'At sustained relative humidity above about 60%, mold does not need a leak, a flood, or a plumbing failure. Ordinary house dust on ordinary surfaces is enough. That is the entire mechanism, and it is why the houses we open in November are usually bone dry and still smell.',
         ],
@@ -62,7 +62,7 @@ export const guides = [
         list: [
           {
             term: '1. A thermostat with a true humidity setpoint',
-            text: 'Not “dry mode” and not a temperature setting you hope produces dehumidification. A thermostat that reads humidity and calls for cooling to hold it — typically around 55% — with the temperature allowed to drift into the high 70s. Many modern thermostats can do this and most owners have never turned it on.',
+            text: 'Not “dry mode” and not a temperature setting you hope produces dehumidification. A thermostat that reads humidity and calls for cooling to hold it, typically around 55%, with the temperature allowed to drift into the high 70s. Many modern thermostats can do this and most owners have never turned it on.',
           },
           {
             term: '2. A standalone whole-house dehumidifier',
@@ -93,7 +93,7 @@ export const guides = [
           },
           {
             title: 'Set a humidity target, not just a temperature',
-            text: 'Around 55% RH, with the temperature allowed to sit at 78 to 80°F. If your equipment cannot hold a humidity setpoint, this is the thing to fix before you leave — it matters more than any other item on this list.',
+            text: 'Around 55% RH, with the temperature allowed to sit at 78 to 80°F. If your equipment cannot hold a humidity setpoint, this is the thing to fix before you leave. It matters more than any other item on this list.',
             check: 'After you set it, watch the reading for a full day before you travel. It should settle, not climb.',
           },
           {
@@ -135,7 +135,7 @@ export const guides = [
       {
         h2: 'What this costs versus what it prevents',
         body: [
-          'Holding 55% relative humidity in a closed house for five months costs meaningfully less than most owners assume — the equipment runs in longer, lower-load cycles rather than short hard ones, and you are cooling an empty building with the blinds shut.',
+          'Holding 55% relative humidity in a closed house for five months costs meaningfully less than most owners assume: the equipment runs in longer, lower-load cycles rather than short hard ones, and you are cooling an empty building with the blinds shut.',
           'The comparison that matters is not electricity against zero. It is electricity against remediating an air handler, replacing a colonized duct board plenum, and cleaning a duct system, in a unit you cannot use until it is finished, during the season you actually came down here for.',
         ],
       },
@@ -144,7 +144,7 @@ export const guides = [
     faqs: [
       {
         q: 'What temperature should I leave my Florida house at for the summer?',
-        a: 'The temperature is the wrong dial to be thinking about. Set a humidity target of around 55% and let the temperature land wherever it needs to — usually 78 to 80°F. If your thermostat cannot hold a humidity setpoint, a temperature around 76 to 78 will produce more run time and better dehumidification than 80, but it is a workaround rather than a solution.',
+        a: 'The temperature is the wrong dial to be thinking about. Set a humidity target of around 55% and let the temperature land wherever it needs to, usually 78 to 80°F. If your thermostat cannot hold a humidity setpoint, a temperature around 76 to 78 will produce more run time and better dehumidification than 80, but it is a workaround rather than a solution.',
       },
       {
         q: 'Is it cheaper to just turn the AC off completely?',
@@ -152,15 +152,15 @@ export const guides = [
       },
       {
         q: 'Do I need a dehumidifier if my AC is new?',
-        a: 'Maybe not — a correctly sized modern system with a working humidity setpoint can hold the house on its own. Where a dehumidifier earns its keep is on oversized equipment that short-cycles, on zoned systems where a wing rarely calls for cooling, and as insurance on a property you cannot check for months. It also keeps working if the compressor fails while you are away, which the air conditioner obviously does not.',
+        a: 'Maybe not. A correctly sized modern system with a working humidity setpoint can hold the house on its own. Where a dehumidifier earns its keep is on oversized equipment that short-cycles, on zoned systems where a wing rarely calls for cooling, and as insurance on a property you cannot check for months. It also keeps working if the compressor fails while you are away, which the air conditioner obviously does not.',
       },
       {
         q: 'Should I have someone check the house while I am gone?',
-        a: 'Yes, physically inside, monthly. The value is not that they will spot mold — by the time it is visible you already have a job. The value is the humidity reading. A house that reads 52% in June and 68% in August has told you something is wrong while it is still cheap to fix.',
+        a: 'Yes, physically inside, monthly. The value is not that they will spot mold. By the time it is visible you already have a job. The value is the humidity reading. A house that reads 52% in June and 68% in August has told you something is wrong while it is still cheap to fix.',
       },
       {
         q: 'The house already smells and I just got back. What now?',
-        a: 'Follow the steps above before you touch the thermostat — the order matters more than the speed. Beyond that, this is the most common call we take in December, and it is usually very fixable: a coil and plenum that have grown something over a closed-up summer are a contained equipment problem. What decides how big the job gets is whether the blower has already run. If it has, the same growth is now distributed through every room it serves, and we are pricing a house instead of a machine.',
+        a: 'Follow the steps above before you touch the thermostat: the order matters more than the speed. Beyond that, this is the most common call we take in December, and it is usually very fixable: a coil and plenum that have grown something over a closed-up summer are a contained equipment problem. What decides how big the job gets is whether the blower has already run. If it has, the same growth is now distributed through every room it serves, and we are pricing a house instead of a machine.',
       },
     ],
 
@@ -196,11 +196,11 @@ guides.push({
   signals: [
     { value: '5 items', label: 'What a comparable scope has to state. Missing any one of them and you cannot compare the number to anything.' },
     { value: '2 licenses', label: 'Florida separates assessment from remediation. Whoever writes the clearance should not be whoever did the work.' },
-    { value: 'Ask first', label: 'What a walkthrough and a written scope cost. Get the number before anyone drives out — from us or from anyone else.' },
+    { value: 'Ask first', label: 'What a walkthrough and a written scope cost. Get the number before anyone drives out, from us or from anyone else.' },
   ],
 
   intro: [
-    'The single most common thing we hear on a first call is that the homeowner has three quotes in front of them, they range from a few hundred dollars to five figures, and none of them explains itself. That spread is real information — it is just not information about price.',
+    'The single most common thing we hear on a first call is that the homeowner has three quotes in front of them, they range from a few hundred dollars to five figures, and none of them explains itself. That spread is real information. It is just not information about price.',
     'This page is how to read them. It is written so it works on our quote too, and you should hold us to it.',
   ],
 
@@ -219,7 +219,7 @@ guides.push({
       list: [
         {
           term: '1. What material, and how much of it',
-          text: 'Named materials and square footage — “removal of 40 sq ft of colonized drywall and batt insulation, north wall, floor to 4 feet.” Not “affected areas.” Square footage of porous material is the single biggest driver of what this costs, so a quote that will not state it has left itself room to move.',
+          text: 'Named materials and square footage: “removal of 40 sq ft of colonized drywall and batt insulation, north wall, floor to 4 feet.” Not “affected areas.” Square footage of porous material is the single biggest driver of what this costs, so a quote that will not state it has left itself room to move.',
         },
         {
           term: '2. What is removed versus what is cleaned',
@@ -235,17 +235,17 @@ guides.push({
         },
         {
           term: '5. What is excluded',
-          text: 'Reconstruction, painting, flooring, plenum fabrication, the plumber or roofer who fixes the actual leak. A quote with no exclusions section is not a cheaper quote — it is a quote with the exclusions still ahead of you.',
+          text: 'Reconstruction, painting, flooring, plenum fabrication, the plumber or roofer who fixes the actual leak. A quote with no exclusions section is not a cheaper quote. It is a quote with the exclusions still ahead of you.',
         },
       ],
     },
     {
       h2: 'The questions worth asking on the phone',
-      note: 'Four minutes each, and they separate the three quotes faster than anything else you can do. There are [five more checks that work on any contractor](/about/#how-to-check-any-mold-contractor-including-us) — ours included — and not one of them needs you to know anything about mold.',
+      note: 'Four minutes each, and they separate the three quotes faster than anything else you can do. There are [five more checks that work on any contractor](/about/#how-to-check-any-mold-contractor-including-us), ours included, and not one of them needs you to know anything about mold.',
       steps: [
         {
           title: 'Where is the water coming from?',
-          text: 'A company that cannot answer this has not finished assessing. Growth is a symptom; the moisture source determines the scope, the cost, and whether the job stays fixed. The answer should be specific — a failed condensate trap, a window sealant failure, a short-cycling oversized system.',
+          text: 'A company that cannot answer this has not finished assessing. Growth is a symptom; the moisture source determines the scope, the cost, and whether the job stays fixed. The answer should be specific: a failed condensate trap, a window sealant failure, a short-cycling oversized system.',
           check: 'If the answer is “we would have to open it up,” fine. If the answer is a shrug, keep calling.',
         },
         {
@@ -260,7 +260,7 @@ guides.push({
         },
         {
           title: 'What happens to the duct board plenum?',
-          text: 'Only relevant if your system is involved, but in pre-2000 Florida housing it usually is. Colonized fiberglass duct board cannot be cleaned — it is porous and growth extends into the fiber mat. The honest answer is replacement.',
+          text: 'Only relevant if your system is involved, but in pre-2000 Florida housing it usually is. Colonized fiberglass duct board cannot be cleaned. It is porous and growth extends into the fiber mat. The honest answer is replacement.',
           check: 'If someone offers to clean and encapsulate a colonized plenum, ask what standard they are working to.',
         },
         {
@@ -273,7 +273,7 @@ guides.push({
       h2: 'Three quotes that should worry you',
       flag: true,
       body: [
-        'A free mold inspection followed by that same company’s remediation quote. In Florida those are two separate licenses and [one company is restricted from doing both](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate) on the same structure. A free visual walkthrough from a remediation company is a normal sales call and is fine — a free “inspection” presented as an assessment is not the same thing.',
+        'A free mold inspection followed by that same company’s remediation quote. In Florida those are two separate licenses and [one company is restricted from doing both](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate) on the same structure. A free visual walkthrough from a remediation company is a normal sales call and is fine. A free “inspection” presented as an assessment is not the same thing.',
         'A number with no scope. One page, one figure, a sentence of description. There is nothing to hold anyone to, and nothing to compare.',
         'Anything built around spraying. Fogging, sanitizing, ozone, or an antimicrobial treatment offered as the remediation rather than as a step at the end of it. Antimicrobials work on non-porous surfaces you can physically reach. They do not restore porous material, and the porous material is the problem.',
       ],
@@ -303,11 +303,11 @@ guides.push({
     },
     {
       q: 'Do I need three quotes?',
-      a: 'For anything beyond a small contained job, yes — not mainly for the price, but because the second and third conversations are how you learn what questions to ask. If there is standing water right now, skip this and call somebody, because the window between a water loss and a mold job is about two days in this climate.',
+      a: 'For anything beyond a small contained job, yes. Not mainly for the price, but because the second and third conversations are how you learn what questions to ask. If there is standing water right now, skip this and call somebody, because the window between a water loss and a mold job is about two days in this climate.',
     },
     {
       q: 'Will my insurance decide which company I use?',
-      a: 'Usually not — in Florida you generally choose your own contractor, though your carrier may have preferred vendors and may push you toward one. What the carrier does decide is what it will pay, which is a separate question from what the work costs. Document conditions thoroughly from day one either way.',
+      a: 'Usually not: in Florida you generally choose your own contractor, though your carrier may have preferred vendors and may push you toward one. What the carrier does decide is what it will pay, which is a separate question from what the work costs. Document conditions thoroughly from day one either way.',
     },
   ],
 
@@ -347,7 +347,7 @@ guides.push({
   intro: [
     'This is written for the person standing in it right now, so it is ordered by the clock rather than by topic. Skim the headings, do the thing under the one you are in.',
     'The two-day figure is not ours. It is the window [the EPA puts on drying out a flooded house](https://www.epa.gov/indoor-air-quality-iaq/flood-cleanup-protect-indoor-air-quality), and their plainer version of it is that things left wet for more than two days usually get moldy. Everything below is about spending that window well.',
-    'It applies to a supply line, a water heater, an air conditioning overflow, and to wind-driven rain and roof intrusion after a tropical system — which in August and September is most of why people call.',
+    'It applies to a supply line, a water heater, an air conditioning overflow, and to wind-driven rain and roof intrusion after a tropical system, which in August and September is most of why people call.',
   ],
 
   sections: [
@@ -357,7 +357,7 @@ guides.push({
       steps: [
         {
           title: 'Make it safe before you make it dry',
-          text: 'If water is anywhere near outlets, a panel, or a submerged appliance, kill the power to that area at the breaker before you walk in it. If the ceiling is holding water and bulging, stay out from under it — a saturated drywall ceiling comes down as a sheet, and it comes down without warning.',
+          text: 'If water is anywhere near outlets, a panel, or a submerged appliance, kill the power to that area at the breaker before you walk in it. If the ceiling is holding water and bulging, stay out from under it: a saturated drywall ceiling comes down as a sheet, and it comes down without warning.',
           check: 'Standing water plus energised circuits is the one hazard on this page that can actually hurt you.',
         },
         {
@@ -371,7 +371,7 @@ guides.push({
         },
         {
           title: 'Call your carrier and start a claim file',
-          text: 'Even if you are not sure you will file. Note the time, the claim number, and who you spoke to. Most Florida policies impose a duty to mitigate — meaning you are expected to act promptly to limit damage — so starting the clock formally protects you.',
+          text: 'Even if you are not sure you will file. Note the time, the claim number, and who you spoke to. Most Florida policies impose a duty to mitigate, meaning you are expected to act promptly to limit damage, so starting the clock formally protects you.',
         },
       ],
     },
@@ -381,10 +381,10 @@ guides.push({
         'Every gallon you remove mechanically is a gallon nobody has to pay to evaporate later, and evaporation is the expensive half of drying.',
       ],
       list: [
-        { term: 'Extract standing water', text: 'A wet/dry shop vacuum, a pump, or a mop and bucket. Do not use a household vacuum cleaner on standing water — it is not rated for it and it is a shock hazard.' },
+        { term: 'Extract standing water', text: 'A wet/dry shop vacuum, a pump, or a mop and bucket. Do not use a household vacuum cleaner on standing water. It is not rated for it and it is a shock hazard.' },
         { term: 'Get furniture up off wet flooring', text: 'Aluminium foil, plastic blocks, or wood scraps under the legs. Wooden and metal furniture legs will bleed stain and rust into wet carpet within hours, and that transfer is usually permanent.' },
         { term: 'Lift area rugs off wet floors', text: 'They will both stay wetter and mark the floor underneath. Get them out of the room entirely if you can.' },
-        { term: 'Take out what is already lost, but photograph it first', text: 'Saturated carpet pad, soaked cardboard, wet paper. Bag it and set it aside rather than binning it immediately — an adjuster may want to see it.' },
+        { term: 'Take out what is already lost, but photograph it first', text: 'Saturated carpet pad, soaked cardboard, wet paper. Bag it and set it aside rather than binning it immediately. An adjuster may want to see it.' },
         { term: 'Open cabinet doors and drawers, pull toe kicks', text: 'The cavity under a kitchen cabinet run holds water and dries last. It is one of the most common places we find growth six weeks after a “dried” loss.' },
         { term: 'Do not start cutting drywall yet', text: 'Unless water is actively pooling behind it. Where and how high to cut is a decision made from moisture readings, and cutting in the wrong place turns a contained loss into a bigger repair.' },
       ],
@@ -393,9 +393,9 @@ guides.push({
       h2: 'Which water you are dealing with',
       note: 'This is the single biggest factor in what can be saved.',
       list: [
-        { term: 'Category 1 — clean', text: 'A supply line, a water heater, rainwater through a roof. If it is addressed quickly, most materials can be dried in place and kept.' },
-        { term: 'Category 2 — gray', text: 'Dishwasher or washing machine discharge, toilet overflow with no solids, aquarium water. Some porous material can be saved if it is dried fast; much of it cannot.' },
-        { term: 'Category 3 — black', text: 'Sewage, a toilet backflow past the trap, ground surface water, and storm surge or flood water. Nothing porous that it touched gets dried and kept. Not carpet, not pad, not drywall, not insulation. This is not an upsell and it is not negotiable.' },
+        { term: 'Category 1: clean', text: 'A supply line, a water heater, rainwater through a roof. If it is addressed quickly, most materials can be dried in place and kept.' },
+        { term: 'Category 2: gray', text: 'Dishwasher or washing machine discharge, toilet overflow with no solids, aquarium water. Some porous material can be saved if it is dried fast; much of it cannot.' },
+        { term: 'Category 3: black', text: 'Sewage, a toilet backflow past the trap, ground surface water, and storm surge or flood water. Nothing porous that it touched gets dried and kept. Not carpet, not pad, not drywall, not insulation. This is not an upsell and it is not negotiable.' },
         { term: 'Category degrades with time', text: 'Category 1 water sitting in a warm house for two days with organic material in it is no longer Category 1. The clock changes the answer, which is why the clock is the point of this page.' },
       ],
     },
@@ -405,14 +405,14 @@ guides.push({
       body: [
         'This is the question we get most often on these calls, and the answer genuinely goes both ways.',
         'Run it if the water did not reach the air handler, the ducts, or the closet the equipment sits in. In South Florida the air conditioner is a dehumidifier, ambient humidity is what makes drying slow here, and a running system meaningfully helps.',
-        'Do not run it if water reached the air handler, the return, the plenum, or any part of the duct system — or if the ceiling above the equipment is what got wet. A running blower in a wet system distributes whatever is starting to grow to every room in the house, and it converts a contained equipment problem into a whole-house one before anybody has looked at it.',
+        'Do not run it if water reached the air handler, the return, the plenum, or any part of the duct system, or if the ceiling above the equipment is what got wet. A running blower in a wet system distributes whatever is starting to grow to every room in the house, and it converts a contained equipment problem into a whole-house one before anybody has looked at it.',
         'If you lost power in a storm and the house has been closed and hot for two days, that matters as much as the water did. An unconditioned South Florida house sits near outdoor humidity within hours, and everything in this guide runs faster in those conditions.',
       ],
     },
     {
       h2: 'Hours six to forty-eight: why fans alone are not drying',
       body: [
-        'The instinct is to point every fan in the house at the wet spot. Air movement is genuinely half the job — it strips the saturated boundary layer off a wet surface so evaporation can continue — but it is only half.',
+        'The instinct is to point every fan in the house at the wet spot. Air movement is genuinely half the job: it strips the saturated boundary layer off a wet surface so evaporation can continue. But it is only half.',
         'The other half is taking that moisture out of the air, and in a climate where outdoor air is already at 70 or 80 percent relative humidity, opening windows and running box fans mostly moves wet air around. What actually dries a South Florida house is dehumidification capacity: a refrigerant dehumidifier with a drain, sized to the space, running continuously. Rent one the same day if you are doing this yourself.',
         'Watch the materials, not the surface. A tile floor feels dry long before the slab under it and the drywall behind the baseboard are. If you can borrow or buy a cheap moisture meter, take readings on affected material and on the same material in an unaffected room, and keep going until they match.',
       ],
@@ -421,10 +421,10 @@ guides.push({
       h2: 'When to stop and call somebody',
       body: [
         'Any one of these is reason enough to stop and call. You do not need several of them.',
-        'Also call if you are simply not sure. Ask what a visit costs when you call — the honest outcome is sometimes that you have already handled it and do not need us, which is a genuinely useful thing to be told on day two rather than discovered on day forty.',
+        'Also call if you are simply not sure. Ask what a visit costs when you call. The honest outcome is sometimes that you have already handled it and do not need us, which is a genuinely useful thing to be told on day two rather than discovered on day forty.',
       ],
       list: [
-        { term: 'The water was Category 2 or 3', text: 'Anything that is not clean supply-line water — appliance discharge, ground water, or sewage.' },
+        { term: 'The water was Category 2 or 3', text: 'Anything that is not clean supply-line water: appliance discharge, ground water, or sewage.' },
         { term: 'It has been more than about 48 hours', text: 'Past that window in this climate you are not drying a building any more, you are removing material from it.' },
         { term: 'More than roughly one room is affected', text: 'Scale changes the equipment and the containment, and both of those change what the job is.' },
         { term: 'Water reached wall cavities or ran under cabinetry', text: 'You cannot verify those are dry from the room side, and that is where do-it-yourself drying usually fails.' },
@@ -441,7 +441,7 @@ guides.push({
     },
     {
       q: 'Can I just dry it myself?',
-      a: 'For a small Category 1 loss caught within hours — a supply line under a sink, caught the same day — often yes, if you extract properly and run real dehumidification rather than just fans. What you cannot do yourself is verify that a wall cavity or the space under a cabinet run is dry, and that is where these come back.',
+      a: 'For a small Category 1 loss caught within hours (a supply line under a sink, caught the same day), often yes, if you extract properly and run real dehumidification rather than just fans. What you cannot do yourself is verify that a wall cavity or the space under a cabinet run is dry, and that is where these come back.',
     },
     {
       q: 'My ceiling is stained from the storm but everything feels dry now. Do I need anything?',
@@ -453,7 +453,7 @@ guides.push({
     },
     {
       q: 'Will insurance cover this?',
-      a: 'For a sudden, accidental discharge — a supply line, a water heater, an air conditioning overflow — usually yes, subject to your deductible, and mold that results from it is typically covered up to a sublimit ($10,000 is a common Florida figure). Flood and storm surge are a separate policy entirely and are not covered by standard homeowners insurance. Gradual seepage is generally excluded. Document everything from hour one either way.',
+      a: 'For a sudden, accidental discharge (a supply line, a water heater, an air conditioning overflow), usually yes, subject to your deductible, and mold that results from it is typically covered up to a sublimit ($10,000 is a common Florida figure). Flood and storm surge are a separate policy entirely and are not covered by standard homeowners insurance. Gradual seepage is generally excluded. Document everything from hour one either way.',
     },
   ],
 
@@ -483,10 +483,10 @@ guides.push({
   },
   lede:
     'Probably not, is the short answer. Most of what grows on the outside of a South Florida house is algae or lichen rather than mold, and most of it is a landscaping problem rather than a remediation one.',
-    short: 'Most of what grows outside a South Florida house is algae — a landscaping problem, not a remediation one.',
+    short: 'Most of what grows outside a South Florida house is algae: a landscaping problem, not a remediation one.',
 
   signals: [
-    { value: 'Algae', label: 'What the black streaking on Florida roofs almost always is — a cyanobacteria, not mold.' },
+    { value: 'Algae', label: 'What the black streaking on Florida roofs almost always is: a cyanobacteria, not mold.' },
     { value: '18–24 in', label: 'Clearance to keep between planting and the wall. The single most effective thing on this page.' },
     { value: '$0', label: 'What a lot of this costs to fix, because the answer is usually a pruning saw and a sprinkler head.' },
   ],
@@ -502,20 +502,20 @@ guides.push({
       note: 'Four things get called mold. Only one of them usually is.',
       list: [
         {
-          term: 'Black streaking on the roof — algae',
+          term: 'Black streaking on the roof: algae',
           text: 'Those dark runs down a roof slope are almost always Gloeocapsa magma, a cyanobacteria that feeds on moisture and the limestone filler in roofing material. It is unsightly, it holds heat, and on tile it is nearly universal in this climate. It is not mold and it is not a building-health problem.',
         },
         {
-          term: 'Green or gray film on stucco — algae',
+          term: 'Green or gray film on stucco: algae',
           text: 'A thin uniform film on a shaded elevation, often heaviest near the base and under eaves. Also algae. It tells you the surface stays damp, which is worth knowing, but the film itself is not damaging the stucco.',
         },
         {
-          term: 'Crusty gray-green patches — lichen',
+          term: 'Crusty gray-green patches: lichen',
           text: 'Raised, circular, and much harder to remove than algae because it is anchored into the surface. Slow-growing and mostly cosmetic on stucco, though on tile it can lift and hold moisture.',
         },
         {
           term: 'Genuine mold and mildew',
-          text: 'Darker, patchier, and typically concentrated where something is repeatedly wetted — under a leaking gutter joint, beneath a window that sheds water onto the wall, at a hose bib. Outdoors this is far less common than the other three, and where it turns up it is usually pointing at a specific water source.',
+          text: 'Darker, patchier, and typically concentrated where something is repeatedly wetted: under a leaking gutter joint, beneath a window that sheds water onto the wall, at a hose bib. Outdoors this is far less common than the other three, and where it turns up it is usually pointing at a specific water source.',
         },
       ],
     },
@@ -526,7 +526,7 @@ guides.push({
       ],
       list: [
         { term: 'Growth at the base of the wall', text: 'A band in the lowest foot or two suggests splash-back, irrigation, or leaf litter holding moisture against the slab edge. That one is worth acting on, because it is the part of the assembly closest to the interior floor.' },
-        { term: 'Growth around a crack or a penetration', text: 'Concentrated growth at a stucco crack, a hose bib, a light fixture or a window return means water is being repeatedly delivered there — and stucco cracks let water into the wall, not just onto it.' },
+        { term: 'Growth around a crack or a penetration', text: 'Concentrated growth at a stucco crack, a hose bib, a light fixture or a window return means water is being repeatedly delivered there. And stucco cracks let water into the wall, not just onto it.' },
         { term: 'The same location, inside', text: 'The one finding that changes the conversation. Exterior growth plus a damp or stained interior surface at the same spot means it is no longer an exterior question.' },
         { term: 'An elevation that never dries', text: 'A north or east wall under mature canopy, or a preserve-edge lot with vegetation hard against the building. This is chronic rather than acute, and it is the situation most likely to eventually become a real problem.' },
         { term: 'Nothing else', text: 'A uniform film on a shaded wall with a dry interior and no cracking is, genuinely, a cleaning job. We would rather tell you that than sell you an inspection.' },
@@ -558,8 +558,8 @@ guides.push({
           text: 'Raising and thinning a mature tree gets air and light back onto the elevation without losing the shade that keeps your cooling bill down. An arborist is the right call here, not a remediation company.',
         },
         {
-          title: 'Soft wash — do not pressure wash',
-        text: 'A soft wash: low pressure, a solution that kills the organism, then a rinse. Worth knowing that it removes what is there and does nothing to stop it returning — on a shaded north wall or the north slope of a tile roof in this climate, plan on repeating it every few years rather than treating it as solved.',
+          title: 'Soft wash: do not pressure wash',
+        text: 'A soft wash: low pressure, a solution that kills the organism, then a rinse. Worth knowing that it removes what is there and does nothing to stop it returning. On a shaded north wall or the north slope of a tile roof in this climate, plan on repeating it every few years rather than treating it as solved.',
           check: 'If a contractor proposes pressure washing your tile roof, get a second quote.',
         },
       ],
@@ -568,7 +568,7 @@ guides.push({
       h2: 'What we would tell you on the phone',
       flag: true,
       body: [
-        'If you describe uniform green film on a shaded wall with a dry interior, we will tell you it is algae, point you at the list above, and not schedule anything. That is not us being generous — an exterior cleaning is not our trade, and sending a remediation crew to a landscaping problem wastes your money and our day.',
+        'If you describe uniform green film on a shaded wall with a dry interior, we will tell you it is algae, point you at the list above, and not schedule anything. That is not us being generous: an exterior cleaning is not our trade, and sending a remediation crew to a landscaping problem wastes your money and our day.',
         'What we do want to hear about is exterior growth paired with anything happening inside: a damp baseboard, a stained wall base, a musty smell in the room behind that elevation. That combination is worth a moisture reading, and it is the case where an exterior symptom is genuinely worth acting on.',
       ],
     },
@@ -577,19 +577,19 @@ guides.push({
   faqs: [
     {
       q: 'What are the black streaks on my roof?',
-        a: 'Gloeocapsa magma — the organism described above. It reads as streaks because it travels down-slope with rainwater, which is also why it shows worst below vents, in valleys, and anywhere runoff concentrates. The practical point is that this is a roof-cleaning job and not a remediation one. No mold contractor should be quoting you for it, ourselves included.',
+        a: 'Gloeocapsa magma, the organism described above. It reads as streaks because it travels down-slope with rainwater, which is also why it shows worst below vents, in valleys, and anywhere runoff concentrates. The practical point is that this is a roof-cleaning job and not a remediation one. No mold contractor should be quoting you for it, ourselves included.',
     },
     {
       q: 'Will pressure washing get rid of it?',
-      a: 'It will remove it and cause other problems. High pressure drives water into stucco and behind roof tile, abrades the surface so the growth returns faster, and on barrel tile it can crack tiles outright. Soft washing — low pressure plus a solution that kills the organism — is the standard for a reason. Be especially careful about anyone offering to pressure wash a tile roof.',
+      a: 'It will remove it and cause other problems. High pressure drives water into stucco and behind roof tile, abrades the surface so the growth returns faster, and on barrel tile it can crack tiles outright. Soft washing, low pressure plus a solution that kills the organism, is the standard for a reason. Be especially careful about anyone offering to pressure wash a tile roof.',
     },
     {
       q: 'Does exterior mold get inside?',
-      a: 'Not by growing through a sound wall. Concrete block and intact stucco are not a food source and not a route. What does get inside is water — through a stucco crack, a failed window seal, or a penetration — and where that happens you will usually find growth on the interior surface at the same location. The exterior film is a clue about moisture, not a colonization route.',
+      a: 'Not by growing through a sound wall. Concrete block and intact stucco are not a food source and not a route. What does get inside is water (through a stucco crack, a failed window seal, or a penetration), and where that happens you will usually find growth on the interior surface at the same location. The exterior film is a clue about moisture, not a colonization route.',
     },
     {
       q: 'Should I use bleach on it?',
-      a: 'For exterior algae on a hard surface, a diluted solution applied at low pressure is roughly what a soft wash is, so yes in principle. Be careful of the runoff — it will damage planting under the wall, which is the same planting you may want to keep. And it does nothing about the shade and moisture that let it grow, so it will come back on the same schedule.',
+      a: 'For exterior algae on a hard surface, a diluted solution applied at low pressure is roughly what a soft wash is, so yes in principle. Be careful of the runoff. It will damage planting under the wall, which is the same planting you may want to keep. And it does nothing about the shade and moisture that let it grow, so it will come back on the same schedule.',
     },
     {
       q: 'How often does it come back?',

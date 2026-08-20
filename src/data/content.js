@@ -100,7 +100,7 @@ export const airPathPoints = [
     n: 3,
     key: 'pan',
     title: 'Drain pan & condensate trap',
-    text: 'A clogged line or a dry trap backs water into the pan. Standing water in a dark cabinet at 75°F is the easiest growth in the building — and the failure that floods ceilings.',
+    text: 'A clogged line or a dry trap backs water into the pan. Standing water in a dark cabinet at 75°F is the easiest growth in the building, and the failure that floods ceilings.',
   },
   {
     n: 4,
@@ -158,7 +158,7 @@ export const home = {
     eyebrow: 'The mechanism',
     h2: 'Down here, mold travels through the ductwork',
     body: [
-      'Most people picture mold as something on a wall, spreading outward from a leak. That does happen. But the more common South Florida version is invisible from the room: growth starts at the wettest surface in the house — the evaporator coil — and the blower distributes it under positive pressure to every supply register in the building.',
+      'Most people picture mold as something on a wall, spreading outward from a leak. That does happen. But the more common South Florida version is invisible from the room: growth starts at the evaporator coil, the wettest surface in the house. The blower distributes it under positive pressure to every supply register in the building.',
       'That is why the same house can have a musty smell in four rooms and no visible growth anywhere. It is also why cleaning the visible spot fixes nothing, and why a company that treats one bedroom will be back in your house in six weeks.',
     'Trace the route below and the sequence explains itself: the equipment is wet first, the plenum is downstream of the equipment, and every room is downstream of the plenum.',
     ],
@@ -178,7 +178,7 @@ export const home = {
       },
       {
         title: 'We do not grade our own work',
-        text: 'Florida licenses assessors and remediators separately, and a company that assessed a property is barred from remediating it — [why that separation is the whole point](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate). Your clearance test comes from an independent assessor. That is what makes the passing result mean anything.',
+        text: 'Florida licenses assessors and remediators separately, and a company that assessed a property is barred from remediating it ([why that separation is the whole point](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate)). Your clearance test comes from an independent assessor. That is what makes the passing result mean anything.',
       },
       {
         title: 'We fix the condition, not just the growth',
@@ -190,15 +190,15 @@ export const home = {
   faqs: [
     {
       q: 'How fast can you get out here?',
-      a: 'It depends on the week and where you are in the two counties, so the honest answer is that we will give you a real date on the call rather than a booking we then slip. Tell us if there is active water — that changes where you sit in the schedule, because a wet building has a clock on it and a contained patch of growth does not.',
+      a: 'It depends on the week and where you are in the two counties, so the honest answer is that we will give you a real date on the call rather than a booking we then slip. Tell us if there is active water. That changes where you sit in the schedule, because a wet building has a clock on it and a contained patch of growth does not.',
     },
     {
       q: 'What does an inspection cost?',
-      a: 'Ask on the call and we will tell you before anyone drives out — it depends on the property and on what you are describing, and a number you get afterwards is worth a lot less than one you get first. What we cannot sell you at any price is a licensed mold assessment with sampling: that is a separate license, a separate company, and an independent document.',
+      a: 'Ask on the call and we will tell you before anyone drives out. It depends on the property and on what you are describing, and a number you get afterwards is worth a lot less than one you get first. What we cannot sell you at any price is a licensed mold assessment with sampling: that is a separate license, a separate company, and an independent document.',
     },
     {
       q: 'Do you handle the repairs after the mold work?',
-      a: 'We remove, clean, and dry. Reconstruction — drywall, texture, paint, flooring, and any plenum fabrication — is scoped separately and we are clear about which line items are which so you can compare bids honestly.',
+      a: 'We remove, clean, and dry. Reconstruction (drywall, texture, paint, flooring, and any plenum fabrication) is scoped separately and we are clear about which line items are which so you can compare bids honestly.',
     },
     
   ],
@@ -225,11 +225,11 @@ export const guidesHub = {
         },
         {
           term: 'You have quotes in hand and they do not agree',
-          text: 'The useful test is whether the spread is a percentage or a multiple. Quotes within a few hundred dollars of each other are pricing the same job and you can choose on other grounds. Quotes that are several times apart are not, and no amount of staring at the totals will tell you which one is right. [Comparing three quotes](/guides/comparing-mold-remediation-quotes/) sets out what has to be written down — affected square footage, what comes out versus what gets cleaned, who does the clearance — before the numbers can be compared at all.',
+          text: 'The useful test is whether the spread is a percentage or a multiple. Quotes within a few hundred dollars of each other are pricing the same job and you can choose on other grounds. Quotes that are several times apart are not, and no amount of staring at the totals will tell you which one is right. [Comparing three quotes](/guides/comparing-mold-remediation-quotes/) sets out what has to be written down before the numbers can be compared at all: affected square footage, what comes out versus what gets cleaned, who does the clearance.',
         },
         {
           term: 'The dark staining is on the outside of the house',
-          text: 'Most of what people photograph on a stucco wall and send us is not a remediation problem at all — it is algae, or it is the shaded north side doing what shaded north sides do in this climate. [The stuff on your stucco](/guides/mold-on-the-outside-of-your-house/) covers how to tell those apart from the pattern that does mean water is getting into the wall, which is the one worth acting on.',
+          text: 'Most of what people photograph on a stucco wall and send us is not a remediation problem at all: it is algae, or it is the shaded north side doing what shaded north sides do in this climate. [The stuff on your stucco](/guides/mold-on-the-outside-of-your-house/) covers how to tell those apart from the pattern that does mean water is getting into the wall, which is the one worth acting on.',
         },
         {
           term: 'The house is about to sit empty for months',
@@ -242,7 +242,7 @@ export const guidesHub = {
       flag: true,
       body: [
         'None of these will tell you whether what you are looking at is mold. That takes somebody in the room with a moisture meter, and on a property where remediation is likely it takes a [licensed assessor](/services/mold-inspection-testing/) who is not the company hoping to do the removal.',
-        'They also will not size a scope. Square footage, what comes out versus what gets cleaned, and whether the plenum has to be replaced are decisions made against readings, not against a photograph. If a guide leaves you fairly sure you have a problem, the next step is somebody looking at it — ours or anybody else’s.',
+        'They also will not size a scope. Square footage, what comes out versus what gets cleaned, and whether the plenum has to be replaced are decisions made against readings, not against a photograph. If a guide leaves you fairly sure you have a problem, the next step is somebody looking at it, ours or anybody else’s.',
         'And there is one situation where reading is the wrong move entirely: standing water that has not been removed, sewage involvement, or somebody in the house with asthma or a compromised immune system. Those are phone calls. [Tell us what you are seeing](/contact/) or ring the number at the top of the page.',
       ],
     },
@@ -264,11 +264,11 @@ export const servicesHub = {
       list: [
         {
           term: 'Air duct cleaning vs. HVAC mold remediation',
-          text: 'Duct cleaning is hygiene: removing accumulated dust and debris from a system that is otherwise sound. HVAC mold remediation is removal: the coil, the pan, the blower, and usually a colonized plenum that has to be replaced rather than cleaned. If growth is at the coil, cleaning the ducts leaves the source running upstream of everything you just paid for. The tell is the smell — if it tracks with the air conditioning cycle, start at [the equipment](/services/hvac-air-conditioner-mold-remediation/), not the ductwork.',
+          text: 'Duct cleaning is hygiene: removing accumulated dust and debris from a system that is otherwise sound. HVAC mold remediation is removal: the coil, the pan, the blower, and usually a colonized plenum that has to be replaced rather than cleaned. If growth is at the coil, cleaning the ducts leaves the source running upstream of everything you just paid for. The tell is the smell: if it tracks with the air conditioning cycle, start at [the equipment](/services/hvac-air-conditioner-mold-remediation/), not the ductwork.',
         },
         {
           term: 'Inspection and testing vs. remediation',
-          text: 'Inspection answers what is happening and why. Remediation removes it. They are separately licensed in Florida and one company is restricted from doing both on the same property, which is not red tape — it is what stops the company being paid to remove mold from also being the one deciding how much there is. If you are being offered both in one quote, that is the thing to ask about. [Why one company cannot do both](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate) is the shortest version of the reason.',
+          text: 'Inspection answers what is happening and why. Remediation removes it. They are separately licensed in Florida and one company is restricted from doing both on the same property, which is not red tape. It is what stops the company being paid to remove mold from also being the one deciding how much there is. If you are being offered both in one quote, that is the thing to ask about. [Why one company cannot do both](/faq/#why-is-one-company-not-allowed-to-inspect-and-remediate) is the shortest version of the reason.',
         },
         {
           term: 'And one that is not a pair at all',
@@ -311,7 +311,7 @@ export const process = {
     {
       title: 'Containment',
       duration: '1–3 hours',
-      text: 'Six-mil polyethylene sealed to floor, walls, and ceiling, with a zippered entry and — for anything beyond a small isolated area — a decontamination chamber. HVAC supply and return registers inside the containment get sealed so the system cannot move air through the work zone.',
+      text: 'Six-mil polyethylene sealed to floor, walls, and ceiling, with a zippered entry and, for anything beyond a small isolated area, a decontamination chamber. HVAC supply and return registers inside the containment get sealed so the system cannot move air through the work zone.',
       check: 'Walk up to it. You should see sealed edges, a real airlock, and taped-off registers. Plastic hanging loosely in a doorway is not containment.',
     },
     {
@@ -323,7 +323,7 @@ export const process = {
     {
       title: 'Source removal',
       duration: '1–3 days',
-      text: 'Colonized porous material comes out and is bagged inside the containment: drywall, insulation, carpet pad, duct board, ceiling tile. Semi-porous material like framing is cleaned mechanically — HEPA vacuum and abrasion — rather than removed, where it is structurally sound.',
+      text: 'Colonized porous material comes out and is bagged inside the containment: drywall, insulation, carpet pad, duct board, ceiling tile. Semi-porous material like framing is cleaned mechanically (HEPA vacuum and abrasion) rather than removed, where it is structurally sound.',
       check: 'Removal is cut back to a defined margin past the visible growth, not to the edge of the stain.',
     },
     {
@@ -347,13 +347,13 @@ export const process = {
     {
       title: 'Independent clearance testing',
       duration: '2–5 days for lab results',
-      text: 'A third-party licensed mold assessor — not us — inspects and samples the containment before it comes down. Florida separates these two licenses specifically so that this check is real, and [what that means for you](/faq/#licensing-and-standards) is worth reading before you hire anyone.',
+      text: 'A third-party licensed mold assessor, not us, inspects and samples the containment before it comes down. Florida separates these two licenses specifically so that this check is real, and [what that means for you](/faq/#licensing-and-standards) is worth reading before you hire anyone.',
       check: 'The company that did the work should never be the company that clears it. If they offer to, that is the whole answer about how they operate.',
     },
     {
       title: 'Teardown and reconstruction',
       duration: '1 day + rebuild',
-      text: 'Containment comes down only after clearance passes. Reconstruction — drywall, texture, paint, flooring, plenum fabrication — is scoped and priced as its own line so you can see what you are paying for.',
+      text: 'Containment comes down only after clearance passes. Reconstruction (drywall, texture, paint, flooring, plenum fabrication) is scoped and priced as its own line so you can see what you are paying for.',
       check: 'Nothing should be closed up before the clearance result is in hand.',
     },
   ],
@@ -376,15 +376,15 @@ export const faqPage = {
       faqs: [
         {
           q: 'I think I have mold. What should I do first?',
-          a: 'Stop the water if you can find it, and do not disturb the growth — scrubbing or sanding it aerosolizes far more than leaving it alone. If the smell tracks with your air conditioning, turn the system off rather than running it, because a running system distributes whatever is in it. Then get somebody to look at it. Photograph everything before anything changes, especially if an insurance claim is possible — [the first 48 hours](/guides/first-48-hours-after-water-damage/) sets out the order to do all of this in.',
+          a: 'Stop the water if you can find it, and do not disturb the growth: scrubbing or sanding it aerosolizes far more than leaving it alone. If the smell tracks with your air conditioning, turn the system off rather than running it, because a running system distributes whatever is in it. Then get somebody to look at it. Photograph everything before anything changes, especially if an insurance claim is possible. [The first 48 hours](/guides/first-48-hours-after-water-damage/) sets out the order to do all of this in.',
         },
         {
           q: 'How do I know whether I need remediation or just cleaning?',
-          a: 'The dividing line is the EPA guidance — under about ten square feet, roughly a three-foot square, is generally a job you can do yourself, and [the EPA sets it out here](https://www.epa.gov/mold/mold-cleanup-your-home) — but the material matters more than the area. Surface growth on non-porous tile or a shower surround is a cleaning job. Anything on drywall, in insulation, inside a wall cavity, or in an air system is a containment job regardless of size, because those cannot be cleaned in place and disturbing them without containment spreads it.',
+          a: 'The dividing line is the EPA guidance: under about ten square feet, roughly a three-foot square, is generally a job you can do yourself, and [the EPA sets it out here](https://www.epa.gov/mold/mold-cleanup-your-home). But the material matters more than the area. Surface growth on non-porous tile or a shower surround is a cleaning job. Anything on drywall, in insulation, inside a wall cavity, or in an air system is a containment job regardless of size, because those cannot be cleaned in place and disturbing them without containment spreads it.',
         },
         {
           q: 'Should I test first or just have it removed?',
-          a: 'If you can see it and you know where the water came from, testing usually just delays the work by a week to confirm what you already know. Test first when you have symptoms and no visible growth, when you need documentation for a claim or a real estate transaction, or when there is a dispute between a landlord and a tenant — [what a real inspection includes](/services/mold-inspection-testing/) covers what you should get back for the money. Always test at clearance, regardless.',
+          a: 'If you can see it and you know where the water came from, testing usually just delays the work by a week to confirm what you already know. Test first when you have symptoms and no visible growth, when you need documentation for a claim or a real estate transaction, or when there is a dispute between a landlord and a tenant. [What a real inspection includes](/services/mold-inspection-testing/) covers what you should get back for the money. Always test at clearance, regardless.',
         },
       ],
     },
@@ -397,11 +397,11 @@ export const faqPage = {
         },
         {
           q: 'Does homeowners insurance cover mold in Florida?',
-          a: 'Partially, usually. Most Florida policies carry a mold sublimit — $10,000 is a common figure — and coverage typically depends on the mold resulting from a sudden, accidental, covered water event. Gradual seepage, deferred maintenance, and chronic humidity are excluded in most policies. Document everything from day one; the documentation is what determines the outcome more than the argument does.',
+          a: 'Partially, usually. Most Florida policies carry a mold sublimit ($10,000 is a common figure), and coverage typically depends on the mold resulting from a sudden, accidental, covered water event. Gradual seepage, deferred maintenance, and chronic humidity are excluded in most policies. Document everything from day one; the documentation is what determines the outcome more than the argument does.',
         },
         {
           q: 'Should I file a claim?',
-          a: 'For a sudden discharge — a supply line, a water heater, a condensate overflow into a ceiling — usually yes. For gradual humidity, filing may cost you more in premium and claim history than it recovers against a sublimit. We will document conditions either way and we will not push you toward a claim because it makes our invoice easier to collect.',
+          a: 'For a sudden discharge (a supply line, a water heater, a condensate overflow into a ceiling), usually yes. For gradual humidity, filing may cost you more in premium and claim history than it recovers against a sublimit. We will document conditions either way and we will not push you toward a claim because it makes our invoice easier to collect.',
         },
         {
           q: 'Why are the quotes I am getting so different from each other?',
@@ -414,15 +414,15 @@ export const faqPage = {
       faqs: [
         {
           q: 'Why does my house smell musty when the AC starts?',
-          a: 'Because the source is in the equipment. A smell that is strongest in the first thirty to sixty seconds of a cycle and fades as it runs points at the coil or the drain pan — the blower pushes the accumulated odor down the ducts, then the air behind it is cleaner. A smell that grows as the system runs points more toward the duct system itself, which is [a different job](/services/air-duct-cleaning-sanitizing/) from the equipment.',
+          a: 'Because the source is in the equipment. A smell that is strongest in the first thirty to sixty seconds of a cycle and fades as it runs points at the coil or the drain pan. The blower pushes the accumulated odor down the ducts, then the air behind it is cleaner. A smell that grows as the system runs points more toward the duct system itself, which is [a different job](/services/air-duct-cleaning-sanitizing/) from the equipment.',
         },
         {
           q: 'Is there mold in my ducts?',
-          a: 'Maybe, but it is rarely the whole story. Ducts are the delivery system; the coil is where growth almost always starts. If somebody quotes you duct cleaning without opening the air handler cabinet, they have looked at the pipes and not the source — [the seven places we find it](/services/hvac-air-conditioner-mold-remediation/) is where that starts.',
+          a: 'Maybe, but it is rarely the whole story. Ducts are the delivery system; the coil is where growth almost always starts. If somebody quotes you duct cleaning without opening the air handler cabinet, they have looked at the pipes and not the source. [The seven places we find it](/services/hvac-air-conditioner-mold-remediation/) is where that starts.',
         },
         {
           q: 'What is duct board and why does it matter so much?',
-          a: 'Rigid bonded fiberglass with a foil facing, used to build plenums and trunk lines in most Florida construction before roughly 2000. The interior face is an exposed fiber mat, so it is porous — growth extends into the fibers rather than sitting on the surface. No cleaning process removes growth from inside a fiber mat, and coating over it seals it in. That is why colonized duct board is replaced rather than treated.',
+          a: 'Rigid bonded fiberglass with a foil facing, used to build plenums and trunk lines in most Florida construction before roughly 2000. The interior face is an exposed fiber mat, so it is porous: growth extends into the fibers rather than sitting on the surface. No cleaning process removes growth from inside a fiber mat, and coating over it seals it in. That is why colonized duct board is replaced rather than treated.',
         },
         {
           q: 'Will a UV light in my air handler prevent mold?',
@@ -439,11 +439,11 @@ export const faqPage = {
         },
         {
           q: 'Do we need to move out?',
-          a: 'For most jobs, no — containment and negative air exist so the rest of the house stays usable. Plan to stay out of the containment area entirely — [our process](/process/) sets out what is built and when. We do recommend relocating when the work involves the only air handler in the house in the middle of summer, when the affected area is large, or when someone in the home is immunocompromised, pregnant, or has significant respiratory disease.',
+          a: 'For most jobs, no: containment and negative air exist so the rest of the house stays usable. Plan to stay out of the containment area entirely. [Our process](/process/) sets out what is built and when. We do recommend relocating when the work involves the only air handler in the house in the middle of summer, when the affected area is large, or when someone in the home is immunocompromised, pregnant, or has significant respiratory disease.',
         },
         {
           q: 'Is bleach useful?',
-          a: 'Less than its reputation. On non-porous surfaces, soap and water with mechanical scrubbing performs about as well and is safer to use — worth knowing that [the EPA’s own cleanup instruction](https://www.epa.gov/mold/mold-cleanup-your-home) is to scrub hard surfaces with detergent and water, and does not mention bleach at all. On porous material, bleach is mostly water — the chlorine stays at the surface while the water carries into the material, which can leave the substrate wetter than it started. It is not a remediation tool.',
+          a: 'Less than its reputation. On non-porous surfaces, soap and water with mechanical scrubbing performs about as well and is safer to use. Worth knowing that [the EPA’s own cleanup instruction](https://www.epa.gov/mold/mold-cleanup-your-home) is to scrub hard surfaces with detergent and water, and does not mention bleach at all. On porous material, bleach is mostly water: the chlorine stays at the surface while the water carries into the material, which can leave the substrate wetter than it started. It is not a remediation tool.',
         },
       ],
     },
@@ -457,7 +457,7 @@ export const faqPage = {
         },
         {
           q: 'What is IICRC S520?',
-          a: 'The industry consensus standard for professional mold remediation. It defines the conditions, the containment levels, and the principle the whole trade is supposed to operate on — that remediation means physically removing contamination, not treating it in place. It is not law, but it is the document a competent remediator writes scopes against and the one an expert witness will reference if things go badly. [Every stage of the work](/services/mold-remediation/) is scoped against it, and [what the standard actually requires](/about/#the-standards-we-work-to) is set out in full alongside NADCA ACR.',
+          a: 'The industry consensus standard for professional mold remediation. It defines the conditions, the containment levels, and the principle the whole trade is supposed to operate on: that remediation means physically removing contamination, not treating it in place. It is not law, but it is the document a competent remediator writes scopes against and the one an expert witness will reference if things go badly. [Every stage of the work](/services/mold-remediation/) is scoped against it, and [what the standard actually requires](/about/#the-standards-we-work-to) is set out in full alongside NADCA ACR.',
         },
       ],
     },
@@ -478,7 +478,7 @@ export const about = {
   body: [
     'The pattern that got us here is simple enough to state in one sentence: in South Florida, the air conditioner is the wettest thing in the building and it runs almost every day of the year. Once you have opened enough air handler cabinets, you stop being surprised that the ceiling stain in the guest room started in a closet forty feet away.',
     'That perspective changes how we scope work. A restoration-trained crew called out for a musty smell will look for a leak, and when they do not find one they will look harder for a leak. We start by asking what the indoor humidity is doing, what the return looks like, and whether the plenum is duct board. A good share of the time that conversation ends without any demolition at all.',
-    'It also means we say no fairly often. We turn down duct cleaning on systems that do not need it, we tell people their ceiling stain is a repair rather than a remediation, and we refer the assessment side out because Florida requires it and because it is the right structure. None of that is generosity — it is that a remediation company lives on referrals, and the fastest way to lose them is to sell somebody work they did not need.',
+    'It also means we say no fairly often. We turn down duct cleaning on systems that do not need it, we tell people their ceiling stain is a repair rather than a remediation, and we refer the assessment side out because Florida requires it and because it is the right structure. None of that is generosity. It is that a remediation company lives on referrals, and the fastest way to lose them is to sell somebody work they did not need.',
   ],
   sections: [
     {
@@ -486,16 +486,16 @@ export const about = {
       note: 'This site refers to both repeatedly. Here is what they actually are, because almost nobody explains them.',
       list: [
         {
-          term: 'IICRC S520 — mold remediation',
-          text: 'Formally ANSI/IICRC S520, the Standard for Professional Mold Remediation — an ANSI-accredited consensus standard published by the [IICRC](https://iicrc.org/iicrcstandards/). It defines the conditions a space can be in, the containment levels that correspond to them, and the principle the whole trade is meant to operate on: remediation means physically removing contamination, not treating it in place. It is what our scopes are written against.',
+          term: 'IICRC S520: mold remediation',
+          text: 'Formally ANSI/IICRC S520, the Standard for Professional Mold Remediation, an ANSI-accredited consensus standard published by the [IICRC](https://iicrc.org/iicrcstandards/). It defines the conditions a space can be in, the containment levels that correspond to them, and the principle the whole trade is meant to operate on: remediation means physically removing contamination, not treating it in place. It is what our scopes are written against.',
         },
         {
-          term: 'NADCA ACR — HVAC system cleaning',
+          term: 'NADCA ACR: HVAC system cleaning',
           text: 'The [Assessment, Cleaning and Restoration of HVAC Systems](https://acrstandard.nadca.com/) standard, published by NADCA. Its core requirement is source removal, and NADCA states it plainly: cleaning begins with agitation devices that loosen contaminants from the interior surfaces, and the entire system is held under continuous negative pressure throughout so nothing spreads while that happens. We vent the collection unit outside on top of that, which is our practice rather than something the standard specifies. It is what separates [real duct cleaning](/services/air-duct-cleaning-sanitizing/) from a vacuum at the register.',
         },
         {
           term: 'Neither one is law',
-          text: 'Worth being straight about. No statute mandates a particular technical standard. S520 and ACR are industry consensus documents. What they are is the reference a competent contractor writes scopes against — and the document an expert witness will hold a job up against if it ends up in front of one.',
+          text: 'Worth being straight about. No statute mandates a particular technical standard. S520 and ACR are industry consensus documents. What they are is the reference a competent contractor writes scopes against, and the document an expert witness will hold a job up against if it ends up in front of one.',
         },
         {
           term: 'Which is why naming one matters',
@@ -515,7 +515,7 @@ export const about = {
         },
         {
           title: 'Ask what standard they work to',
-          text: 'S520 for remediation, NADCA ACR for duct work. You are not testing their recall — you are finding out whether there is a defined method behind the price.',
+          text: 'S520 for remediation, NADCA ACR for duct work. You are not testing their recall: you are finding out whether there is a defined method behind the price.',
         },
         {
           title: 'Get the scope in writing before the number matters',
@@ -579,9 +579,9 @@ export const privacy = {
       h2: 'Analytics',
       body: [
         'This site loads Google Analytics 4 on every page, under the measurement id G-EE6SMM9HMT. It is the standard Google tag, served from googletagmanager.com, and it sets cookies in your browser.',
-        'What it records is ordinary traffic data: which pages you opened, roughly where you are (Google derives that from your IP address, to the level of a city), what device and browser you used, and how you arrived — a search, an ad, another site, or typing the address in.',
+        'What it records is ordinary traffic data: which pages you opened, roughly where you are (Google derives that from your IP address, to the level of a city), what device and browser you used, and how you arrived: a search, an ad, another site, or typing the address in.',
         'Two things on top of that are counted as conversions, because they are the only two actions on this site that mean somebody is trying to reach us. One fires when you tap a phone number. The other fires when the contact form sends successfully. Both record the page you were on. Neither records what you typed.',
-        'Google processes this data as described in [its own privacy policy](https://policies.google.com/privacy). You can stop it entirely with [Google’s opt-out add-on](https://tools.google.com/dlpage/gaoptout), or with any browser setting or extension that blocks analytics — the site works exactly the same either way.',
+        'Google processes this data as described in [its own privacy policy](https://policies.google.com/privacy). You can stop it entirely with [Google’s opt-out add-on](https://tools.google.com/dlpage/gaoptout), or with any browser setting or extension that blocks analytics. The site works exactly the same either way.',
       ],
     },
     {
@@ -637,7 +637,7 @@ export const contact = {
   h1: 'Tell us what you are seeing',
   eyebrow: 'Contact',
   lede:
-    'The fastest path is a phone call — most of what we need to know takes about four minutes to establish. If it is easier to write it down, the form goes to the same place.',
+    'The fastest path is a phone call: most of what we need to know takes about four minutes to establish. If it is easier to write it down, the form goes to the same place.',
 
   sections: [
     {
@@ -646,7 +646,7 @@ export const contact = {
       list: [
         {
           term: 'Water is coming in right now',
-          text: 'Stop the source if you can reach it, kill power to any area with standing water near outlets, and stay out from under a bulging ceiling. Then photograph everything before you move anything — that is what a claim gets built on and it cannot be recreated later. [The first 48 hours](/guides/first-48-hours-after-water-damage/) is written to be read while it is happening.',
+          text: 'Stop the source if you can reach it, kill power to any area with standing water near outlets, and stay out from under a bulging ceiling. Then photograph everything before you move anything. That is what a claim gets built on and it cannot be recreated later. [The first 48 hours](/guides/first-48-hours-after-water-damage/) is written to be read while it is happening.',
         },
         {
           term: 'The smell is worst when the air conditioning kicks on',
@@ -654,11 +654,11 @@ export const contact = {
         },
         {
           term: 'You have just opened a house that was closed for the season',
-          text: 'Same instruction — leave the air conditioning off, open windows if the weather allows, and have the air handler looked at before the system goes back into service.',
+          text: 'Same instruction: leave the air conditioning off, open windows if the weather allows, and have the air handler looked at before the system goes back into service.',
         },
         {
           term: 'It is green or black film on an outside wall',
-          text: 'It is very likely algae rather than mold, and very likely a landscaping and irrigation fix rather than a job for us. [Read this first](/guides/mold-on-the-outside-of-your-house/) — we would rather you did not pay anyone, including us, to look at it.',
+          text: 'It is very likely algae rather than mold, and very likely a landscaping and irrigation fix rather than a job for us. [Read this first](/guides/mold-on-the-outside-of-your-house/): we would rather you did not pay anyone, including us, to look at it.',
         },
         {
           term: 'You are holding quotes that do not resemble each other',
@@ -670,7 +670,7 @@ export const contact = {
       h2: 'What is useful to have to hand',
       note: 'None of it is required. It just makes the call shorter and the answer better. If what you actually want to know is what happens after the call, [our process](/process/) sets out all ten steps, and says at each one what to ask us to show you.',
       list: [
-        { term: 'Where it is and what it looks like', text: 'Room, surface, roughly how big. A photograph is worth more than any description — you can text it.' },
+        { term: 'Where it is and what it looks like', text: 'Room, surface, roughly how big. A photograph is worth more than any description. You can text it.' },
         { term: 'How long you have known about it', text: 'Two days and two years are genuinely different problems, and the answer changes what we expect to find.' },
         { term: 'Whether anything is wet right now', text: 'This is the question that decides whether you need somebody today or this week.' },
         { term: 'The age of the house and of the air conditioning', text: 'The second one matters more than people expect. A twenty-year-old air handler and a two-year-old one point in different directions before anyone has seen anything.' },
