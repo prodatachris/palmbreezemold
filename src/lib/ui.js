@@ -325,9 +325,9 @@ const node = (n, x, y, lead) => `
   <rect class="dg-part" x="566" y="156" width="48" height="10"/>
 
   <!-- Supply air entering each room: whatever grew upstream arrives here -->
-  <path class="dg-air" d="M316 182 L330 196 L344 182 M316 204 L330 218 L344 204"/>
-  <path class="dg-air" d="M446 182 L460 196 L474 182 M446 204 L460 218 L474 204"/>
-  <path class="dg-air" d="M576 182 L590 196 L604 182 M576 204 L590 218 L604 204"/>
+  <path class="dg-air" style="--i:0" d="M316 182 L330 196 L344 182 M316 204 L330 218 L344 204"/>
+  <path class="dg-air" style="--i:1" d="M446 182 L460 196 L474 182 M446 204 L460 218 L474 204"/>
+  <path class="dg-air" style="--i:2" d="M576 182 L590 196 L604 182 M576 204 L590 218 L604 204"/>
 
   <!-- Rooms -->
   <text class="dg-label dg-label--room" x="317" y="404">Bedroom</text>
@@ -368,11 +368,11 @@ const node = (n, x, y, lead) => `
   <path class="dg-pulse" pathLength="1" d="M28 373 H156 V110 H660"/>
 
   <!-- Findings, numbered in the order the air reaches them -->
-  ${node(1, 66, 373, 24)}
-  ${node(2, 156, 250, 30)}
-  ${node(3, 156, 294, 33)}
-  ${node(4, 156, 148, 38)}
-  ${node(5, 460, 142, 45)}
+  ${node(1, 66, 373, 40)}
+  ${node(2, 156, 250, 46)}
+  ${node(3, 156, 294, 49)}
+  ${node(4, 156, 148, 54)}
+  ${node(5, 460, 142, 61)}
 </svg>
 </div>`;
 }

@@ -186,10 +186,12 @@ ${mediaHero({
     ${sectionHead({ eyebrow: home.thesis.eyebrow, h2: home.thesis.h2, wide: true })}
     <div class="mech">
       <div class="body-block">${paras(home.thesis.body)}</div>
+      <div class="dg-runway">
       <figure class="diagram">
         ${airPathDiagram('home')}
         <figcaption>Fig. 1 &mdash; Air path through a typical Broward or Palm Beach single-story home. Markers 1&ndash;5 are the five commonest places growth turns up, numbered in the order the air reaches them.</figcaption>
       </figure>
+      </div>
     </div>
     <div class="mt-lg">${airPathLegend()}</div>
   </div>
@@ -412,10 +414,12 @@ ${mediaHero({
   <div class="wrap">
     <div class="body-block">${paras(s.intro)}</div>
     ${isHvac ? `
+    <div class="dg-runway">
     <figure class="diagram mt-lg">
       ${airPathDiagram('svc')}
       <figcaption>Fig. 1 &mdash; The air path, numbered in the order the air reaches each point. These are five of the seven places listed below; the list is ordered by how often we find each one instead, so the numbers here and the numbers there are answering different questions.</figcaption>
-    </figure>` : ''}
+    </figure>
+    </div>` : ''}
     ${nav}
   </div>
 </section>

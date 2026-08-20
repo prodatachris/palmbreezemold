@@ -834,6 +834,12 @@ h1, h2, h3, h4 {
 }
 
 /* ── The signature: air path diagram ───────────────────────────────────────── */
+/* The runway occupies the grid slot the figure used to, so it needs the same
+   escape from the grid item's min-content floor. Without it the diagram's
+   34rem mobile min-width propagates up through the wrapper and pushes the
+   whole home page into sideways scroll at 320: the exact bug the zoom tool's
+   header documents, one wrapper higher. */
+.dg-runway { min-width: 0; }
 .diagram {
   margin: 0;
   min-width: 0;
@@ -916,6 +922,12 @@ h1, h2, h3, h4 {
   to { stroke-dashoffset: 0; }
 }
 
+/* Chevrons descending into the rooms. Shared by native and fallback paths. */
+@keyframes dg-air-in {
+  from { opacity: 0; translate: 0 -12px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
 /* Keyframes shared by BOTH paths: the native scroll-timeline block below and
    the paused-and-scrubbed fallback that follows. They were defined inside
    that @supports block, which meant Firefox -- the browser the fallback
@@ -974,18 +986,19 @@ figure.diagram[data-scroll-fallback] .dg-ring {
   animation-fill-mode: both;
   animation-iteration-count: 1;
 }
-/* Draw, cover 0 -> 22%. The native rule starts at entry 10%, which has no
-   cover equivalent; 0 is the closest honest mapping and the line is drawn by
-   the time the figure is a fifth of the way across either way. */
+/* Without native support there is no pin either (the sticky rule sits in the
+   same @supports), so these fractions are the figure's own transit, shifted
+   late enough that the show plays in front of the reader instead of under
+   the fold: draw 24-34, branches 30-40, pulse 34-64, chevrons from 60. */
 figure.diagram[data-scroll-fallback] .dg-flow {
   animation-name: dg-draw;
   animation-timing-function: cubic-bezier(0.36, 0.02, 0.2, 1);
-  animation-delay: calc(-1s * clamp(0, var(--dg-cover, 0) / 0.22, 1));
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.24) / 0.10, 1));
 }
 figure.diagram[data-scroll-fallback] .dg-flow--b,
 figure.diagram[data-scroll-fallback] .dg-flow--c,
 figure.diagram[data-scroll-fallback] .dg-flow--d {
-  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.18) / 0.12, 1));
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.30) / 0.10, 1));
 }
 /* The pulse, cover 18 -> 48%, on the same eased keyframes as the native path
    so it still arrives at each marker where that marker sits. */
@@ -993,7 +1006,7 @@ figure.diagram[data-scroll-fallback] .dg-pulse {
   animation-name: dg-travel-scroll;
   animation-timing-function: linear;
   opacity: 1;
-  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.18) / 0.30, 1));
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.34) / 0.30, 1));
 }
 /* Markers light in airflow order. --lead is a percentage in the markup, so it
    is divided by 100% to reach the unitless fraction calc needs here. */
@@ -1006,6 +1019,15 @@ figure.diagram[data-scroll-fallback] .dg-ring {
   animation-name: dg-ping-scroll;
   animation-timing-function: ease-out;
   animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - (var(--lead) / 100%)) / 0.08, 1));
+}
+figure.diagram[data-scroll-fallback] .dg-air {
+  animation-name: dg-air-in;
+  animation-duration: 1s;
+  animation-play-state: paused;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.2, 1);
+  animation-delay: calc(-1s * clamp(0, (var(--dg-cover, 0) - 0.60 - var(--i, 0) * 0.03) / 0.10, 1));
 }
 
 /* A slow travelling pulse that reads as air moving through the system */
@@ -1130,23 +1152,35 @@ figure.diagram[data-scroll-fallback] .dg-ring {
     /* The diagram <figure> is the timeline subject on both pages that carry
        it — the home page wraps it in .mech beside the thesis copy, the HVAC
        page places it alone after the intro. */
-    figure.diagram { view-timeline: --airpath block; }
-    /* The legend is a sibling of .mech, not a descendant, so the named
-       timeline is out of its scope. timeline-scope on the shared ancestor
-       (the section's .wrap) hoists the name so both can read one clock. */
-    #mechanism > .wrap, .section > .wrap:has(> figure.diagram) { timeline-scope: --airpath; }
+    /* The runway is what the timeline reads, and the figure inside it is
+       sticky, so the page holds with fig. 1 in view while the reader's own
+       scroll drives the sequence. The owner's complaint was precise: the
+       animation used to be over before anyone saw it, because it played
+       across the figure's transit and the figure transits fast. 240svh of
+       runway minus the figure's ~50svh leaves about 1.9 viewports of held
+       scroll, and the arithmetic holds across viewports because every term
+       is svh or rem. Every consumer of --airpath lives inside the runway,
+       so the name reaches them by ordinary descendant visibility. */
+    .dg-runway { view-timeline: --airpath block; height: 240svh; }
+    .dg-runway figure.diagram {
+      position: sticky;
+      top: max(5.5rem, calc(50svh - 15rem));
+    }
+    /* timeline-scope hoisting used to sit here for the legend. The legend
+       reveals on its own view() now and every --airpath consumer is inside
+       .dg-runway, so the scope rule left with the runway change. */
     figure.diagram .dg-flow {
       animation: dg-draw auto cubic-bezier(0.36, 0.02, 0.2, 1) both;
       animation-timeline: --airpath;
-      animation-range: entry 10% cover 22%;
+      animation-range: cover 24% cover 34%;
     }
     figure.diagram .dg-flow--b, figure.diagram .dg-flow--c, figure.diagram .dg-flow--d {
-      animation-range: cover 18% cover 30%;
+      animation-range: cover 30% cover 40%;
     }
     figure.diagram .dg-pulse {
       animation: dg-travel-scroll auto linear both;
       animation-timeline: --airpath;
-      animation-range: cover 18% cover 48%;
+      animation-range: cover 34% cover 64%;
     }
     /* Not linear, and the offsets are not arbitrary. Each stop below puts the
        pulse at the exact point on the path where a marker sits at the moment
@@ -1167,22 +1201,16 @@ figure.diagram[data-scroll-fallback] .dg-ring {
        scroll-timeline path and the JS fallback share ONE definition. */
     /* Markers light in airflow order. Each one's window is offset by its index
        so 1 lights first and 5 last, tracking the pulse's arrival. */
-    /* Windows sit where each marker is actually on screen. The first schedule
-       (20% + i×13%, ten-point windows, marker 5 at 72–82%) lit 4 and 5 after
-       they had scrolled under the sticky header on every viewport measured —
-       marker 5's centre was at viewport y −79 at 1440×900 when it hit full
-       opacity, and y −41 on a 390×844 phone. The climax played off-screen.
-       The anchor is where a reader actually stops: measured with
-       scrollIntoView({block:'center'}) the figure's top settles at cover
-       31–43% (phone 31%, home desktop 43%, the tall HVAC figure 32%) — not
-       50%, because centring puts the top edge mid-viewport and a phone will
-       not scroll the figure under its sticky header. So the sequence runs
-       24–50%: 1 lights 24–29, 2 30–35, 3 33–38, 4 38–43, 5 45–50. The
-       gaps are uneven because 2 and 3 sit within 3% of each other on the
-       path, and lighting them five points apart would overstate that.
-       Arriving,
-       the reader sees 1–2 lit and the air moving; a small nudge down brings
-       3, 4 and 5 in — all with the figure still on screen. */
+    /* Retuned when the figure went sticky. The old 24-50% schedule was
+       paced for a figure that scrolled past, and lit everything during the
+       one stretch it happened to be fully visible. The figure now pins
+       inside .dg-runway from roughly cover 23% to 79% (svh arithmetic, so
+       the window holds across viewports) and the whole sequence sits inside
+       the pin: line 24-34, branches 30-40, pulse 34-64, markers at
+       40/46/49/54/61 with five-point windows, chevrons 60-76. The pulse
+       keyframe stops did not move: the new leads keep the same relative
+       positions in the new range, and assertDiagramPulseSync checks the
+       mapping rather than this comment. */
     figure.diagram .dg-mark {
       /* --lead is set per marker in the markup. See src/lib/ui.js. */
       animation: dg-arrive auto ease-out both;
@@ -1195,6 +1223,14 @@ figure.diagram[data-scroll-fallback] .dg-ring {
       animation: dg-ping-scroll auto ease-out both;
       animation-timeline: --airpath;
       animation-range: cover var(--lead) cover calc(var(--lead) + 8%);
+    }
+    /* Once the pulse is in the trunk the registers deliver: each column's
+       chevrons drop into their room, staggered left to right by --i from
+       the markup. Supply is the end of the story the diagram tells. */
+    figure.diagram .dg-air {
+      animation: dg-air-in auto cubic-bezier(0.2, 0.6, 0.2, 1) both;
+      animation-timeline: --airpath;
+      animation-range: cover calc(60% + var(--i, 0) * 3%) cover calc(70% + var(--i, 0) * 3%);
     }
     /* @keyframes dg-ping-scroll is defined outside this block, above, so the
        scroll-timeline path and the JS fallback share ONE definition. */
@@ -2126,6 +2162,8 @@ a.card--flag.card--photo:hover { border-color: #e8a163; box-shadow: inset 0 3px 
 /* Print — people do print these pages for insurance files */
 @media print {
   .hdr, .callbar, .cta-band, .ftr__grid { display: none; }
+  /* Runways are scroll furniture. On paper they are just blank pages. */
+  .mhero-runway, .dg-runway { height: auto; }
   body { background: #fff; font-size: 11pt; padding: 0; }
   .section { padding-block: 1rem; }
   a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8pt; color: #555; }

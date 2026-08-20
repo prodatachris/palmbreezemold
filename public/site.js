@@ -437,7 +437,13 @@
   function update() {
     frame = null;
     for (var i = 0; i < figures.length; i++) {
-      figures[i].style.setProperty('--dg-cover', cover(figures[i]).toFixed(4));
+      /* Progress is measured on the runway, not the figure: the figure is
+         sticky inside it where the native path is enhanced, and a sticky
+         element's own rect is a scroll tracker, not a position. Without the
+         runway (or without the enhancement) closest() falls back to the
+         figure and the sums are what they always were. */
+      var track = figures[i].closest('.dg-runway') || figures[i];
+      figures[i].style.setProperty('--dg-cover', cover(track).toFixed(4));
     }
   }
 
