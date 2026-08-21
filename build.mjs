@@ -184,6 +184,13 @@ ${mediaHero({
 <section class="section section--ruled defer" id="mechanism">
   <div class="wrap">
     ${sectionHead({ eyebrow: home.thesis.eyebrow, h2: home.thesis.h2, wide: true })}
+    ${'' /* Scrollytelling, both halves pinned. The first standalone version
+        let the thesis copy scroll away while fig. 1 held alone, which the
+        owner called poor design, and he was right: this copy narrates the
+        figure ("trace the route below"), so the two must hold together. On
+        desktop the copy pins in the left column while the reader's scroll
+        plays the sequence beside it; on phones they stack and only the
+        figure pins, which is the HVAC page's own behaviour. */}
     <div class="mech">
       <div class="body-block">${paras(home.thesis.body)}</div>
       <div class="dg-runway">

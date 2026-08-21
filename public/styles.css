@@ -800,7 +800,11 @@ h1, h2, h3, h4 {
   .mhero__cap { font-size: 0.64rem; }
 }
 
-/* Mechanism section: copy beside the schematic */
+/* The home page's copy-beside-figure grid. The copy column PINS alongside
+   the pinned figure (rule further down, inside the enhancement gates): the
+   thesis narrates fig. 1, so the two hold together while the reader's scroll
+   plays the sequence. Base layout is a plain stack; the two columns arrive
+   at 1000px. */
 .mech { display: grid; gap: clamp(1.75rem, 3.5vw, 3rem); align-items: start; }
 @media (min-width: 1000px) {
   .mech { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
@@ -1172,7 +1176,23 @@ figure.diagram[data-scroll-fallback] .dg-air {
     .dg-runway { view-timeline: --airpath block; height: 240svh; }
     .dg-runway figure.diagram {
       position: sticky;
-      top: max(5.5rem, calc(50svh - 15rem));
+      top: max(5.5rem, calc(50svh - 19rem)); /* centres the capped figure */
+      /* Standalone at wrap width the SVG grows past 700px tall and pins with
+         its caption below the fold at 1440x900. The cap keeps the pinned
+         figure inside a 900px viewport with room over and under; phones and
+         the home page's grid column are narrower than the cap and unaffected. */
+      max-width: 58rem;
+      margin-inline: auto;
+    }
+    /* The other half of the hold: the thesis copy pins at the same line as
+       the figure, so the narration and the diagram it narrates stay on
+       screen together for the whole sequence. Desktop only — stacked, the
+       copy has already been read by the time the figure pins. */
+    @media (min-width: 1000px) {
+      .mech > .body-block {
+        position: sticky;
+        top: max(5.5rem, calc(50svh - 19rem));
+      }
     }
     /* timeline-scope hoisting used to sit here for the legend. The legend
        reveals on its own view() now and every --airpath consumer is inside
